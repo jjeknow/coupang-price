@@ -8,6 +8,7 @@
  */
 
 import crypto from 'crypto';
+import { checkRateLimit, getRateLimitStatus } from './rate-limiter';
 
 // API 설정
 const API_BASE_URL = 'https://api-gateway.coupang.com';
@@ -97,17 +98,38 @@ function generateAuthHeader(method: string, path: string): string {
   return `CEA algorithm=HmacSHA256, access-key=${ACCESS_KEY}, signed-date=${datetime}, signature=${signature}`;
 }
 
-// API 호출 함수
+// API 호출 함수 (Rate Limit 적용)
 async function callApi<T>(
   method: 'GET' | 'POST',
   path: string,
-  body?: object
+  body?: object,
+  rateLimitType: 'global' | 'search' | 'reports' = 'global'
 ): Promise<T> {
   // API 키가 없으면 에러
   if (!ACCESS_KEY || !SECRET_KEY) {
     console.error('Coupang API keys not configured');
     throw new Error('API 키가 설정되지 않았습니다.');
   }
+
+  // Rate Limit 체크 (글로벌)
+  const globalCheck = checkRateLimit('global');
+  if (!globalCheck.allowed) {
+    console.warn(`[Rate Limit] Global limit exceeded. Retry after ${globalCheck.retryAfter}s`);
+    throw new Error(`API 호출 한도 초과. ${globalCheck.retryAfter}초 후 다시 시도해주세요.`);
+  }
+
+  // Rate Limit 체크 (타입별)
+  if (rateLimitType !== 'global') {
+    const typeCheck = checkRateLimit(rateLimitType);
+    if (!typeCheck.allowed) {
+      console.warn(`[Rate Limit] ${rateLimitType} limit exceeded. Retry after ${typeCheck.retryAfter}s`);
+      throw new Error(`${rateLimitType} API 호출 한도 초과. ${typeCheck.retryAfter}초 후 다시 시도해주세요.`);
+    }
+  }
+
+  // 현재 Rate Limit 상태 로깅
+  const status = getRateLimitStatus('global');
+  console.log(`[API Call] ${path} - Remaining: ${status.remaining}/${status.limit}`);
 
   const authorization = generateAuthHeader(method, path);
   const url = API_BASE_URL + path;
@@ -173,7 +195,7 @@ export async function getGoldboxProducts(
 }
 
 /**
- * 상품 검색
+ * 상품 검색 (검색 API는 별도 Rate Limit 적용)
  */
 export async function searchProducts(
   keyword: string,
@@ -183,7 +205,8 @@ export async function searchProducts(
   const encodedKeyword = encodeURIComponent(keyword);
   const path = `/v2/providers/affiliate_open_api/apis/openapi/v1/products/search?keyword=${encodedKeyword}&limit=${limit}&imageSize=${imageSize}`;
 
-  const response = await callApi<{ data: SearchResult }>('GET', path);
+  // 검색 API는 별도 Rate Limit (분당 15회)
+  const response = await callApi<{ data: SearchResult }>('GET', path, undefined, 'search');
   return response.data;
 }
 

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { searchProducts } from '@/lib/coupang-api';
+import { getFromCache, setCache, createCacheKey, CACHE_TTL } from '@/lib/cache';
 
-// 상품 검색 API
+// 상품 검색 API (캐싱 적용 - 5분)
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -18,15 +19,38 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const result = await searchProducts(keyword.trim(), limit);
+    const trimmedKeyword = keyword.trim();
+
+    // 캐시 키 생성
+    const cacheKey = createCacheKey('search', trimmedKeyword, limit);
+
+    // 캐시 확인
+    const cached = getFromCache<{ keyword: string; landingUrl: string; products: unknown[] }>(cacheKey);
+    if (cached) {
+      console.log(`[CACHE HIT] ${cacheKey}`);
+      return NextResponse.json({
+        success: true,
+        data: cached,
+        cached: true,
+      });
+    }
+
+    console.log(`[CACHE MISS] ${cacheKey} - API 호출`);
+    const result = await searchProducts(trimmedKeyword, limit);
+
+    const responseData = {
+      keyword: trimmedKeyword,
+      landingUrl: result.landingUrl,
+      products: result.productData,
+    };
+
+    // 캐시 저장 (5분)
+    setCache(cacheKey, responseData, CACHE_TTL.SEARCH);
 
     return NextResponse.json({
       success: true,
-      data: {
-        keyword: keyword.trim(),
-        landingUrl: result.landingUrl,
-        products: result.productData,
-      },
+      data: responseData,
+      cached: false,
     });
   } catch (error) {
     console.error('검색 API 오류:', error);

@@ -17,13 +17,15 @@ interface CacheEntry<T> {
 // 메모리 캐시 저장소
 const cacheStore: Map<string, CacheEntry<unknown>> = new Map();
 
-// 캐시 만료 시간 설정 (밀리초)
+// 캐시 만료 시간 설정 (밀리초) - v3.0 24시간 캐시
+// Reco API가 아닌 일반 API는 캐시 제한 없음
+// 쿠팡 API 제한: 분당 100회, 검색 분당 50회, 3회 초과 시 이용 제한
 export const CACHE_TTL = {
-  GOLDBOX: 30 * 60 * 1000, // 30분
-  BEST_PRODUCTS: 10 * 60 * 1000, // 10분
-  SEARCH: 5 * 60 * 1000, // 5분
-  CATEGORIES: 60 * 60 * 1000, // 1시간
-  DEFAULT: 5 * 60 * 1000, // 5분
+  GOLDBOX: 24 * 60 * 60 * 1000, // 24시간 (매일 7:30 업데이트)
+  BEST_PRODUCTS: 24 * 60 * 60 * 1000, // 24시간
+  SEARCH: 24 * 60 * 60 * 1000, // 24시간
+  CATEGORIES: 24 * 60 * 60 * 1000, // 24시간
+  DEFAULT: 24 * 60 * 60 * 1000, // 24시간
 };
 
 /**

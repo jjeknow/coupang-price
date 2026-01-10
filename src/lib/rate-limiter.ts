@@ -1,24 +1,26 @@
 /**
- * Rate Limiter - 쿠팡 파트너스 API 호출 제한 관리
+ * Rate Limiter - 쿠팡 파트너스 API 호출 제한 관리 v2.0
  *
  * 쿠팡 공식 제한:
  * - 모든 API: 1분당 100회
  * - 검색 API: 1분당 50회
  * - 리포트 API: 1시간당 500회
+ * - 경고 3회 초과 시 파트너스 이용 제한!
  *
- * 안전 마진 적용 (70%):
- * - 모든 API: 1분당 70회
- * - 검색 API: 1분당 35회
+ * 안전 마진 대폭 강화 (40~50%):
+ * - 다른 사이트와 API 키 공유 시에도 안전하도록
+ * - 모든 API: 1분당 40회 (공식 100회의 40%)
+ * - 검색 API: 1분당 15회 (공식 50회의 30%)
  */
 
 // 메모리 기반 Rate Limit 저장소
 const rateLimitStore: Map<string, { count: number; resetAt: number }> = new Map();
 
-// Rate Limit 설정
+// Rate Limit 설정 - 매우 보수적으로 설정 (다른 사이트와 키 공유 대비)
 const RATE_LIMITS = {
-  global: { limit: 70, windowMs: 60 * 1000 }, // 1분당 70회
-  search: { limit: 35, windowMs: 60 * 1000 }, // 1분당 35회
-  reports: { limit: 350, windowMs: 60 * 60 * 1000 }, // 1시간당 350회
+  global: { limit: 40, windowMs: 60 * 1000 }, // 1분당 40회 (40% 마진)
+  search: { limit: 15, windowMs: 60 * 1000 }, // 1분당 15회 (30% 마진)
+  reports: { limit: 200, windowMs: 60 * 60 * 1000 }, // 1시간당 200회 (40% 마진)
 };
 
 /**
