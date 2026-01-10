@@ -190,33 +190,42 @@ export default function PriceChart({
           <h3 className="toss-title-3 mb-1">가격 변동 추이</h3>
           <p className="toss-caption">최근 30일간 가격 변동</p>
         </div>
-        {isLowest && (
-          <span className="toss-badge toss-badge-red flex items-center gap-1 px-3 py-1.5">
-            <TrendingDown size={12} />
-            역대 최저가
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {isLowest && (
+            <span className="toss-badge toss-badge-red flex items-center gap-1 px-3 py-1.5">
+              <TrendingDown size={12} />
+              역대 최저가
+            </span>
+          )}
+          {stats.changePercent < -5 && !isLowest && (
+            <span className="toss-badge toss-badge-green flex items-center gap-1 px-3 py-1.5">
+              구매 적기
+            </span>
+          )}
+        </div>
       </div>
 
-      {/* 가격 변동 요약 */}
-      <div className="flex items-center gap-4 mb-6 p-4 bg-[#f2f4f6] rounded-xl">
-        <div>
-          <p className="toss-caption mb-0.5">30일 전 대비</p>
-          <div className="flex items-center gap-1.5">
+      {/* 가격 변동 요약 - 3열 레이아웃 */}
+      <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="p-3 sm:p-4 bg-[#f2f4f6] rounded-xl text-center">
+          <p className="toss-caption mb-1">30일 전 대비</p>
+          <div className="flex items-center justify-center gap-1">
             {getTrendIcon()}
-            <span className={`text-[15px] font-bold ${getTrendColor()}`}>
-              {stats.change > 0 ? '+' : ''}{stats.change.toLocaleString('ko-KR')}원
-            </span>
-            <span className={`text-[13px] ${getTrendColor()}`}>
-              ({stats.changePercent > 0 ? '+' : ''}{stats.changePercent.toFixed(1)}%)
+            <span className={`text-[14px] sm:text-[15px] font-bold ${getTrendColor()}`}>
+              {stats.changePercent > 0 ? '+' : ''}{stats.changePercent.toFixed(1)}%
             </span>
           </div>
         </div>
-        <div className="w-px h-8 bg-[#e5e8eb]" />
-        <div>
-          <p className="toss-caption mb-0.5">평균가</p>
-          <p className="text-[15px] font-bold text-[#191f28]">
+        <div className="p-3 sm:p-4 bg-[#e8f3ff] rounded-xl text-center">
+          <p className="toss-caption mb-1 text-[#3182f6]">평균가</p>
+          <p className="text-[14px] sm:text-[15px] font-bold text-[#3182f6]">
             {stats.average.toLocaleString('ko-KR')}원
+          </p>
+        </div>
+        <div className="p-3 sm:p-4 bg-[#fff0f0] rounded-xl text-center">
+          <p className="toss-caption mb-1 text-[#e03131]">최저가</p>
+          <p className="text-[14px] sm:text-[15px] font-bold text-[#e03131]">
+            {stats.lowest.toLocaleString('ko-KR')}원
           </p>
         </div>
       </div>

@@ -18,6 +18,35 @@ import {
 } from 'lucide-react';
 import PriceChart from '@/components/chart/PriceChart';
 import ProductCard from '@/components/ui/ProductCard';
+import { saveRecentProduct } from '@/components/home/RecentlyViewed';
+import { isFavorite as checkIsFavorite, toggleFavorite } from '@/lib/favorites';
+
+// 카카오 SDK 타입
+declare global {
+  interface Window {
+    Kakao?: {
+      Share: {
+        sendDefault: (options: {
+          objectType: string;
+          content: {
+            title: string;
+            imageUrl: string;
+            link: { mobileWebUrl: string; webUrl: string };
+          };
+          commerce: {
+            productName: string;
+            regularPrice: number;
+            discountPrice: number;
+          };
+          buttons: Array<{
+            title: string;
+            link: { mobileWebUrl: string; webUrl: string };
+          }>;
+        }) => void;
+      };
+    };
+  }
+}
 
 interface Product {
   productId: number;
@@ -101,10 +130,23 @@ function getCategoryIdByName(categoryName: string): number {
   return 1012; // 기본값: 식품
 }
 
+// URL 슬러그에서 productId 추출 (예: "삼성-tv-65인치-12345" → "12345")
+function extractProductId(slug: string): string {
+  const parts = slug.split('-');
+  const lastPart = parts[parts.length - 1];
+  // 마지막 부분이 숫자인지 확인
+  if (/^\d+$/.test(lastPart)) {
+    return lastPart;
+  }
+  // 숫자가 없으면 전체 반환 (기존 방식 호환)
+  return slug;
+}
+
 export default function ProductDetailPage() {
   const params = useParams();
   const searchParams = useSearchParams();
-  const productId = params.id as string;
+  const rawId = params.id as string;
+  const productId = extractProductId(rawId);
 
   const [product, setProduct] = useState<Product | null>(null);
   const [priceHistory, setPriceHistory] = useState<PriceHistory[]>([]);
@@ -215,6 +257,18 @@ export default function ProductDetailPage() {
         const productData = JSON.parse(decodeURIComponent(dataParam)) as Product;
         setProduct(productData);
         setPriceHistory(generatePriceHistory(productData.productPrice));
+
+        // 최근 본 상품에 저장
+        saveRecentProduct({
+          productId: productData.productId,
+          productName: productData.productName,
+          productPrice: productData.productPrice,
+          productImage: productData.productImage,
+          productUrl: productData.productUrl,
+          isRocket: productData.isRocket,
+          isFreeShipping: productData.isFreeShipping,
+          categoryName: productData.categoryName,
+        });
       } catch {
         console.error('상품 데이터 파싱 실패');
         setProduct(null);
@@ -225,6 +279,13 @@ export default function ProductDetailPage() {
 
     setLoading(false);
   }, [productId, searchParams]);
+
+  // 관심상품 상태 초기화
+  useEffect(() => {
+    if (product) {
+      setIsFavorite(checkIsFavorite(product.productId));
+    }
+  }, [product]);
 
   // ============================================================
   // 비슷한 상품 추천 (단순 키워드 검색 방식)
@@ -364,26 +425,14 @@ export default function ProductDetailPage() {
       )}
 
       <div className="min-h-screen bg-[#f2f4f6]">
-        {/* 상단 네비게이션 */}
-        <div className="sticky top-0 z-50 bg-white border-b border-[#e5e8eb]">
+        {/* 상단 네비게이션 - 뒤로가기만 */}
+        <div className="bg-white border-b border-[#e5e8eb]">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="flex items-center justify-between h-14">
-              <Link href="/" className="p-2 -ml-2 text-[#4e5968] hover:bg-[#f2f4f6] rounded-lg">
-                <ArrowLeft size={24} />
+            <div className="flex items-center h-12">
+              <Link href="/" className="p-2 -ml-2 text-[#4e5968] hover:bg-[#f2f4f6] rounded-lg flex items-center gap-2">
+                <ArrowLeft size={20} />
+                <span className="text-[14px] font-medium">뒤로</span>
               </Link>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => setIsFavorite(!isFavorite)}
-                  className={`p-2 rounded-lg transition-colors ${
-                    isFavorite ? 'text-[#f04452]' : 'text-[#4e5968] hover:bg-[#f2f4f6]'
-                  }`}
-                >
-                  <Heart size={24} fill={isFavorite ? '#f04452' : 'none'} />
-                </button>
-                <button className="p-2 text-[#4e5968] hover:bg-[#f2f4f6] rounded-lg">
-                  <Share2 size={24} />
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -411,6 +460,78 @@ export default function ProductDetailPage() {
                     </span>
                   </div>
                 )}
+                {/* 우측 상단 - 관심/공유 버튼 (세로 배치) */}
+                <div className="absolute top-3 right-3 flex flex-col gap-2">
+                  <button
+                    onClick={() => {
+                      const newState = toggleFavorite({
+                        productId: product.productId,
+                        productName: product.productName,
+                        productPrice: product.productPrice,
+                        productImage: product.productImage,
+                        productUrl: product.productUrl,
+                        isRocket: product.isRocket,
+                        isFreeShipping: product.isFreeShipping,
+                        categoryName: product.categoryName,
+                      });
+                      setIsFavorite(newState);
+                    }}
+                    className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-lg border border-[#e5e8eb] ${
+                      isFavorite ? 'bg-[#f04452] text-white border-[#f04452]' : 'bg-white/95 text-[#6b7684] hover:bg-white hover:text-[#f04452]'
+                    }`}
+                    aria-label="관심상품"
+                  >
+                    <Heart size={18} fill={isFavorite ? '#fff' : 'none'} />
+                  </button>
+                  <button
+                    onClick={() => {
+                      // 카카오톡 공유
+                      if (typeof window !== 'undefined' && window.Kakao) {
+                        window.Kakao.Share.sendDefault({
+                          objectType: 'commerce',
+                          content: {
+                            title: product.productName,
+                            imageUrl: product.productImage,
+                            link: {
+                              mobileWebUrl: `${BASE_URL}/product/${productId}`,
+                              webUrl: `${BASE_URL}/product/${productId}`,
+                            },
+                          },
+                          commerce: {
+                            productName: product.productName,
+                            regularPrice: highestPrice,
+                            discountPrice: product.productPrice,
+                          },
+                          buttons: [
+                            {
+                              title: '자세히 보기',
+                              link: {
+                                mobileWebUrl: `${BASE_URL}/product/${productId}`,
+                                webUrl: `${BASE_URL}/product/${productId}`,
+                              },
+                            },
+                          ],
+                        });
+                      } else {
+                        // 카카오 SDK 없으면 일반 공유
+                        if (navigator.share) {
+                          navigator.share({
+                            title: product.productName,
+                            text: `${product.productName} - ${formatPrice(product.productPrice)}원`,
+                            url: window.location.href,
+                          });
+                        } else {
+                          navigator.clipboard.writeText(window.location.href);
+                          alert('링크가 복사되었습니다!');
+                        }
+                      }
+                    }}
+                    className="w-9 h-9 bg-white/95 text-[#6b7684] hover:bg-white hover:text-[#3182f6] rounded-full flex items-center justify-center transition-all shadow-lg border border-[#e5e8eb]"
+                    aria-label="공유하기"
+                  >
+                    <Share2 size={18} />
+                  </button>
+                </div>
                 {/* 배지들 */}
                 <div className="absolute bottom-4 left-4 flex gap-2">
                   {product.isRocket && (
@@ -443,11 +564,11 @@ export default function ProductDetailPage() {
 
                 {/* 현재 가격 */}
                 <div className="mb-6">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-[36px] font-bold text-[#191f28] tracking-tight">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-[32px] sm:text-[36px] font-bold text-[#e03131] tracking-tighter">
                       {formatPrice(product.productPrice)}
                     </span>
-                    <span className="text-[18px] text-[#6b7684]">원</span>
+                    <span className="text-[16px] sm:text-[18px] text-[#e03131]">원</span>
                     {isCurrentLowest && (
                       <span className="bg-[#f04452] text-white text-[12px] font-bold px-2 py-0.5 rounded ml-2">
                         최저
@@ -522,6 +643,14 @@ export default function ProductDetailPage() {
                     쿠팡에서 구매
                     <ExternalLink size={18} />
                   </a>
+                </div>
+
+                {/* 파트너스 고지 */}
+                <div className="mt-4 p-4 bg-[#f8f9fa] rounded-xl">
+                  <p className="text-[12px] text-[#6b7684] leading-relaxed">
+                    본 서비스는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며,
+                    무료로 제공하는 가격 추적 서비스 유지에 사용됩니다. 구매자에게 추가 비용은 없습니다.
+                  </p>
                 </div>
               </div>
             </div>
@@ -605,12 +734,6 @@ export default function ProductDetailPage() {
           </div>
         )}
 
-        {/* 파트너스 고지 */}
-        <div className="max-w-6xl mx-auto px-4 pb-8">
-          <p className="text-[11px] text-[#adb5bd] text-center">
-            해당 사이트는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며, 구매자에게 추가 비용은 없습니다.
-          </p>
-        </div>
       </div>
     </>
   );

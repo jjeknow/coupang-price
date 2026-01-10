@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
-import ProductGrid from '@/components/ui/ProductGrid';
 import { getBestProducts, CATEGORIES } from '@/lib/coupang-api';
+import CategoryProductList from '@/components/category/CategoryProductList';
 
 export const dynamic = 'force-dynamic';
 
@@ -77,7 +77,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {products.length > 0 ? (
           <>
-            <ProductGrid products={products} />
+            <CategoryProductList products={products} />
             <p className="text-[11px] text-[#adb5bd] mt-6 text-center">
               해당 사이트는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며, 구매자에게 추가 비용은 없습니다.
             </p>

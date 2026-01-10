@@ -3,7 +3,7 @@
 import { useState, memo, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { TrendingDown, Clock } from 'lucide-react';
+import { TrendingDown } from 'lucide-react';
 
 interface ProductCardProps {
   productId: number;
@@ -80,15 +80,22 @@ function ProductCard({
     })
   );
 
+  // SEO 친화적 URL용 슬러그 생성
+  const slug = productName
+    .replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '')
+    .replace(/\s+/g, '-')
+    .slice(0, 50)
+    .toLowerCase();
+
   return (
     <article className="group" itemScope itemType="https://schema.org/Product">
       <Link
-        href={`/product/${productId}?data=${productData}`}
+        href={`/product/${slug}-${productId}?data=${productData}`}
         className="block"
         aria-label={`${productName} - ${formatPrice(productPrice)}원`}
       >
         {/* 이미지 */}
-        <div className="relative aspect-square bg-white rounded-xl overflow-hidden mb-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)] group-hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-shadow duration-200">
+        <div className="relative aspect-square bg-[#fafafa] rounded-xl overflow-hidden mb-3 border border-[#e5e8eb] shadow-[0_2px_8px_rgba(0,0,0,0.08)] group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-shadow duration-200">
           {/* 할인율 배지 */}
           {discountPercent > 0 && (
             <div className="absolute top-2 left-2 z-10">
@@ -111,8 +118,8 @@ function ProductCard({
               src={productImage}
               alt={productName}
               fill
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-              className={`object-contain p-3 group-hover:scale-105 transition-transform duration-200 ${
+              sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 18vw"
+              className={`object-contain p-2 sm:p-3 group-hover:scale-105 transition-transform duration-200 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
               onLoad={() => setImageLoaded(true)}
@@ -128,7 +135,7 @@ function ProductCard({
         <div className="space-y-2">
           {/* 상품명 */}
           <p
-            className="text-[14px] text-[#333d4b] line-clamp-2 leading-snug min-h-[40px]"
+            className="text-[14px] text-[#333d4b] line-clamp-1 leading-snug"
             itemProp="name"
           >
             {productName}
@@ -136,15 +143,15 @@ function ProductCard({
 
           {/* 가격 */}
           <div itemProp="offers" itemScope itemType="https://schema.org/Offer">
-            <div className="flex items-baseline gap-1">
+            <div className="flex items-baseline gap-0.5">
               <span
-                className="text-[18px] font-bold text-[#191f28]"
+                className="text-[17px] sm:text-[18px] font-bold text-[#e03131] tracking-tight"
                 itemProp="price"
                 content={productPrice.toString()}
               >
                 {formatPrice(productPrice)}
               </span>
-              <span className="text-[14px] text-[#191f28]">원</span>
+              <span className="text-[13px] sm:text-[14px] text-[#e03131]">원</span>
               <meta itemProp="priceCurrency" content="KRW" />
             </div>
           </div>
@@ -159,8 +166,8 @@ function ProductCard({
             )}
             {status === 'good' && (
               <span className="inline-flex items-center gap-1 px-2 py-1 bg-[#e8f3ff] text-[#3182f6] text-[11px] font-semibold rounded">
-                <Clock size={12} />
-                구매 적기
+                <TrendingDown size={12} />
+                가격 Good
               </span>
             )}
             {isRocket && (

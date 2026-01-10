@@ -4,17 +4,9 @@ import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import HeroSearch from '@/components/home/HeroSearch';
 import CategorySection from '@/components/home/CategorySection';
+import RecentlyViewed from '@/components/home/RecentlyViewed';
 
 export const dynamic = 'force-dynamic';
-
-// 파트너스 고지 컴포넌트 (자연스럽게 스며들게)
-function PartnerNotice() {
-  return (
-    <p className="text-[11px] text-[#adb5bd] mt-6 text-center">
-      해당 사이트는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며, 구매자에게 추가 비용은 없습니다.
-    </p>
-  );
-}
 
 export default async function HomePage() {
   const [goldboxProducts, electronicsProducts, foodProducts, beautyProducts] =
@@ -32,6 +24,9 @@ export default async function HomePage() {
 
       {/* 카테고리 선택 섹션 */}
       <CategorySection />
+
+      {/* 최근 본 상품 */}
+      <RecentlyViewed />
 
       {/* 골드박스 섹션 */}
       <section className="bg-[#f8f9fa] py-10">
@@ -53,7 +48,6 @@ export default async function HomePage() {
               <p className="text-[#8b95a1]">상품을 불러오는 중...</p>
             </div>
           )}
-          <PartnerNotice />
         </div>
       </section>
 
@@ -112,7 +106,6 @@ export default async function HomePage() {
               <p className="text-[#8b95a1]">상품을 불러오는 중...</p>
             </div>
           )}
-          <PartnerNotice />
         </div>
       </section>
 

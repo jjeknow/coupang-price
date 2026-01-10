@@ -776,3 +776,8 @@ input:focus-visible {
     border: 1px solid #000;
   }
 }
+
+/* 상품 상세 페이지 레이아웃 */
+.product-detail-page {
+  /* 상세 페이지 전용 스타일 */
+}

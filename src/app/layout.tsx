@@ -62,6 +62,7 @@ export const metadata: Metadata = {
   },
 
   // Open Graph (페이스북, 카카오톡 등) - 상세 설정
+  // OG 이미지는 opengraph-image.tsx에서 동적 생성됨
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
@@ -70,33 +71,16 @@ export const metadata: Metadata = {
     title: '쿠팡 최저가 | 실시간 가격 추적 & 역대 최저가 알림',
     description:
       '쿠팡 상품의 실시간 가격 변동을 추적하고 역대 최저가 알림을 받으세요. 30일 가격 차트로 최적의 구매 타이밍을 찾아보세요!',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: '쿠팡 최저가 - 실시간 가격 추적 서비스',
-        type: 'image/png',
-      },
-      {
-        url: '/og-image-square.png',
-        width: 600,
-        height: 600,
-        alt: '쿠팡 최저가',
-        type: 'image/png',
-      },
-    ],
     countryName: 'South Korea',
   },
 
-  // 트위터 카드
+  // 트위터 카드 - twitter-image.tsx에서 동적 생성됨
   twitter: {
     card: 'summary_large_image',
     site: '@coupang_price',
     creator: '@coupang_price',
     title: '쿠팡 최저가 | 실시간 가격 추적 서비스',
     description: '쿠팡 상품의 가격 변동을 추적하고 역대 최저가 알림을 받으세요. 스마트한 쇼핑의 시작!',
-    images: ['/og-image.png'],
   },
 
   // 검색엔진 인증
@@ -139,9 +123,6 @@ export const metadata: Metadata = {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon.ico', sizes: 'any' },
-    ],
-    apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
     shortcut: '/favicon.ico',
   },

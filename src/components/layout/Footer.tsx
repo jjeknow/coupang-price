@@ -105,7 +105,7 @@ export default function Footer() {
         <div className="mt-10 pt-8 border-t border-[#333d4b]">
           <div className="p-4 bg-[#333d4b]/50 rounded-xl mb-6">
             <p className="text-[12px] text-[#8b95a1] leading-relaxed">
-              이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의
+              해당 사이트는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의
               수수료를 제공받습니다. 구매자에게 추가 비용이 발생하지 않습니다.
               서비스에서 제공하는 가격 정보는 쿠팡 API를 통해 제공받으며, 실시간으로
               변동될 수 있습니다.
