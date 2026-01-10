@@ -30,11 +30,16 @@ export async function GET() {
       cached: false,
     });
   } catch (error) {
-    console.error('골드박스 API 오류:', error);
+    const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류';
+    console.error('골드박스 API 오류:', errorMessage);
     return NextResponse.json(
       {
         success: false,
-        error: '골드박스 상품을 가져오는데 실패했습니다.',
+        error: errorMessage,
+        debug: {
+          hasAccessKey: !!process.env.COUPANG_ACCESS_KEY,
+          hasSecretKey: !!process.env.COUPANG_SECRET_KEY,
+        },
       },
       { status: 500 }
     );
