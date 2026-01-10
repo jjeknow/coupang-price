@@ -44,8 +44,9 @@ export default async function HomePage() {
             <ProductGrid products={goldboxProducts} />
           ) : (
             <div className="bg-white rounded-2xl p-12 text-center">
-              <div className="spinner-lg mx-auto mb-4" />
-              <p className="text-[#8b95a1]">상품을 불러오는 중...</p>
+              <p className="text-[40px] mb-4">⏳</p>
+              <p className="text-[#191f28] font-medium mb-2">상품을 준비 중입니다</p>
+              <p className="text-[13px] text-[#8b95a1]">잠시 후 다시 시도해주세요</p>
             </div>
           )}
         </div>
@@ -74,7 +75,9 @@ export default async function HomePage() {
             <ProductGrid products={electronicsProducts} />
           ) : (
             <div className="bg-[#f8f9fa] rounded-2xl p-12 text-center">
-              <p className="text-[#8b95a1]">상품을 불러오는 중...</p>
+              <p className="text-[40px] mb-4">⏳</p>
+              <p className="text-[#191f28] font-medium mb-2">상품을 준비 중입니다</p>
+              <p className="text-[13px] text-[#8b95a1]">잠시 후 다시 시도해주세요</p>
             </div>
           )}
         </div>
@@ -103,7 +106,9 @@ export default async function HomePage() {
             <ProductGrid products={foodProducts} />
           ) : (
             <div className="bg-white rounded-2xl p-12 text-center">
-              <p className="text-[#8b95a1]">상품을 불러오는 중...</p>
+              <p className="text-[40px] mb-4">⏳</p>
+              <p className="text-[#191f28] font-medium mb-2">상품을 준비 중입니다</p>
+              <p className="text-[13px] text-[#8b95a1]">잠시 후 다시 시도해주세요</p>
             </div>
           )}
         </div>
@@ -132,7 +137,9 @@ export default async function HomePage() {
             <ProductGrid products={beautyProducts} />
           ) : (
             <div className="bg-[#f8f9fa] rounded-2xl p-12 text-center">
-              <p className="text-[#8b95a1]">상품을 불러오는 중...</p>
+              <p className="text-[40px] mb-4">⏳</p>
+              <p className="text-[#191f28] font-medium mb-2">상품을 준비 중입니다</p>
+              <p className="text-[13px] text-[#8b95a1]">잠시 후 다시 시도해주세요</p>
             </div>
           )}
         </div>

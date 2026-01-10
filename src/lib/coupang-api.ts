@@ -9,6 +9,7 @@
 
 import crypto from 'crypto';
 import { checkRateLimit, getRateLimitStatus } from './rate-limiter';
+import { getFromCache, setCache, createCacheKey, CACHE_TTL } from './cache';
 
 // API 설정
 const API_BASE_URL = 'https://api-gateway.coupang.com';
@@ -158,9 +159,17 @@ async function callApi<T>(
 
   const data = await response.json();
 
+  // 빈 객체 체크 (API 키 문제 또는 서버 오류)
+  if (!data || Object.keys(data).length === 0) {
+    console.error('Coupang API Empty Response - API 키를 확인하세요');
+    console.error('ACCESS_KEY exists:', !!ACCESS_KEY);
+    console.error('SECRET_KEY exists:', !!SECRET_KEY);
+    throw new Error('API 응답이 비어있습니다. API 키 설정을 확인하세요.');
+  }
+
   if (data.rCode !== '0' && data.rCode !== 0) {
-    console.error('Coupang API Business Error:', data);
-    throw new Error(data.rMessage || 'API 비즈니스 오류');
+    console.error('Coupang API Business Error:', JSON.stringify(data));
+    throw new Error(data.rMessage || `API 비즈니스 오류 (rCode: ${data.rCode})`);
   }
 
   return data;
@@ -169,45 +178,84 @@ async function callApi<T>(
 // ========== 공개 API 함수들 ==========
 
 /**
- * 카테고리별 베스트 상품 조회
+ * 카테고리별 베스트 상품 조회 (캐시 적용)
  */
 export async function getBestProducts(
   categoryId: number,
   limit: number = 20,
   imageSize: string = '340x340'
 ): Promise<CoupangProduct[]> {
+  // 캐시 체크
+  const cacheKey = createCacheKey('best', categoryId, limit);
+  const cached = getFromCache<CoupangProduct[]>(cacheKey);
+  if (cached) {
+    console.log(`[CACHE HIT] ${cacheKey}`);
+    return cached;
+  }
+
+  console.log(`[CACHE MISS] ${cacheKey} - API 호출`);
   const path = `/v2/providers/affiliate_open_api/apis/openapi/v1/products/bestcategories/${categoryId}?limit=${limit}&imageSize=${imageSize}`;
 
   const response = await callApi<{ data: CoupangProduct[] }>('GET', path);
-  return response.data || [];
+  const products = response.data || [];
+
+  // 캐시 저장 (24시간)
+  setCache(cacheKey, products, CACHE_TTL.BEST_PRODUCTS);
+  return products;
 }
 
 /**
- * 골드박스 상품 조회 (매일 오전 7:30 업데이트)
+ * 골드박스 상품 조회 (캐시 적용 - 매일 오전 7:30 업데이트)
  */
 export async function getGoldboxProducts(
   imageSize: string = '340x340'
 ): Promise<CoupangProduct[]> {
+  // 캐시 체크
+  const cacheKey = 'goldbox';
+  const cached = getFromCache<CoupangProduct[]>(cacheKey);
+  if (cached) {
+    console.log(`[CACHE HIT] ${cacheKey}`);
+    return cached;
+  }
+
+  console.log(`[CACHE MISS] ${cacheKey} - API 호출`);
   const path = `/v2/providers/affiliate_open_api/apis/openapi/v1/products/goldbox?imageSize=${imageSize}`;
 
   const response = await callApi<{ data: CoupangProduct[] }>('GET', path);
-  return response.data || [];
+  const products = response.data || [];
+
+  // 캐시 저장 (24시간)
+  setCache(cacheKey, products, CACHE_TTL.GOLDBOX);
+  return products;
 }
 
 /**
- * 상품 검색 (검색 API는 별도 Rate Limit 적용)
+ * 상품 검색 (캐시 적용 - 검색 API는 별도 Rate Limit 적용)
  */
 export async function searchProducts(
   keyword: string,
   limit: number = 10,
   imageSize: string = '340x340'
 ): Promise<SearchResult> {
+  // 캐시 체크
+  const cacheKey = createCacheKey('search', keyword, limit);
+  const cached = getFromCache<SearchResult>(cacheKey);
+  if (cached) {
+    console.log(`[CACHE HIT] ${cacheKey}`);
+    return cached;
+  }
+
+  console.log(`[CACHE MISS] ${cacheKey} - API 호출`);
   const encodedKeyword = encodeURIComponent(keyword);
   const path = `/v2/providers/affiliate_open_api/apis/openapi/v1/products/search?keyword=${encodedKeyword}&limit=${limit}&imageSize=${imageSize}`;
 
   // 검색 API는 별도 Rate Limit (분당 15회)
   const response = await callApi<{ data: SearchResult }>('GET', path, undefined, 'search');
-  return response.data;
+  const result = response.data;
+
+  // 캐시 저장 (24시간)
+  setCache(cacheKey, result, CACHE_TTL.SEARCH);
+  return result;
 }
 
 /**
