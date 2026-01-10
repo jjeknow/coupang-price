@@ -1,65 +1,149 @@
-import Image from "next/image";
+import ProductGrid from '@/components/ui/ProductGrid';
+import { getGoldboxProducts, getBestProducts } from '@/lib/coupang-api';
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import HeroSearch from '@/components/home/HeroSearch';
+import CategorySection from '@/components/home/CategorySection';
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+
+// 파트너스 고지 컴포넌트 (자연스럽게 스며들게)
+function PartnerNotice() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <p className="text-[11px] text-[#adb5bd] mt-6 text-center">
+      해당 사이트는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며, 구매자에게 추가 비용은 없습니다.
+    </p>
+  );
+}
+
+export default async function HomePage() {
+  const [goldboxProducts, electronicsProducts, foodProducts, beautyProducts] =
+    await Promise.all([
+      getGoldboxProducts().catch(() => []),
+      getBestProducts(1016, 10).catch(() => []),
+      getBestProducts(1012, 10).catch(() => []),
+      getBestProducts(1010, 10).catch(() => []),
+    ]);
+
+  return (
+    <div className="min-h-screen">
+      {/* 히어로 검색 섹션 */}
+      <HeroSearch />
+
+      {/* 카테고리 선택 섹션 */}
+      <CategorySection />
+
+      {/* 골드박스 섹션 */}
+      <section className="bg-[#f8f9fa] py-10">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <span className="text-[32px]">🎁</span>
+              <div>
+                <h2 className="text-[20px] font-bold text-[#191f28]">오늘의 골드박스</h2>
+                <p className="text-[13px] text-[#8b95a1]">매일 오전 7:30 업데이트</p>
+              </div>
+            </div>
+          </div>
+          {goldboxProducts.length > 0 ? (
+            <ProductGrid products={goldboxProducts} />
+          ) : (
+            <div className="bg-white rounded-2xl p-12 text-center">
+              <div className="spinner-lg mx-auto mb-4" />
+              <p className="text-[#8b95a1]">상품을 불러오는 중...</p>
+            </div>
+          )}
+          <PartnerNotice />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* 가전/디지털 섹션 */}
+      <section className="bg-white py-10">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <span className="text-[32px]">📺</span>
+              <div>
+                <h2 className="text-[20px] font-bold text-[#191f28]">가전/디지털 인기상품</h2>
+                <p className="text-[13px] text-[#8b95a1]">지금 가장 많이 찾는 제품</p>
+              </div>
+            </div>
+            <Link
+              href="/category/1016"
+              className="flex items-center gap-1 text-[14px] text-[#3182f6] font-medium hover:underline"
+            >
+              전체보기
+              <ChevronRight size={16} />
+            </Link>
+          </div>
+          {electronicsProducts.length > 0 ? (
+            <ProductGrid products={electronicsProducts} />
+          ) : (
+            <div className="bg-[#f8f9fa] rounded-2xl p-12 text-center">
+              <p className="text-[#8b95a1]">상품을 불러오는 중...</p>
+            </div>
+          )}
         </div>
-      </main>
+      </section>
+
+      {/* 식품 섹션 */}
+      <section className="bg-[#f8f9fa] py-10">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <span className="text-[32px]">🍎</span>
+              <div>
+                <h2 className="text-[20px] font-bold text-[#191f28]">식품 인기상품</h2>
+                <p className="text-[13px] text-[#8b95a1]">신선하고 맛있는 먹거리</p>
+              </div>
+            </div>
+            <Link
+              href="/category/1012"
+              className="flex items-center gap-1 text-[14px] text-[#3182f6] font-medium hover:underline"
+            >
+              전체보기
+              <ChevronRight size={16} />
+            </Link>
+          </div>
+          {foodProducts.length > 0 ? (
+            <ProductGrid products={foodProducts} />
+          ) : (
+            <div className="bg-white rounded-2xl p-12 text-center">
+              <p className="text-[#8b95a1]">상품을 불러오는 중...</p>
+            </div>
+          )}
+          <PartnerNotice />
+        </div>
+      </section>
+
+      {/* 뷰티 섹션 */}
+      <section className="bg-white py-10">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <span className="text-[32px]">💄</span>
+              <div>
+                <h2 className="text-[20px] font-bold text-[#191f28]">뷰티 인기상품</h2>
+                <p className="text-[13px] text-[#8b95a1]">아름다움을 위한 선택</p>
+              </div>
+            </div>
+            <Link
+              href="/category/1010"
+              className="flex items-center gap-1 text-[14px] text-[#3182f6] font-medium hover:underline"
+            >
+              전체보기
+              <ChevronRight size={16} />
+            </Link>
+          </div>
+          {beautyProducts.length > 0 ? (
+            <ProductGrid products={beautyProducts} />
+          ) : (
+            <div className="bg-[#f8f9fa] rounded-2xl p-12 text-center">
+              <p className="text-[#8b95a1]">상품을 불러오는 중...</p>
+            </div>
+          )}
+        </div>
+      </section>
     </div>
   );
 }
