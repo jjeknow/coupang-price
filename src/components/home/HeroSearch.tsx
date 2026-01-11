@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, TrendingUp, Sparkles, Clock, X } from 'lucide-react';
+import { Search, Clock, X, Sparkles } from 'lucide-react';
 
 // 인기 검색어 (트렌드)
 const TRENDING_KEYWORDS = [
@@ -59,7 +59,6 @@ export default function HeroSearch() {
           matched.push(...keywords);
         }
       }
-      // 중복 제거 및 상위 5개
       setSuggestions([...new Set(matched)].slice(0, 5));
     } else {
       setSuggestions([]);
@@ -106,33 +105,64 @@ export default function HeroSearch() {
   };
 
   return (
-    <section className="bg-gradient-to-br from-[#f04452] to-[#ff6b6b] text-white">
-      <div className="max-w-6xl mx-auto px-4 py-8 md:py-14">
+    <section className="relative">
+      {/* 다크 블루 그라데이션 배경 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]" />
+
+      {/* 글로우 이펙트 */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px]">
+        <div className="absolute top-0 left-0 w-72 h-72 bg-[#3b82f6]/30 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#6366f1]/20 rounded-full blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#0ea5e9]/20 rounded-full blur-[80px]" />
+      </div>
+
+      {/* 그리드 패턴 오버레이 */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)`,
+          backgroundSize: '50px 50px'
+        }}
+      />
+
+      <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 relative z-10">
         <div className="flex flex-col items-center text-center">
+          {/* 뱃지 */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/10 mb-3">
+            <Sparkles size={12} className="text-[#60a5fa]" />
+            <span className="text-[12px] text-white/80">스마트한 쇼핑의 시작</span>
+          </div>
+
           {/* 타이틀 */}
-          <p className="text-white/80 text-[12px] md:text-[14px] mb-1.5 md:mb-2 flex items-center gap-1">
-            <Sparkles size={12} className="md:w-[14px] md:h-[14px]" />
-            2026 Happy New Year
-          </p>
-          <h1 className="text-[24px] md:text-[36px] font-bold leading-tight mb-2 md:mb-3">
-            쿠팡 최저가 추적
+          <h1 className="text-[22px] md:text-[36px] font-bold leading-tight mb-2 md:mb-3 tracking-tight text-white">
+            쿠팡 가격 추적을 위한{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] via-[#a78bfa] to-[#60a5fa] animate-gradient bg-[length:200%_auto]">
+              최저가 알림
+            </span>
           </h1>
-          <p className="text-white/90 text-[13px] md:text-[15px] mb-5 md:mb-8 px-4">
-            가격 변동을 실시간으로 추적하고 최저가일 때 알림받으세요
+          <p className="text-[#94a3b8] text-[13px] md:text-[15px] mb-5 md:mb-6 max-w-md">
+            가격 변동을 추적하고, 원하는 가격이 되면 알림을 받아보세요.
           </p>
 
           {/* 검색창 */}
-          <form onSubmit={handleSearch} className="w-full max-w-xl mb-4 md:mb-6 px-1">
+          <form onSubmit={handleSearch} className="w-full max-w-xl mb-4">
             <div ref={dropdownRef} className="relative">
               <div
-                className={`relative bg-white rounded-xl md:rounded-2xl transition-all duration-200 ${
-                  isFocused ? 'shadow-2xl ring-4 ring-white/30' : 'shadow-lg'
+                className={`relative bg-white/5 backdrop-blur-xl border rounded-xl transition-all duration-300 ${
+                  isFocused
+                    ? 'border-[#3b82f6]/50 bg-white/10 ring-2 ring-[#3b82f6]/20'
+                    : 'border-white/10 hover:border-white/20'
                 }`}
               >
-                <Search
-                  size={18}
-                  className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 text-[#8b95a1] md:w-[22px] md:h-[22px]"
-                />
+                {/* 플랫폼 선택 (데스크톱) */}
+                <div className="hidden md:flex items-center absolute left-4 top-1/2 -translate-y-1/2 border-r border-white/10 pr-3">
+                  <span className="text-[13px] text-white font-medium flex items-center gap-1.5">
+                    <div className="w-4 h-4 bg-gradient-to-br from-[#f04452] to-[#ff6b6b] rounded flex items-center justify-center">
+                      <span className="text-[8px] font-bold text-white">C</span>
+                    </div>
+                    쿠팡
+                  </span>
+                </div>
                 <input
                   ref={inputRef}
                   type="text"
@@ -140,56 +170,55 @@ export default function HeroSearch() {
                   onChange={(e) => setQuery(e.target.value)}
                   onFocus={() => { setIsFocused(true); setShowDropdown(true); }}
                   onBlur={() => setIsFocused(false)}
-                  placeholder="찾고 싶은 상품을 검색해보세요"
-                  className="w-full pl-11 md:pl-14 pr-20 md:pr-24 py-3.5 md:py-5 text-[15px] md:text-[16px] text-[#191f28] placeholder:text-[#8b95a1] rounded-xl md:rounded-2xl focus:outline-none"
+                  placeholder="상품명 or 쿠팡 URL 입력"
+                  className="w-full pl-4 md:pl-24 pr-20 md:pr-24 py-3 md:py-3.5 text-[14px] md:text-[15px] text-white placeholder:text-[#64748b] bg-transparent rounded-xl focus:outline-none"
                 />
                 <button
                   type="submit"
-                  className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 px-4 md:px-5 py-1.5 md:py-2 bg-[#f04452] hover:bg-[#d63d4a] text-white text-[13px] md:text-[14px] font-semibold rounded-lg md:rounded-xl transition-colors"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-gradient-to-r from-[#3b82f6] to-[#6366f1] hover:from-[#2563eb] hover:to-[#4f46e5] text-white text-[13px] font-semibold rounded-lg transition-all duration-200 flex items-center gap-1.5"
                 >
-                  검색
+                  <Search size={14} />
+                  <span className="hidden sm:inline">검색</span>
                 </button>
               </div>
 
               {/* 자동완성 드롭다운 */}
               {showDropdown && (suggestions.length > 0 || recentSearches.length > 0) && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-[#e5e8eb] overflow-hidden z-50">
-                  {/* 자동완성 제안 */}
+                <div className="absolute top-full left-0 right-0 mt-2 bg-[#1e293b] rounded-lg border border-white/20 z-[100] shadow-2xl max-h-64 overflow-y-auto">
                   {suggestions.length > 0 && (
-                    <div className="p-2">
-                      <p className="px-3 py-1 text-[12px] text-[#8b95a1]">추천 검색어</p>
+                    <div className="p-1.5">
+                      <p className="px-2.5 py-1 text-[11px] text-[#64748b] font-medium">추천 검색어</p>
                       {suggestions.map((keyword) => (
                         <button
                           key={keyword}
                           type="button"
                           onClick={() => handleKeywordClick(keyword)}
-                          className="w-full px-3 py-2 text-left text-[14px] text-[#191f28] hover:bg-[#f2f4f6] rounded-lg flex items-center gap-2"
+                          className="w-full px-2.5 py-2 text-left text-[13px] text-white hover:bg-white/10 rounded-md flex items-center gap-2 transition-colors"
                         >
-                          <Search size={14} className="text-[#8b95a1]" />
+                          <Search size={12} className="text-[#64748b]" />
                           {keyword}
                         </button>
                       ))}
                     </div>
                   )}
 
-                  {/* 최근 검색어 */}
                   {recentSearches.length > 0 && suggestions.length === 0 && (
-                    <div className="p-2">
-                      <p className="px-3 py-1 text-[12px] text-[#8b95a1]">최근 검색어</p>
+                    <div className="p-1.5">
+                      <p className="px-2.5 py-1 text-[11px] text-[#64748b] font-medium">최근 검색어</p>
                       {recentSearches.map((keyword) => (
                         <button
                           key={keyword}
                           type="button"
                           onClick={() => handleKeywordClick(keyword)}
-                          className="w-full px-3 py-2 text-left text-[14px] text-[#191f28] hover:bg-[#f2f4f6] rounded-lg flex items-center justify-between group"
+                          className="w-full px-2.5 py-2 text-left text-[13px] text-white hover:bg-white/10 rounded-md flex items-center justify-between group transition-colors"
                         >
                           <span className="flex items-center gap-2">
-                            <Clock size={14} className="text-[#8b95a1]" />
+                            <Clock size={12} className="text-[#64748b]" />
                             {keyword}
                           </span>
                           <X
-                            size={14}
-                            className="text-[#adb5bd] hover:text-[#6b7684] opacity-0 group-hover:opacity-100"
+                            size={12}
+                            className="text-[#64748b] hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"
                             onClick={(e) => removeRecentSearch(keyword, e)}
                           />
                         </button>
@@ -202,31 +231,49 @@ export default function HeroSearch() {
           </form>
 
           {/* 인기 검색어 */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 md:gap-2 mb-4 md:mb-6 px-2">
-            <span className="flex items-center gap-1 text-white/70 text-[12px] md:text-[13px]">
-              <TrendingUp size={12} className="md:w-[14px] md:h-[14px]" />
-              인기:
-            </span>
-            {TRENDING_KEYWORDS.map((keyword) => (
+          <div className="flex flex-wrap items-center justify-center gap-1.5 mb-4">
+            {TRENDING_KEYWORDS.slice(0, 4).map((keyword) => (
               <button
                 key={keyword}
                 onClick={() => handleKeywordClick(keyword)}
-                className="px-2.5 md:px-3 py-1 md:py-1.5 bg-white/20 hover:bg-white/30 text-white text-[11px] md:text-[13px] rounded-full transition-colors"
+                className="px-2.5 py-1 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-[#94a3b8] hover:text-white text-[11px] rounded-full transition-all duration-200"
               >
-                {keyword}
+                #{keyword}
               </button>
             ))}
+            <span className="hidden md:inline-flex">
+              {TRENDING_KEYWORDS.slice(4).map((keyword) => (
+                <button
+                  key={keyword}
+                  onClick={() => handleKeywordClick(keyword)}
+                  className="px-2.5 py-1 ml-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-[#94a3b8] hover:text-white text-[11px] rounded-full transition-all duration-200"
+                >
+                  #{keyword}
+                </button>
+              ))}
+            </span>
           </div>
 
           {/* 파트너스 고지 */}
-          <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mx-2">
-            <div className="w-1 h-1 md:w-1.5 md:h-1.5 bg-white/60 rounded-full animate-pulse flex-shrink-0" />
-            <p className="text-white/80 text-[10px] md:text-[11px] leading-tight">
-              본 서비스는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며, 무료로 제공하는 가격 추적 서비스 유지에 사용됩니다
+          <div className="mx-2 md:mx-0 px-4 py-2 bg-white/5 rounded-full">
+            <p className="text-[#64748b] text-[10px] md:text-[11px] whitespace-nowrap">
+              본 서비스는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받습니다
             </p>
           </div>
         </div>
       </div>
+
+      {/* CSS 애니메이션 */}
+      <style jsx>{`
+        @keyframes gradient {
+          0% { background-position: 0% center; }
+          50% { background-position: 100% center; }
+          100% { background-position: 0% center; }
+        }
+        .animate-gradient {
+          animation: gradient 4s ease infinite;
+        }
+      `}</style>
     </section>
   );
 }

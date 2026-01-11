@@ -44,14 +44,14 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/"
-            className="toss-btn toss-btn-primary inline-flex items-center justify-center gap-2"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#3182f6] text-white rounded-xl font-medium hover:bg-[#1b64da] transition-colors"
           >
             <Home size={18} />
-            홈으로 이동
+            홈으로
           </Link>
           <Link
             href="/search"
-            className="toss-btn toss-btn-secondary inline-flex items-center justify-center gap-2"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#f2f4f6] text-[#4e5968] rounded-xl font-medium hover:bg-[#e5e8eb] transition-colors"
           >
             <Search size={18} />
             상품 검색

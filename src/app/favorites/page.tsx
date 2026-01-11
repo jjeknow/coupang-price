@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Heart, ArrowLeft, Trash2 } from 'lucide-react';
+import { Heart, ArrowLeft, Trash2, GitCompare } from 'lucide-react';
 import ProductCard from '@/components/ui/ProductCard';
 import { getFavorites, removeFavorite, FavoriteProduct } from '@/lib/favorites';
 
@@ -59,13 +59,24 @@ export default function FavoritesPage() {
               </h1>
             </div>
             {favorites.length > 0 && (
-              <button
-                onClick={handleClearAll}
-                className="flex items-center gap-1 px-3 py-1.5 text-[13px] text-[#6b7684] hover:text-[#f04452] hover:bg-[#f2f4f6] rounded-lg transition-colors"
-              >
-                <Trash2 size={14} />
-                전체 삭제
-              </button>
+              <div className="flex items-center gap-2">
+                {favorites.length >= 2 && (
+                  <Link
+                    href="/compare"
+                    className="flex items-center gap-1 px-3 py-1.5 text-[13px] text-[#3182f6] hover:bg-[#e8f3ff] rounded-lg transition-colors"
+                  >
+                    <GitCompare size={14} />
+                    비교하기
+                  </Link>
+                )}
+                <button
+                  onClick={handleClearAll}
+                  className="flex items-center gap-1 px-3 py-1.5 text-[13px] text-[#6b7684] hover:text-[#f04452] hover:bg-[#f2f4f6] rounded-lg transition-colors"
+                >
+                  <Trash2 size={14} />
+                  전체 삭제
+                </button>
+              </div>
             )}
           </div>
         </div>

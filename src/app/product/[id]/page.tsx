@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -13,8 +14,8 @@ import {
   Zap,
   Truck,
   TrendingDown,
-  Share2,
   ChevronRight,
+  X,
 } from 'lucide-react';
 import PriceChart from '@/components/chart/PriceChart';
 import ProductCard from '@/components/ui/ProductCard';
@@ -25,6 +26,8 @@ import { isFavorite as checkIsFavorite, toggleFavorite } from '@/lib/favorites';
 declare global {
   interface Window {
     Kakao?: {
+      init: (appKey: string) => void;
+      isInitialized: () => boolean;
       Share: {
         sendDefault: (options: {
           objectType: string;
@@ -47,6 +50,9 @@ declare global {
     };
   }
 }
+
+// 카카오 JavaScript 앱 키 (카카오 개발자 콘솔에서 발급)
+const KAKAO_JS_KEY = process.env.NEXT_PUBLIC_KAKAO_JS_KEY || '';
 
 interface Product {
   productId: number;
@@ -145,6 +151,7 @@ function extractProductId(slug: string): string {
 export default function ProductDetailPage() {
   const params = useParams();
   const searchParams = useSearchParams();
+  const { data: session } = useSession();
   const rawId = params.id as string;
   const productId = extractProductId(rawId);
 
@@ -154,6 +161,10 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isAlertOn, setIsAlertOn] = useState(false);
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [targetPrice, setTargetPrice] = useState(0);
+  const [alertLoading, setAlertLoading] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
 
   // 가격 통계 계산 (priceHistory가 비어있어도 안전하게 처리)
   const { lowestPrice, highestPrice, isCurrentLowest } = useMemo(() => {
@@ -228,6 +239,15 @@ export default function ProductDetailPage() {
     };
   }, [product]);
 
+  // 카카오 SDK 초기화
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.Kakao && KAKAO_JS_KEY) {
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init(KAKAO_JS_KEY);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     // 가격 히스토리 생성 (데모)
     const generatePriceHistory = (basePrice: number) => {
@@ -280,12 +300,171 @@ export default function ProductDetailPage() {
     setLoading(false);
   }, [productId, searchParams]);
 
-  // 관심상품 상태 초기화
+  // 관심상품/알림 상태 초기화
   useEffect(() => {
     if (product) {
+      // 로컬 스토리지 (비로그인)
       setIsFavorite(checkIsFavorite(product.productId));
+      setTargetPrice(Math.round(product.productPrice * 0.9)); // 기본 목표가: 10% 할인
+
+      // 로그인 상태면 서버에서 체크
+      if (session?.user) {
+        checkUserFavorite();
+        checkUserAlert();
+      }
     }
-  }, [product]);
+  }, [product, session]);
+
+  const checkUserFavorite = async () => {
+    if (!product) return;
+    try {
+      const res = await fetch('/api/user/favorites');
+      if (res.ok) {
+        const favorites = await res.json();
+        const found = favorites.find((f: { coupangProductId: string }) =>
+          f.coupangProductId === String(product.productId)
+        );
+        if (found) setIsFavorite(true);
+      }
+    } catch (error) {
+      console.error('관심상품 체크 실패:', error);
+    }
+  };
+
+  const checkUserAlert = async () => {
+    if (!product) return;
+    try {
+      const res = await fetch('/api/user/alerts');
+      if (res.ok) {
+        const alerts = await res.json();
+        const found = alerts.find((a: { coupangProductId: string; isActive: boolean; targetPrice: number }) =>
+          a.coupangProductId === String(product.productId) && a.isActive
+        );
+        if (found) {
+          setIsAlertOn(true);
+          setTargetPrice(found.targetPrice);
+        }
+      }
+    } catch (error) {
+      console.error('알림 체크 실패:', error);
+    }
+  };
+
+  const handleFavoriteClick = async () => {
+    if (!product) return;
+
+    // 비로그인: 로컬 스토리지
+    if (!session?.user) {
+      const newState = toggleFavorite({
+        productId: product.productId,
+        productName: product.productName,
+        productPrice: product.productPrice,
+        productImage: product.productImage,
+        productUrl: product.productUrl,
+        isRocket: product.isRocket,
+        isFreeShipping: product.isFreeShipping,
+        categoryName: product.categoryName,
+      });
+      setIsFavorite(newState);
+      return;
+    }
+
+    // 로그인: 서버 저장
+    setFavoriteLoading(true);
+    try {
+      if (isFavorite) {
+        // 삭제
+        const res = await fetch(`/api/user/favorites?productId=${product.productId}`, {
+          method: 'DELETE',
+        });
+        if (res.ok) setIsFavorite(false);
+      } else {
+        // 추가
+        const res = await fetch('/api/user/favorites', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            coupangProductId: product.productId,
+            productName: product.productName,
+            productPrice: product.productPrice,
+            productImage: product.productImage,
+            productUrl: product.productUrl,
+            categoryName: product.categoryName,
+            isRocket: product.isRocket,
+            isFreeShipping: product.isFreeShipping,
+          }),
+        });
+        if (res.ok) setIsFavorite(true);
+      }
+    } catch (error) {
+      console.error('관심상품 토글 실패:', error);
+    } finally {
+      setFavoriteLoading(false);
+    }
+  };
+
+  const handleAlertClick = () => {
+    if (!session?.user) {
+      // 비로그인: 로그인 페이지로 이동
+      window.location.href = `/auth/login?callbackUrl=/product/${rawId}`;
+      return;
+    }
+    setShowAlertModal(true);
+  };
+
+  const handleAlertSubmit = async () => {
+    if (!product || !session?.user) return;
+
+    setAlertLoading(true);
+    try {
+      const res = await fetch('/api/user/alerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          coupangProductId: product.productId,
+          productName: product.productName,
+          productPrice: product.productPrice,
+          productImage: product.productImage,
+          productUrl: product.productUrl,
+          targetPrice,
+        }),
+      });
+
+      if (res.ok) {
+        setIsAlertOn(true);
+        setShowAlertModal(false);
+      } else {
+        const data = await res.json();
+        alert(data.error || '알림 설정 실패');
+      }
+    } catch (error) {
+      console.error('알림 설정 실패:', error);
+      alert('알림 설정 중 오류가 발생했습니다.');
+    } finally {
+      setAlertLoading(false);
+    }
+  };
+
+  const handleAlertDelete = async () => {
+    if (!product || !session?.user) return;
+
+    try {
+      const res = await fetch('/api/user/alerts');
+      if (res.ok) {
+        const alerts = await res.json();
+        const found = alerts.find((a: { coupangProductId: string; id: string }) =>
+          a.coupangProductId === String(product.productId)
+        );
+        if (found) {
+          await fetch(`/api/user/alerts?alertId=${found.id}`, { method: 'DELETE' });
+          setIsAlertOn(false);
+          setShowAlertModal(false);
+        }
+      }
+    } catch (error) {
+      console.error('알림 삭제 실패:', error);
+    }
+  };
 
   // ============================================================
   // 비슷한 상품 추천 (단순 키워드 검색 방식)
@@ -408,6 +587,19 @@ export default function ProductDetailPage() {
 
   return (
     <>
+      {/* 카카오 SDK */}
+      <Script
+        src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
+        integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Ber/1kA"
+        crossOrigin="anonymous"
+        strategy="lazyOnload"
+        onLoad={() => {
+          if (typeof window !== 'undefined' && window.Kakao && KAKAO_JS_KEY && !window.Kakao.isInitialized()) {
+            window.Kakao.init(KAKAO_JS_KEY);
+          }
+        }}
+      />
+
       {/* JSON-LD 구조화 데이터 */}
       {productJsonLd && (
         <Script
@@ -463,20 +655,9 @@ export default function ProductDetailPage() {
                 {/* 우측 상단 - 관심/공유 버튼 (세로 배치) */}
                 <div className="absolute top-3 right-3 flex flex-col gap-2">
                   <button
-                    onClick={() => {
-                      const newState = toggleFavorite({
-                        productId: product.productId,
-                        productName: product.productName,
-                        productPrice: product.productPrice,
-                        productImage: product.productImage,
-                        productUrl: product.productUrl,
-                        isRocket: product.isRocket,
-                        isFreeShipping: product.isFreeShipping,
-                        categoryName: product.categoryName,
-                      });
-                      setIsFavorite(newState);
-                    }}
-                    className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-lg border border-[#e5e8eb] ${
+                    onClick={handleFavoriteClick}
+                    disabled={favoriteLoading}
+                    className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-lg border border-[#e5e8eb] disabled:opacity-50 ${
                       isFavorite ? 'bg-[#f04452] text-white border-[#f04452]' : 'bg-white/95 text-[#6b7684] hover:bg-white hover:text-[#f04452]'
                     }`}
                     aria-label="관심상품"
@@ -486,7 +667,7 @@ export default function ProductDetailPage() {
                   <button
                     onClick={() => {
                       // 카카오톡 공유
-                      if (typeof window !== 'undefined' && window.Kakao) {
+                      if (typeof window !== 'undefined' && window.Kakao && window.Kakao.isInitialized()) {
                         window.Kakao.Share.sendDefault({
                           objectType: 'commerce',
                           content: {
@@ -526,10 +707,12 @@ export default function ProductDetailPage() {
                         }
                       }
                     }}
-                    className="w-9 h-9 bg-white/95 text-[#6b7684] hover:bg-white hover:text-[#3182f6] rounded-full flex items-center justify-center transition-all shadow-lg border border-[#e5e8eb]"
-                    aria-label="공유하기"
+                    className="w-9 h-9 bg-[#FEE500] hover:bg-[#FADA0A] rounded-full flex items-center justify-center transition-all shadow-lg"
+                    aria-label="카카오톡 공유하기"
                   >
-                    <Share2 size={18} />
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                      <path fillRule="evenodd" clipRule="evenodd" d="M10 3C5.58172 3 2 5.79086 2 9.20755C2 11.4151 3.54198 13.3397 5.80545 14.3962L4.97368 17.4528C4.89777 17.7408 5.22735 17.9692 5.48052 17.8021L9.17596 15.3585C9.44707 15.3862 9.72166 15.4151 10 15.4151C14.4183 15.4151 18 12.6242 18 9.20755C18 5.79086 14.4183 3 10 3Z" fill="#191f28"/>
+                    </svg>
                   </button>
                 </div>
                 {/* 배지들 */}
@@ -624,7 +807,7 @@ export default function ProductDetailPage() {
                 {/* 버튼 */}
                 <div className="flex gap-3">
                   <button
-                    onClick={() => setIsAlertOn(!isAlertOn)}
+                    onClick={handleAlertClick}
                     className={`flex-1 py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
                       isAlertOn
                         ? 'bg-[#f04452]/10 text-[#f04452] border-2 border-[#f04452]'
@@ -632,7 +815,7 @@ export default function ProductDetailPage() {
                     }`}
                   >
                     <Bell size={20} fill={isAlertOn ? '#f04452' : 'none'} />
-                    {isAlertOn ? '알림 ON' : '최저가 알림'}
+                    {isAlertOn ? `${formatPrice(targetPrice)}원 알림` : '최저가 알림'}
                   </button>
                   <a
                     href={product.productUrl}
@@ -735,6 +918,104 @@ export default function ProductDetailPage() {
         )}
 
       </div>
+
+      {/* 알림 설정 모달 */}
+      {showAlertModal && product && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+          <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden animate-fadeIn">
+            {/* 모달 헤더 */}
+            <div className="flex items-center justify-between p-4 border-b border-[#e5e8eb]">
+              <h3 className="text-lg font-bold text-[#191f28]">가격 알림 설정</h3>
+              <button
+                onClick={() => setShowAlertModal(false)}
+                className="p-2 hover:bg-[#f2f4f6] rounded-lg"
+              >
+                <X size={20} className="text-[#6b7684]" />
+              </button>
+            </div>
+
+            {/* 모달 내용 */}
+            <div className="p-4">
+              {/* 상품 정보 */}
+              <div className="flex gap-3 mb-6">
+                <div className="relative w-16 h-16 bg-[#f8f9fa] rounded-lg overflow-hidden flex-shrink-0">
+                  <Image
+                    src={product.productImage}
+                    alt={product.productName}
+                    fill
+                    className="object-contain p-1"
+                    unoptimized
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] text-[#191f28] line-clamp-2">{product.productName}</p>
+                  <p className="text-[15px] font-bold text-[#191f28] mt-1">
+                    현재 {formatPrice(product.productPrice)}원
+                  </p>
+                </div>
+              </div>
+
+              {/* 목표 가격 입력 */}
+              <div className="mb-6">
+                <label className="block text-[14px] font-medium text-[#191f28] mb-2">
+                  목표 가격
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={targetPrice}
+                    onChange={(e) => setTargetPrice(Number(e.target.value))}
+                    className="w-full px-4 py-3 bg-[#f2f4f6] rounded-xl text-[16px] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+                    min={1}
+                    max={product.productPrice - 1}
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6b7684]">원</span>
+                </div>
+                <p className="text-[12px] text-[#8b95a1] mt-2">
+                  현재 가격보다 {formatPrice(product.productPrice - targetPrice)}원 낮은 가격 (
+                  {Math.round(((product.productPrice - targetPrice) / product.productPrice) * 100)}% 할인)
+                </p>
+              </div>
+
+              {/* 빠른 선택 버튼 */}
+              <div className="flex gap-2 mb-6">
+                {[5, 10, 15, 20].map((percent) => (
+                  <button
+                    key={percent}
+                    onClick={() => setTargetPrice(Math.round(product.productPrice * (1 - percent / 100)))}
+                    className={`flex-1 py-2 text-[13px] rounded-lg transition-colors ${
+                      Math.round(((product.productPrice - targetPrice) / product.productPrice) * 100) === percent
+                        ? 'bg-[#3182f6] text-white'
+                        : 'bg-[#f2f4f6] text-[#4e5968] hover:bg-[#e5e8eb]'
+                    }`}
+                  >
+                    {percent}% 할인
+                  </button>
+                ))}
+              </div>
+
+              {/* 버튼 */}
+              <div className="flex gap-3">
+                {isAlertOn && (
+                  <button
+                    onClick={handleAlertDelete}
+                    className="flex-1 py-3 bg-[#f2f4f6] text-[#e03131] rounded-xl font-medium hover:bg-red-50"
+                  >
+                    알림 해제
+                  </button>
+                )}
+                <button
+                  onClick={handleAlertSubmit}
+                  disabled={alertLoading || targetPrice >= product.productPrice}
+                  className="flex-1 py-3 bg-[#3182f6] text-white rounded-xl font-medium hover:bg-[#1b64da] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {alertLoading ? '설정 중...' : isAlertOn ? '알림 수정' : '알림 설정'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

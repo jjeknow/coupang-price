@@ -781,3 +781,347 @@ input:focus-visible {
 .product-detail-page {
   /* 상세 페이지 전용 스타일 */
 }
+
+/* ========== 모바일 최적화 ========== */
+
+/* 모바일 터치 스크롤 최적화 */
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 모바일 타이틀 크기 조정 */
+  .toss-title-1 {
+    font-size: 22px;
+  }
+
+  .toss-title-2 {
+    font-size: 18px;
+  }
+
+  .toss-title-3 {
+    font-size: 16px;
+  }
+
+  /* 모바일 버튼 터치 영역 확대 */
+  .toss-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* 모바일 카드 간격 */
+  .toss-card,
+  .toss-card-flat {
+    border-radius: var(--radius-md);
+  }
+
+  /* 모바일 입력 필드 최적화 */
+  .toss-input {
+    font-size: 16px; /* iOS 줌 방지 */
+    padding: 12px 14px;
+  }
+
+  /* 모바일 그리드 간격 조정 */
+  .grid {
+    gap: 12px;
+  }
+
+  /* 모바일에서 FAB 위치 조정 */
+  .fab {
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    right: 16px;
+    width: 52px;
+    height: 52px;
+  }
+}
+
+/* 작은 모바일 (SE, Mini 등) */
+@media (max-width: 375px) {
+  .toss-title-1 {
+    font-size: 20px;
+  }
+
+  .toss-title-2 {
+    font-size: 16px;
+  }
+
+  /* 더 작은 패딩 */
+  .max-w-6xl {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+/* 모바일 하단 네비게이션 공간 확보 */
+.mobile-bottom-space {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+}
+
+/* 모바일 풀스크린 모달 */
+@media (max-width: 768px) {
+  .modal-fullscreen-mobile {
+    position: fixed;
+    inset: 0;
+    border-radius: 0;
+    max-height: 100vh;
+    max-height: 100dvh;
+  }
+}
+
+/* 모바일 가로 스크롤 컨테이너 */
+.mobile-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  gap: 12px;
+  padding: 4px;
+  margin: -4px;
+}
+
+.mobile-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-scroll-container > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* 모바일 풀 너비 버튼 */
+@media (max-width: 768px) {
+  .btn-mobile-full {
+    width: 100%;
+  }
+}
+
+/* 모바일 이미지 최적화 */
+@media (max-width: 768px) {
+  img {
+    content-visibility: auto;
+  }
+}
+
+/* 모바일 텍스트 선택 방지 (UI 요소) */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* 모바일 탭 바 */
+.mobile-tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid var(--toss-gray-200);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 50;
+}
+
+/* 모바일 검색 결과 빈 화면 */
+@media (max-width: 768px) {
+  .empty-state-mobile {
+    padding: 48px 24px;
+  }
+
+  .empty-state-mobile .text-\[64px\] {
+    font-size: 48px;
+  }
+}
+
+/* 모바일 상품 카드 최적화 */
+@media (max-width: 640px) {
+  /* 상품 이름 2줄로 표시 */
+  .product-name-mobile {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  /* 배지 크기 축소 */
+  .badge-mobile {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
+
+/* 모바일 스와이프 힌트 */
+.swipe-hint::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  background: linear-gradient(to right, transparent, white);
+  pointer-events: none;
+}
+
+/* 모바일 Pull-to-refresh 영역 */
+.pull-to-refresh-area {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* 모바일 키보드 대응 */
+@media (max-width: 768px) {
+  .keyboard-aware {
+    transition: padding-bottom 0.3s ease;
+  }
+
+  .keyboard-open .keyboard-aware {
+    padding-bottom: 0;
+  }
+}
+
+/* 모바일 카테고리 네비게이션 */
+@media (max-width: 768px) {
+  .category-nav-mobile {
+    padding: 0 16px;
+  }
+
+  .category-nav-mobile .toss-chip {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
+/* 다크 모드 */
+.dark {
+  --background: #121417;
+  --foreground: #f2f4f6;
+  --card-bg: #1e2024;
+
+  --toss-gray-50: #1e2024;
+  --toss-gray-100: #2a2d32;
+  --toss-gray-200: #3a3d42;
+  --toss-gray-300: #4e5968;
+  --toss-gray-400: #6b7684;
+  --toss-gray-500: #8b95a1;
+  --toss-gray-600: #b0b8c1;
+  --toss-gray-700: #d1d6db;
+  --toss-gray-800: #e5e8eb;
+  --toss-gray-900: #f2f4f6;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.dark body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.dark .bg-white {
+  background-color: var(--card-bg) !important;
+}
+
+.dark .bg-gray-50,
+.dark .bg-\[\#f2f4f6\] {
+  background-color: var(--background) !important;
+}
+
+.dark .border-\[\#e5e8eb\] {
+  border-color: var(--toss-gray-200) !important;
+}
+
+.dark .text-\[\#191f28\],
+.dark .text-\[\#333d4b\] {
+  color: var(--toss-gray-900) !important;
+}
+
+.dark .text-\[\#4e5968\],
+.dark .text-\[\#6b7684\] {
+  color: var(--toss-gray-600) !important;
+}
+
+.dark .text-\[\#8b95a1\] {
+  color: var(--toss-gray-500) !important;
+}
+
+/* 다크모드 입력 필드 */
+.dark .toss-input {
+  background: var(--toss-gray-100);
+  color: var(--toss-gray-900);
+}
+
+.dark .toss-input:focus {
+  background: var(--toss-gray-50);
+}
+
+/* 다크모드 카드 */
+.dark .toss-card,
+.dark .toss-card-flat {
+  background: var(--card-bg);
+  border-color: var(--toss-gray-200);
+}
+
+/* 다크모드 배지 */
+.dark .toss-badge-gray {
+  background: var(--toss-gray-200);
+  color: var(--toss-gray-700);
+}
+
+/* 다크모드 스켈레톤 */
+.dark .skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--toss-gray-100) 0%,
+    var(--toss-gray-200) 50%,
+    var(--toss-gray-100) 100%
+  );
+}
+
+/* 다크모드 구분선 */
+.dark .toss-divider {
+  background: var(--toss-gray-100);
+}
+
+/* 다크모드 리스트 아이템 */
+.dark .toss-list-item {
+  background: var(--card-bg);
+}
+
+.dark .toss-list-item:active {
+  background: var(--toss-gray-100);
+}
+
+/* 다크모드 칩 */
+.dark .toss-chip {
+  background: var(--card-bg);
+  border-color: var(--toss-gray-200);
+  color: var(--toss-gray-700);
+}
+
+.dark .toss-chip:hover {
+  background: var(--toss-gray-100);
+  border-color: var(--toss-gray-300);
+}
+
+/* 다크모드 모바일 탭 바 */
+.dark .mobile-tab-bar {
+  background: var(--card-bg);
+  border-color: var(--toss-gray-200);
+}
+
+/* 다크모드 스와이프 힌트 */
+.dark .swipe-hint::after {
+  background: linear-gradient(to right, transparent, var(--background));
+}
+
+/* 다크모드 오버레이 */
+.dark .overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* 다크모드 툴팁 */
+.dark .tooltip::after {
+  background: var(--toss-gray-800);
+  color: var(--toss-gray-100);
+}

@@ -3,7 +3,7 @@
 import { useState, memo, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { TrendingDown } from 'lucide-react';
+import { TrendingDown, ThumbsUp } from 'lucide-react';
 
 interface ProductCardProps {
   productId: number;
@@ -60,6 +60,9 @@ function ProductCard({
 }: ProductCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  // 블러 플레이스홀더 데이터 URL (1x1 그레이 픽셀)
+  const blurDataURL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88P/BfwYABQwC/kfqMwAAAABJRU5ErkJggg==';
 
   const formatPrice = (price: number) => price.toLocaleString('ko-KR');
 
@@ -125,6 +128,8 @@ function ProductCard({
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
               priority={priority}
+              placeholder="blur"
+              blurDataURL={blurDataURL}
               itemProp="image"
               unoptimized
             />
@@ -132,10 +137,10 @@ function ProductCard({
         </div>
 
         {/* 정보 */}
-        <div className="space-y-2">
-          {/* 상품명 */}
+        <div className="space-y-1.5 sm:space-y-2">
+          {/* 상품명 - 모바일에서 2줄 표시 */}
           <p
-            className="text-[14px] text-[#333d4b] line-clamp-1 leading-snug"
+            className="text-[13px] sm:text-[14px] text-[#333d4b] line-clamp-2 sm:line-clamp-1 leading-snug min-h-[36px] sm:min-h-0"
             itemProp="name"
           >
             {productName}
@@ -145,38 +150,38 @@ function ProductCard({
           <div itemProp="offers" itemScope itemType="https://schema.org/Offer">
             <div className="flex items-baseline gap-0.5">
               <span
-                className="text-[17px] sm:text-[18px] font-bold text-[#e03131] tracking-tight"
+                className="text-[16px] sm:text-[18px] font-bold text-[#e03131] tracking-tight"
                 itemProp="price"
                 content={productPrice.toString()}
               >
                 {formatPrice(productPrice)}
               </span>
-              <span className="text-[13px] sm:text-[14px] text-[#e03131]">원</span>
+              <span className="text-[12px] sm:text-[14px] text-[#e03131]">원</span>
               <meta itemProp="priceCurrency" content="KRW" />
             </div>
           </div>
 
           {/* 상태 배지 */}
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-1">
             {status === 'lowest' && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 bg-[#fff0f0] text-[#e03131] text-[11px] font-semibold rounded">
-                <TrendingDown size={12} />
+              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#fff0f0] text-[#e03131] text-[10px] sm:text-[11px] font-semibold rounded">
+                <TrendingDown size={10} className="sm:w-3 sm:h-3" />
                 역대 최저가
               </span>
             )}
             {status === 'good' && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 bg-[#e8f3ff] text-[#3182f6] text-[11px] font-semibold rounded">
-                <TrendingDown size={12} />
+              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#e6f9ed] text-[#0ca678] text-[10px] sm:text-[11px] font-semibold rounded">
+                <ThumbsUp size={10} className="sm:w-3 sm:h-3" />
                 가격 Good
               </span>
             )}
             {isRocket && (
-              <span className="px-2 py-1 bg-[#f8f9fa] text-[#3182f6] text-[11px] font-medium rounded">
+              <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#f8f9fa] text-[#3182f6] text-[10px] sm:text-[11px] font-medium rounded">
                 로켓배송
               </span>
             )}
             {isFreeShipping && !isRocket && (
-              <span className="px-2 py-1 bg-[#f8f9fa] text-[#3182f6] text-[11px] font-medium rounded">
+              <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#f8f9fa] text-[#3182f6] text-[10px] sm:text-[11px] font-medium rounded">
                 무료배송
               </span>
             )}

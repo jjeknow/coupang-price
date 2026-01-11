@@ -36,6 +36,10 @@ export async function GET(
         success: true,
         data: cached,
         cached: true,
+      }, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        },
       });
     }
 
@@ -55,6 +59,10 @@ export async function GET(
       success: true,
       data: responseData,
       cached: false,
+    }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      },
     });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류';
