@@ -500,7 +500,7 @@ input:focus-visible {
   outline-offset: 2px;
 }
 
-/* 터치 피드백 */
+/* 터치 피드백 - 모바일 전용 */
 @media (hover: none) and (pointer: coarse) {
   .toss-card:active {
     transform: scale(0.98);
@@ -509,6 +509,26 @@ input:focus-visible {
 
   .toss-btn:active {
     transform: scale(0.96);
+  }
+
+  /* 링크 및 버튼 터치 피드백 */
+  a:active,
+  button:active {
+    opacity: 0.8;
+  }
+
+  /* 상품 카드 터치 피드백 */
+  article:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* 데스크톱 전용 호버 효과 */
+@media (hover: hover) and (pointer: fine) {
+  .hover-desktop:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
   }
 }
 
@@ -524,6 +544,22 @@ input:focus-visible {
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 스켈레톤 시머 효과 */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s ease-in-out infinite;
+  background: linear-gradient(90deg, #f2f4f6 25%, #e5e8eb 50%, #f2f4f6 75%);
+  background-size: 200% 100%;
 }
 
 /* 마이크로 인터랙션 - 바운스 효과 */

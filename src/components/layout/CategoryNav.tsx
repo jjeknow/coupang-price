@@ -55,7 +55,15 @@ export default function CategoryNav() {
         {/* 우측 그라데이션 힌트 */}
         <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-        <div className="flex overflow-x-auto scrollbar-hide py-3 px-4 gap-2">
+        {/* 스크롤 스냅 + 터치 스크롤 최적화 */}
+        <div
+          className="flex overflow-x-auto scrollbar-hide py-2 sm:py-3 px-4 gap-2"
+          style={{
+            WebkitOverflowScrolling: 'touch',
+            scrollSnapType: 'x mandatory',
+            scrollBehavior: 'smooth'
+          }}
+        >
           {categories.map((category) => {
             const isActive = pathname === `/category/${category.id}`;
 
@@ -63,16 +71,17 @@ export default function CategoryNav() {
               <Link
                 key={category.id}
                 href={`/category/${category.id}`}
-                className={`group flex items-center gap-1.5 px-4 py-2 rounded-full whitespace-nowrap transition-all duration-200 ${
+                className={`group flex items-center gap-1.5 px-3 sm:px-4 py-2.5 sm:py-2 min-h-[44px] rounded-full whitespace-nowrap transition-all duration-200 select-none ${
                   isActive
                     ? 'bg-gradient-to-r from-[#3182f6] to-[#6366f1] text-white shadow-md shadow-blue-200'
-                    : 'bg-[#f2f4f6] text-[#4e5968] hover:bg-gradient-to-r hover:from-[#e8f3ff] hover:to-[#f0f3ff] hover:text-[#3182f6] hover:shadow-sm'
+                    : 'bg-[#f2f4f6] text-[#4e5968] active:scale-95 active:bg-[#e5e8eb] sm:hover:bg-gradient-to-r sm:hover:from-[#e8f3ff] sm:hover:to-[#f0f3ff] sm:hover:text-[#3182f6] sm:hover:shadow-sm'
                 }`}
+                style={{ scrollSnapAlign: 'center' }}
               >
-                <span className="text-[16px]">
+                <span className="text-[14px] sm:text-[16px]">
                   {categoryEmojis[category.id] || '📦'}
                 </span>
-                <span className="text-[13px] font-medium">{category.name}</span>
+                <span className="text-[12px] sm:text-[13px] font-medium">{category.name}</span>
               </Link>
             );
           })}

@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import SessionProvider from '@/components/providers/SessionProvider';
+import PWAProvider from '@/components/PWAProvider';
 
 const notoSansKr = Noto_Sans_KR({
   subsets: ['latin'],
@@ -291,18 +292,20 @@ export default function RootLayout({
       </head>
       <body className={`${notoSansKr.variable} font-sans antialiased bg-gray-50`}>
         <SessionProvider>
-          {/* 스킵 네비게이션 - 접근성 */}
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#3182f6] focus:text-white focus:rounded-lg"
-          >
-            본문으로 바로가기
-          </a>
-          <Header />
-          <main id="main-content" className="min-h-screen" role="main">
-            {children}
-          </main>
-          <Footer />
+          <PWAProvider>
+            {/* 스킵 네비게이션 - 접근성 */}
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#3182f6] focus:text-white focus:rounded-lg"
+            >
+              본문으로 바로가기
+            </a>
+            <Header />
+            <main id="main-content" className="min-h-screen" role="main">
+              {children}
+            </main>
+            <Footer />
+          </PWAProvider>
         </SessionProvider>
       </body>
     </html>

@@ -259,7 +259,7 @@ export default function ProductDetailPage() {
     const history: PriceHistory[] = [];
     const today = new Date();
 
-    for (let i = 29; i >= 0; i--) {
+    for (let i = 6; i >= 0; i--) {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split('T')[0];
@@ -792,31 +792,27 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
 
-                {/* 가격 정보 테이블 */}
+                {/* 가격 정보 테이블 - 2x2 레이아웃 */}
                 <div className="border border-[#e5e8eb] rounded-xl overflow-hidden mb-6">
                   <table className="w-full">
                     <tbody>
                       <tr className="border-b border-[#e5e8eb]">
-                        <td className="py-3 px-4 bg-[#f8f9fa] text-[14px] text-[#6b7684] w-[120px]">역대최저가</td>
-                        <td className="py-3 px-4 text-[14px] font-semibold text-[#00c471]">
+                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 bg-[#f8f9fa] text-[12px] sm:text-[13px] text-[#6b7684] w-1/4 border-r border-[#e5e8eb]">역대최저가</td>
+                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 text-[13px] sm:text-[14px] font-semibold text-[#00c471] w-1/4 border-r border-[#e5e8eb]">
                           {formatPrice(lowestPrice)}원
                         </td>
-                      </tr>
-                      <tr className="border-b border-[#e5e8eb]">
-                        <td className="py-3 px-4 bg-[#f8f9fa] text-[14px] text-[#6b7684]">최근가격</td>
-                        <td className="py-3 px-4 text-[14px] font-medium text-[#191f28]">
+                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 bg-[#f8f9fa] text-[12px] sm:text-[13px] text-[#6b7684] w-1/4 border-r border-[#e5e8eb]">최근가격</td>
+                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 text-[13px] sm:text-[14px] font-medium text-[#191f28] w-1/4">
                           {formatPrice(product.productPrice)}원
                         </td>
                       </tr>
-                      <tr className="border-b border-[#e5e8eb]">
-                        <td className="py-3 px-4 bg-[#f8f9fa] text-[14px] text-[#6b7684]">평균가격</td>
-                        <td className="py-3 px-4 text-[14px] font-medium text-[#191f28]">
+                      <tr>
+                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 bg-[#f8f9fa] text-[12px] sm:text-[13px] text-[#6b7684] border-r border-[#e5e8eb]">평균가격</td>
+                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 text-[13px] sm:text-[14px] font-medium text-[#191f28] border-r border-[#e5e8eb]">
                           {formatPrice(Math.round((lowestPrice + highestPrice) / 2))}원
                         </td>
-                      </tr>
-                      <tr>
-                        <td className="py-3 px-4 bg-[#f8f9fa] text-[14px] text-[#6b7684]">최고가격</td>
-                        <td className="py-3 px-4 text-[14px] font-medium text-[#ff8b00]">
+                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 bg-[#f8f9fa] text-[12px] sm:text-[13px] text-[#6b7684] border-r border-[#e5e8eb]">최고가격</td>
+                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 text-[13px] sm:text-[14px] font-medium text-[#ff8b00]">
                           {formatPrice(highestPrice)}원
                         </td>
                       </tr>
@@ -903,7 +899,7 @@ export default function ProductDetailPage() {
                   <span className="text-[12px] font-bold text-[#3182f6]">1</span>
                 </div>
                 <p className="toss-body-2 text-[#6b7684]">
-                  현재 가격이 30일 내 최저가인지 확인하세요
+                  현재 가격이 7일 내 최저가인지 확인하세요
                 </p>
               </div>
               <div className="flex gap-3">

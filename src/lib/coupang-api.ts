@@ -179,14 +179,18 @@ async function callApi<T>(
 
 /**
  * 카테고리별 베스트 상품 조회 (캐시 적용)
+ * 쿠팡 베스트 API limit 제한: 1~100 (최대 100개)
  */
 export async function getBestProducts(
   categoryId: number,
   limit: number = 20,
   imageSize: string = '340x340'
 ): Promise<CoupangProduct[]> {
+  // 쿠팡 베스트 API limit 제한 (1~100)
+  const safeLimit = Math.min(Math.max(limit, 1), 100);
+
   // 캐시 체크
-  const cacheKey = createCacheKey('best', categoryId, limit);
+  const cacheKey = createCacheKey('best', categoryId, safeLimit);
   const cached = getFromCache<CoupangProduct[]>(cacheKey);
   if (cached) {
     console.log(`[CACHE HIT] ${cacheKey}`);
@@ -194,7 +198,7 @@ export async function getBestProducts(
   }
 
   console.log(`[CACHE MISS] ${cacheKey} - API 호출`);
-  const path = `/v2/providers/affiliate_open_api/apis/openapi/v1/products/bestcategories/${categoryId}?limit=${limit}&imageSize=${imageSize}`;
+  const path = `/v2/providers/affiliate_open_api/apis/openapi/v1/products/bestcategories/${categoryId}?limit=${safeLimit}&imageSize=${imageSize}`;
 
   const response = await callApi<{ data: CoupangProduct[] }>('GET', path);
   const products = response.data || [];
@@ -231,14 +235,18 @@ export async function getGoldboxProducts(
 
 /**
  * 상품 검색 (캐시 적용 - 검색 API는 별도 Rate Limit 적용)
+ * 쿠팡 검색 API limit 제한: 1~10 (최대 10개)
  */
 export async function searchProducts(
   keyword: string,
   limit: number = 10,
   imageSize: string = '340x340'
 ): Promise<SearchResult> {
+  // 쿠팡 검색 API limit 제한 (1~10)
+  const safeLimit = Math.min(Math.max(limit, 1), 10);
+
   // 캐시 체크
-  const cacheKey = createCacheKey('search', keyword, limit);
+  const cacheKey = createCacheKey('search', keyword, safeLimit);
   const cached = getFromCache<SearchResult>(cacheKey);
   if (cached) {
     console.log(`[CACHE HIT] ${cacheKey}`);
@@ -247,7 +255,7 @@ export async function searchProducts(
 
   console.log(`[CACHE MISS] ${cacheKey} - API 호출`);
   const encodedKeyword = encodeURIComponent(keyword);
-  const path = `/v2/providers/affiliate_open_api/apis/openapi/v1/products/search?keyword=${encodedKeyword}&limit=${limit}&imageSize=${imageSize}`;
+  const path = `/v2/providers/affiliate_open_api/apis/openapi/v1/products/search?keyword=${encodedKeyword}&limit=${safeLimit}&imageSize=${imageSize}`;
 
   // 검색 API는 별도 Rate Limit (분당 15회)
   const response = await callApi<{ data: SearchResult }>('GET', path, undefined, 'search');

@@ -27,8 +27,8 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white safe-area-top">
-      {/* 프로모션 배너 */}
-      <div className="bg-[#191f28] text-white text-center py-2.5 px-4">
+      {/* 프로모션 배너 - 모바일에서 숨김 */}
+      <div className="hidden sm:block bg-[#191f28] text-white text-center py-2.5 px-4">
         <p className="text-[13px] font-medium">
           <Bell size={14} className="inline mr-1" />
           <span className="text-[#3182f6]">최저가 알림</span>을 받고 똑똑하게 쇼핑하세요
@@ -37,7 +37,8 @@ export default function Header() {
 
       <div className="border-b border-[#e5e8eb]">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
+          {/* 데스크톱 헤더 */}
+          <div className="hidden md:flex items-center justify-between h-16">
             {/* 로고 */}
             <Link href="/" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-[#3182f6] rounded-lg flex items-center justify-center">
@@ -51,7 +52,7 @@ export default function Header() {
             {/* 검색바 - 데스크톱 */}
             <form
               onSubmit={handleSearch}
-              className="hidden md:flex flex-1 max-w-md mx-8"
+              className="flex flex-1 max-w-md mx-8"
             >
               <div className="relative w-full">
                 <input
@@ -71,7 +72,7 @@ export default function Header() {
             </form>
 
             {/* 네비게이션 - 데스크톱 */}
-            <nav className="hidden md:flex items-center gap-1">
+            <nav className="flex items-center gap-1">
               <Link
                 href={session ? '/mypage/favorites' : '/favorites'}
                 className="flex items-center gap-1.5 px-3 py-2 text-[#4e5968] hover:bg-[#f2f4f6] rounded-lg transition-colors"
@@ -157,31 +158,50 @@ export default function Header() {
               )}
             </nav>
 
-            {/* 모바일 메뉴 버튼 */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-[#4e5968] hover:bg-[#f2f4f6] rounded-lg transition-colors"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+          </div>
+
+          {/* 모바일 헤더 */}
+          <div className="md:hidden flex items-center justify-between gap-3 h-14">
+            {/* 로고 */}
+            <Link href="/" className="flex items-center gap-1.5 flex-shrink-0">
+              <div className="w-8 h-8 bg-[#3182f6] rounded-lg flex items-center justify-center">
+                <TrendingDown size={16} className="text-white" />
+              </div>
+              <span className="text-[15px] font-bold text-[#191f28]">최저가</span>
+            </Link>
+
+            {/* 검색바 + 메뉴 버튼 */}
+            <div className="flex items-center gap-1.5">
+              <form onSubmit={handleSearch} className="w-[140px]">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="검색"
+                    className="w-full pl-3 pr-9 py-1.5 bg-[#f2f4f6] rounded-lg text-[13px] placeholder:text-[#8b95a1] focus:outline-none focus:ring-1 focus:ring-[#3182f6] focus:bg-white"
+                    style={{ fontSize: '16px' }}
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8b95a1]"
+                  >
+                    <Search size={16} />
+                  </button>
+                </div>
+              </form>
+
+              {/* 메뉴 버튼 */}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="flex-shrink-0 w-9 h-9 flex items-center justify-center text-[#4e5968] active:bg-[#e5e8eb] rounded-lg transition-colors"
+                aria-label={isMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
+              >
+                {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* 검색바 - 모바일 */}
-      <div className="md:hidden px-4 pt-3 pb-4 bg-white">
-        <form onSubmit={handleSearch}>
-          <div className="relative">
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8b95a1]" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="찾고 싶은 상품을 검색해보세요"
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#8b95a1] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
-            />
-          </div>
-        </form>
       </div>
 
       {/* 모바일 메뉴 */}
@@ -217,7 +237,7 @@ export default function Header() {
 
             <Link
               href={session ? '/mypage/favorites' : '/favorites'}
-              className="flex items-center gap-3 px-4 py-3 hover:bg-[#f2f4f6] rounded-xl transition-colors"
+              className="flex items-center gap-3 px-4 py-3 min-h-[56px] active:bg-[#e5e8eb] rounded-xl transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               <div className="w-10 h-10 bg-[#f2f4f6] rounded-full flex items-center justify-center">
@@ -227,7 +247,7 @@ export default function Header() {
             </Link>
             <Link
               href={session ? '/mypage/alerts' : '/auth/login?callbackUrl=/mypage/alerts'}
-              className="flex items-center gap-3 px-4 py-3 hover:bg-[#f2f4f6] rounded-xl transition-colors"
+              className="flex items-center gap-3 px-4 py-3 min-h-[56px] active:bg-[#e5e8eb] rounded-xl transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               <div className="w-10 h-10 bg-[#f2f4f6] rounded-full flex items-center justify-center">
@@ -242,7 +262,7 @@ export default function Header() {
                   setIsMenuOpen(false);
                   handleSignOut();
                 }}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 rounded-xl transition-colors w-full"
+                className="flex items-center gap-3 px-4 py-3 min-h-[56px] active:bg-red-100 rounded-xl transition-colors w-full"
               >
                 <div className="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center">
                   <LogOut size={20} className="text-[#e03131]" />
@@ -252,7 +272,7 @@ export default function Header() {
             ) : (
               <Link
                 href="/auth/login"
-                className="flex items-center gap-3 px-4 py-3 hover:bg-[#f2f4f6] rounded-xl transition-colors"
+                className="flex items-center gap-3 px-4 py-3 min-h-[56px] active:bg-[#e5e8eb] rounded-xl transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <div className="w-10 h-10 bg-[#3182f6] rounded-full flex items-center justify-center">

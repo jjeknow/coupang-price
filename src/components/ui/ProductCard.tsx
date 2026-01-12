@@ -19,7 +19,7 @@ interface ProductCardProps {
 }
 
 // productId 기반 가격 인사이트 생성
-function generatePriceInsight(productId: number, currentPrice: number) {
+function generatePriceInsight(productId: number) {
   const seed = (productId * 2654435761) >>> 0;
   const statusRand = seed % 100;
 
@@ -67,8 +67,8 @@ function ProductCard({
   const formatPrice = (price: number) => price.toLocaleString('ko-KR');
 
   const { status, discountPercent } = useMemo(() => {
-    return generatePriceInsight(productId, productPrice);
-  }, [productId, productPrice]);
+    return generatePriceInsight(productId);
+  }, [productId]);
 
   const productData = encodeURIComponent(
     JSON.stringify({
@@ -97,12 +97,12 @@ function ProductCard({
         className="block"
         aria-label={`${productName} - ${formatPrice(productPrice)}원`}
       >
-        {/* 이미지 */}
-        <div className="relative aspect-square bg-[#fafafa] rounded-xl overflow-hidden mb-3 border border-[#e5e8eb] shadow-[0_2px_8px_rgba(0,0,0,0.08)] group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-shadow duration-200">
+        {/* 이미지 - 모바일: 터치 피드백, 데스크톱: 호버 그림자 */}
+        <div className="relative aspect-square bg-[#fafafa] rounded-xl overflow-hidden mb-2 sm:mb-3 border border-[#e5e8eb] shadow-[0_2px_8px_rgba(0,0,0,0.08)] sm:group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] active:scale-[0.98] sm:active:scale-100 transition-all duration-200">
           {/* 할인율 배지 */}
           {discountPercent > 0 && (
             <div className="absolute top-2 left-2 z-10">
-              <span className="inline-block px-2 py-1 bg-[#3182f6] text-white text-[12px] font-bold rounded-lg">
+              <span className="inline-block px-2 py-1 bg-[#3182f6] text-white text-[11px] sm:text-[12px] font-bold rounded-lg">
                 {discountPercent}%
               </span>
             </div>
@@ -122,7 +122,7 @@ function ProductCard({
               alt={productName}
               fill
               sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 18vw"
-              className={`object-contain p-2 sm:p-3 group-hover:scale-105 transition-transform duration-200 ${
+              className={`object-contain p-2 sm:p-3 sm:group-hover:scale-105 transition-transform duration-200 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
               onLoad={() => setImageLoaded(true)}
