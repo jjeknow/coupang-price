@@ -152,8 +152,8 @@ function SearchResults() {
       {/* 파트너스 고지 */}
       <div className="max-w-6xl mx-auto px-4 pb-8">
         <div className="toss-card-flat p-6 text-center border border-[#e5e8eb]">
-          <p className="toss-caption">
-            이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의
+          <p className="toss-caption text-[#6b7684]">
+            본 서비스는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의
             수수료를 제공받습니다.
           </p>
         </div>

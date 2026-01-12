@@ -199,8 +199,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         {products.length > 0 ? (
           <>
             <CategoryProductList products={products} />
-            <p className="text-[11px] text-[#adb5bd] mt-6 text-center">
-              해당 사이트는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며, 구매자에게 추가 비용은 없습니다.
+            <p className="text-[12px] text-[#6b7684] mt-6 text-center">
+              본 서비스는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며, 구매자에게 추가 비용은 없습니다.
             </p>
           </>
         ) : (

@@ -248,27 +248,57 @@ export default function ProductDetailPage() {
     }
   }, []);
 
-  useEffect(() => {
-    // 가격 히스토리 생성 (데모)
-    const generatePriceHistory = (basePrice: number) => {
-      const history: PriceHistory[] = [];
-      const today = new Date();
+  // productId 기반 시드 랜덤 생성 (일관된 데모 데이터용)
+  const seededRandom = (seed: number, index: number) => {
+    const x = Math.sin(seed + index) * 10000;
+    return x - Math.floor(x);
+  };
 
-      for (let i = 29; i >= 0; i--) {
-        const date = new Date(today);
-        date.setDate(date.getDate() - i);
-        const dateStr = date.toISOString().split('T')[0];
+  // 데모용 가격 히스토리 생성 (실제 데이터 없을 때만 사용)
+  const generateDemoPriceHistory = (basePrice: number, productIdNum: number) => {
+    const history: PriceHistory[] = [];
+    const today = new Date();
 
-        // 가격 변동 시뮬레이션 (±10%)
-        const variation = (Math.random() - 0.5) * 0.2;
-        const price = Math.round(basePrice * (1 + variation));
+    for (let i = 29; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      const dateStr = date.toISOString().split('T')[0];
 
-        history.push({ time: dateStr, price });
+      // productId 기반 일관된 변동 (새로고침해도 동일)
+      const variation = (seededRandom(productIdNum, i) - 0.5) * 0.2;
+      const price = Math.round(basePrice * (1 + variation));
+
+      history.push({ time: dateStr, price });
+    }
+
+    return history;
+  };
+
+  // 실제 가격 히스토리 조회
+  const fetchPriceHistory = async (prodId: string, basePrice: number) => {
+    try {
+      const res = await fetch(`/api/products/${prodId}/price-history`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.data.hasHistory && data.data.history.length > 0) {
+          setPriceHistory(data.data.history);
+          setHasRealData(true);
+          return;
+        }
       }
+    } catch (error) {
+      console.error('가격 히스토리 조회 실패:', error);
+    }
 
-      return history;
-    };
+    // 실제 데이터 없으면 데모 데이터 사용
+    setPriceHistory(generateDemoPriceHistory(basePrice, parseInt(prodId)));
+    setHasRealData(false);
+  };
 
+  // 실제 데이터 여부 상태
+  const [hasRealData, setHasRealData] = useState(false);
+
+  useEffect(() => {
     // URL 쿼리에서 상품 데이터 파싱
     const dataParam = searchParams.get('data');
 
@@ -276,7 +306,9 @@ export default function ProductDetailPage() {
       try {
         const productData = JSON.parse(decodeURIComponent(dataParam)) as Product;
         setProduct(productData);
-        setPriceHistory(generatePriceHistory(productData.productPrice));
+
+        // 실제 가격 히스토리 조회 시도
+        fetchPriceHistory(productData.productId.toString(), productData.productPrice);
 
         // 최근 본 상품에 저장
         saveRecentProduct({
@@ -843,6 +875,14 @@ export default function ProductDetailPage() {
         {/* 가격 차트 */}
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="toss-card-flat p-6 border border-[#e5e8eb]">
+            {!hasRealData && (
+              <div className="mb-4 p-3 bg-[#fff8e6] border border-[#ffd43b]/30 rounded-lg">
+                <p className="text-[13px] text-[#8b6914]">
+                  <span className="font-semibold">참고:</span> 이 상품의 가격 데이터를 수집 중입니다.
+                  현재 표시된 그래프는 예상 데이터이며, 실제 가격 추적은 내일부터 시작됩니다.
+                </p>
+              </div>
+            )}
             <PriceChart
               data={priceHistory}
               currentPrice={product.productPrice}

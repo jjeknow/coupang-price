@@ -106,24 +106,30 @@ export default function HeroSearch() {
 
   return (
     <section className="relative">
-      {/* 다크 블루 그라데이션 배경 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]" />
-
-      {/* 글로우 이펙트 */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px]">
-        <div className="absolute top-0 left-0 w-72 h-72 bg-[#3b82f6]/30 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#6366f1]/20 rounded-full blur-[120px]" />
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#0ea5e9]/20 rounded-full blur-[80px]" />
+      {/* 다크 블루 그라데이션 배경 - overflow-hidden 적용 */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]" />
       </div>
 
-      {/* 그리드 패턴 오버레이 */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)`,
-          backgroundSize: '50px 50px'
-        }}
-      />
+      {/* 글로우 이펙트 - overflow-hidden wrapper 안에 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px]">
+          <div className="absolute top-0 left-0 w-72 h-72 bg-[#3b82f6]/30 rounded-full blur-[100px] animate-pulse" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#6366f1]/20 rounded-full blur-[120px]" />
+          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#0ea5e9]/20 rounded-full blur-[80px]" />
+        </div>
+      </div>
+
+      {/* 그리드 패턴 오버레이 - overflow-hidden wrapper 안에 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)`,
+            backgroundSize: '50px 50px'
+          }}
+        />
+      </div>
 
       <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 relative z-10">
         <div className="flex flex-col items-center text-center">
@@ -255,8 +261,8 @@ export default function HeroSearch() {
           </div>
 
           {/* 파트너스 고지 */}
-          <div className="mx-2 md:mx-0 px-4 py-2 bg-white/5 rounded-full">
-            <p className="text-[#64748b] text-[10px] md:text-[11px] whitespace-nowrap">
+          <div className="mx-2 md:mx-0 px-4 py-2.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/10">
+            <p className="text-[#94a3b8] text-[10px] md:text-[11px]">
               본 서비스는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받습니다
             </p>
           </div>

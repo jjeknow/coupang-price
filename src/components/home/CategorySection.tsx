@@ -34,7 +34,7 @@ export default function CategorySection() {
   return (
     <section className="bg-white py-10">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-[18px] font-bold text-[#191f28] text-center mb-8">
+        <h2 className="text-[15px] sm:text-[18px] font-bold text-[#191f28] text-center mb-6 sm:mb-8 px-2">
           🔍 찾고 싶은 카테고리를 선택해 보세요!
         </h2>
 

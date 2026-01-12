@@ -264,6 +264,18 @@ export default function RootLayout({
         <meta name="target" content="all" />
         <meta name="HandheldFriendly" content="True" />
         <meta name="MobileOptimized" content="320" />
+        {/* 네이버 SEO 특화 메타 태그 */}
+        <meta name="NaverBot" content="All" />
+        <meta name="Yeti" content="all" />
+        {/* 다음 SEO */}
+        <meta name="daumoa" content="index,follow" />
+        {/* 빙 SEO */}
+        <meta name="bingbot" content="index,follow" />
+        {/* 지역 타겟팅 */}
+        <meta name="geo.region" content="KR" />
+        <meta name="geo.placename" content="South Korea" />
+        {/* 콘텐츠 언어 */}
+        <meta httpEquiv="content-language" content="ko-KR" />
         {/* 프리로드 - 성능 최적화 */}
         <link rel="preconnect" href="https://thumbnail6.coupangcdn.com" />
         <link rel="preconnect" href="https://thumbnail7.coupangcdn.com" />

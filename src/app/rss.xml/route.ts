@@ -76,7 +76,7 @@ export async function GET() {
             <a href="${product.productUrl}" style="color: #3182f6; text-decoration: none;">쿠팡에서 구매하기 →</a>
           </p>
           <p style="color: #8b95a1; font-size: 12px; margin-top: 16px;">
-            이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
+            본 서비스는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
           </p>
         </div>
       `.trim();
@@ -110,7 +110,7 @@ export async function GET() {
             <a href="${product.productUrl}" style="color: #3182f6; text-decoration: none;">쿠팡에서 구매하기 →</a>
           </p>
           <p style="color: #8b95a1; font-size: 12px; margin-top: 16px;">
-            이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
+            본 서비스는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
           </p>
         </div>
       `.trim();

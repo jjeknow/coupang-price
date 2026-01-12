@@ -176,12 +176,12 @@ function ProductCard({
               </span>
             )}
             {isRocket && (
-              <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#f8f9fa] text-[#3182f6] text-[10px] sm:text-[11px] font-medium rounded">
+              <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#e8f3ff] text-[#3182f6] text-[10px] sm:text-[11px] font-medium rounded border border-[#3182f6]/20">
                 로켓배송
               </span>
             )}
             {isFreeShipping && !isRocket && (
-              <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#f8f9fa] text-[#3182f6] text-[10px] sm:text-[11px] font-medium rounded">
+              <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#e8f3ff] text-[#3182f6] text-[10px] sm:text-[11px] font-medium rounded border border-[#3182f6]/20">
                 무료배송
               </span>
             )}
