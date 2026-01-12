@@ -1,6 +1,6 @@
 /**
  * 가격 수집 Cron API
- * GitHub Actions에서 매일 호출하여 가격 히스토리 저장
+ * Vercel Cron에서 매일 호출하여 가격 히스토리 저장
  *
  * 쿠팡 API 규제 준수:
  * - 분당 100회 제한 → 분당 12회만 호출 (12% 사용)
@@ -12,7 +12,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getBestProducts, getGoldboxProducts, CATEGORIES } from '@/lib/coupang-api';
 
-// Cron 시크릿 키 (GitHub Actions에서 전달)
+// Vercel Cron 시크릿 키
 const CRON_SECRET = process.env.CRON_SECRET;
 
 // 딜레이 함수
@@ -146,10 +146,10 @@ async function saveProductPrice(product: {
   }
 }
 
-export async function POST(request: NextRequest) {
-  // 인증 확인
+export async function GET(request: NextRequest) {
+  // Vercel Cron 인증 확인
   const authHeader = request.headers.get('authorization');
-  if (CRON_SECRET && authHeader !== `Bearer ${CRON_SECRET}`) {
+  if (authHeader !== `Bearer ${CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -240,19 +240,4 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(results, { status: 500 });
   }
-}
-
-// GET 요청도 지원 (테스트용)
-export async function GET(request: NextRequest) {
-  // 인증 확인
-  const authHeader = request.headers.get('authorization');
-  const url = new URL(request.url);
-  const secret = url.searchParams.get('secret');
-
-  if (CRON_SECRET && authHeader !== `Bearer ${CRON_SECRET}` && secret !== CRON_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  // POST로 전달
-  return POST(request);
 }
