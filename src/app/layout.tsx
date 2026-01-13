@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     countryName: 'South Korea',
     images: [
       {
-        url: '/og-image.png',
+        url: '/og-image-v2.png',
         width: 1200,
         height: 630,
         alt: '똑체크 - 쿠팡 가격변동 추적 & 최저가 알림',
@@ -95,7 +95,7 @@ export const metadata: Metadata = {
     creator: '@ddokcheck',
     title: '똑체크 - 쿠팡 가격비교 변동 추적 & 최저가 알림',
     description: '쿠팡 가격변동을 실시간 추적! 가격 그래프, 최저가 알림으로 똑똑하게 쇼핑하세요.',
-    images: ['/twitter-image.png'],
+    images: ['/twitter-image-v2.png'],
   },
 
   // 검색엔진 인증
