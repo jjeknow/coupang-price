@@ -12,6 +12,9 @@ interface Product {
   isRocket?: boolean;
   isFreeShipping?: boolean;
   categoryName?: string;
+  lowestPrice?: number | null;
+  highestPrice?: number | null;
+  averagePrice?: number | null;
 }
 
 interface ProductGridProps {

@@ -10,6 +10,7 @@
 import crypto from 'crypto';
 import { checkRateLimit, getRateLimitStatus } from './rate-limiter';
 import { getFromCache, setCache, createCacheKey, CACHE_TTL } from './cache';
+import { prisma } from './prisma';
 
 // API 설정
 const API_BASE_URL = 'https://api-gateway.coupang.com';
@@ -335,4 +336,64 @@ export function getAllCategories() {
     id: parseInt(id),
     name,
   }));
+}
+
+// 확장된 상품 타입 (DB 가격 데이터 포함)
+export interface EnrichedProduct extends CoupangProduct {
+  lowestPrice: number | null;
+  highestPrice: number | null;
+  averagePrice: number | null;
+}
+
+// DB에서 가격 히스토리 데이터를 가져와 결합
+async function enrichProductsWithPriceData(products: CoupangProduct[]): Promise<EnrichedProduct[]> {
+  if (products.length === 0) return [];
+
+  const coupangIds = products.map(p => p.productId.toString());
+
+  // DB에서 해당 상품들의 가격 데이터 조회
+  const dbProducts = await prisma.product.findMany({
+    where: {
+      coupangId: { in: coupangIds }
+    },
+    select: {
+      coupangId: true,
+      lowestPrice: true,
+      highestPrice: true,
+      averagePrice: true,
+    }
+  });
+
+  // coupangId를 키로 하는 맵 생성
+  const priceMap = new Map(dbProducts.map(p => [p.coupangId, p]));
+
+  // 상품 데이터에 가격 히스토리 추가
+  return products.map(product => {
+    const priceData = priceMap.get(product.productId.toString());
+    return {
+      ...product,
+      lowestPrice: priceData?.lowestPrice ?? null,
+      highestPrice: priceData?.highestPrice ?? null,
+      averagePrice: priceData?.averagePrice ?? null,
+    };
+  });
+}
+
+/**
+ * 카테고리별 베스트 상품 조회 (DB 가격 데이터 포함)
+ */
+export async function getBestProductsWithPriceData(
+  categoryId: number,
+  limit: number = 20
+): Promise<EnrichedProduct[]> {
+  const products = await getBestProducts(categoryId, limit);
+  return enrichProductsWithPriceData(products);
+}
+
+/**
+ * 골드박스 상품 조회 (DB 가격 데이터 포함)
+ */
+export async function getGoldboxProductsWithPriceData(): Promise<EnrichedProduct[]> {
+  const products = await getGoldboxProducts();
+  return enrichProductsWithPriceData(products);
 }

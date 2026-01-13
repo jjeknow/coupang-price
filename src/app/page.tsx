@@ -1,5 +1,5 @@
 import ProductGrid from '@/components/ui/ProductGrid';
-import { getGoldboxProducts, getBestProducts } from '@/lib/coupang-api';
+import { getGoldboxProductsWithPriceData, getBestProductsWithPriceData } from '@/lib/coupang-api';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import HeroSearch from '@/components/home/HeroSearch';
@@ -92,10 +92,10 @@ const howToJsonLd = {
 export default async function HomePage() {
   const [goldboxProducts, electronicsProducts, foodProducts, beautyProducts] =
     await Promise.all([
-      getGoldboxProducts().catch(() => []),
-      getBestProducts(1016, 10).catch(() => []),
-      getBestProducts(1012, 10).catch(() => []),
-      getBestProducts(1010, 10).catch(() => []),
+      getGoldboxProductsWithPriceData().catch(() => []),
+      getBestProductsWithPriceData(1016, 10).catch(() => []),
+      getBestProductsWithPriceData(1012, 10).catch(() => []),
+      getBestProductsWithPriceData(1010, 10).catch(() => []),
     ]);
 
   return (

@@ -14,34 +14,39 @@ interface ProductCardProps {
   isRocket?: boolean;
   isFreeShipping?: boolean;
   categoryName?: string;
-  lowestPrice?: number;
+  lowestPrice?: number | null;
+  highestPrice?: number | null;
+  averagePrice?: number | null;
   priority?: boolean;
 }
 
-// productId 기반 가격 인사이트 생성
-function generatePriceInsight(productId: number) {
-  const seed = (productId * 2654435761) >>> 0;
-  const statusRand = seed % 100;
-
-  let status: 'lowest' | 'good' | 'normal';
+// 실제 가격 데이터 기반 인사이트 계산
+function calculatePriceInsight(
+  currentPrice: number,
+  lowestPrice: number | null | undefined,
+  highestPrice: number | null | undefined,
+  averagePrice: number | null | undefined
+) {
+  let status: 'lowest' | 'good' | 'normal' = 'normal';
   let discountPercent = 0;
 
-  if (statusRand < 12) {
-    // 12% - 역대 최저가
+  // 가격 데이터가 없으면 표시 안함
+  if (!lowestPrice || !highestPrice) {
+    return { status: 'normal' as const, discountPercent: 0 };
+  }
+
+  // 최고가 대비 할인율 계산
+  if (highestPrice > currentPrice) {
+    discountPercent = Math.round(((highestPrice - currentPrice) / highestPrice) * 100);
+  }
+
+  // 역대 최저가 체크 (현재가가 최저가와 같거나 5% 이내)
+  const lowestThreshold = lowestPrice * 1.05;
+  if (currentPrice <= lowestThreshold) {
     status = 'lowest';
-    discountPercent = 30 + ((seed >> 4) % 21); // 30~50%
-  } else if (statusRand < 35) {
-    // 23% - 구매 적기
+  } else if (averagePrice && currentPrice < averagePrice) {
+    // 평균가보다 낮으면 "가격 Good"
     status = 'good';
-    discountPercent = 15 + ((seed >> 6) % 16); // 15~30%
-  } else if (statusRand < 70) {
-    // 35% - 일반 할인
-    status = 'normal';
-    discountPercent = 5 + ((seed >> 8) % 11); // 5~15%
-  } else {
-    // 30% - 할인 없음
-    status = 'normal';
-    discountPercent = 0;
   }
 
   return { status, discountPercent };
@@ -56,6 +61,9 @@ function ProductCard({
   isRocket = false,
   isFreeShipping = false,
   categoryName,
+  lowestPrice,
+  highestPrice,
+  averagePrice,
   priority = false,
 }: ProductCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -66,9 +74,10 @@ function ProductCard({
 
   const formatPrice = (price: number) => price.toLocaleString('ko-KR');
 
+  // 실제 가격 데이터 기반으로 인사이트 계산
   const { status, discountPercent } = useMemo(() => {
-    return generatePriceInsight(productId);
-  }, [productId]);
+    return calculatePriceInsight(productPrice, lowestPrice, highestPrice, averagePrice);
+  }, [productPrice, lowestPrice, highestPrice, averagePrice]);
 
   const productData = encodeURIComponent(
     JSON.stringify({
@@ -99,7 +108,7 @@ function ProductCard({
       >
         {/* 이미지 - 모바일: 터치 피드백, 데스크톱: 호버 그림자 */}
         <div className="relative aspect-square bg-[#fafafa] rounded-xl overflow-hidden mb-2 sm:mb-3 border border-[#e5e8eb] shadow-[0_2px_8px_rgba(0,0,0,0.08)] sm:group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] active:scale-[0.98] sm:active:scale-100 transition-all duration-200">
-          {/* 할인율 배지 */}
+          {/* 할인율 배지 - 실제 데이터 있을 때만 표시 */}
           {discountPercent > 0 && (
             <div className="absolute top-2 left-2 z-10">
               <span className="inline-block px-2 py-1 bg-[#3182f6] text-white text-[11px] sm:text-[12px] font-bold rounded-lg">
@@ -161,7 +170,7 @@ function ProductCard({
             </div>
           </div>
 
-          {/* 상태 배지 */}
+          {/* 상태 배지 - 실제 데이터 있을 때만 표시 */}
           <div className="flex flex-wrap gap-1">
             {status === 'lowest' && (
               <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#fff0f0] text-[#e03131] text-[10px] sm:text-[11px] font-semibold rounded">
