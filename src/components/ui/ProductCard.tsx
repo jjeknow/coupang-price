@@ -119,7 +119,7 @@ function ProductCard({
           ) : (
             <Image
               src={productImage}
-              alt={productName}
+              alt={`${productName} - ${formatPrice(productPrice)}원${isRocket ? ' 로켓배송' : ''}${categoryName ? ` ${categoryName}` : ''}`}
               fill
               sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 18vw"
               className={`object-contain p-2 sm:p-3 sm:group-hover:scale-105 transition-transform duration-200 ${

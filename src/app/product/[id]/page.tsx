@@ -70,7 +70,7 @@ interface PriceHistory {
   price: number;
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://coupang-price.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://ddokcheck.com';
 
 // 카테고리명으로 카테고리 ID 찾기 (부분 매칭 지원)
 const CATEGORY_MAP: Record<string, number> = {
@@ -184,32 +184,88 @@ export default function ProductDetailPage() {
   // JSON-LD 구조화 데이터 (product가 null이어도 안전하게 처리)
   const productJsonLd = useMemo(() => {
     if (!product) return null;
+
+    // 가격 통계 계산
+    const prices = priceHistory.length > 0 ? priceHistory.map((p) => p.price) : [product.productPrice];
+    const lowest = Math.min(...prices);
+    const highest = Math.max(...prices);
+
     return {
       '@context': 'https://schema.org',
       '@type': 'Product',
       '@id': `${BASE_URL}/product/${product.productId}`,
       name: product.productName,
-      image: product.productImage,
-      description: `${product.productName} - 쿠팡 최저가에서 가격 변동을 추적하고 역대 최저가 알림을 받아보세요.`,
+      image: [product.productImage, product.productImage.replace(/\/\d+x\d+\//, '/492x492/')],
+      description: `${product.productName} - 똑체크에서 쿠팡 가격 변동을 추적하고 역대 최저가 알림을 받아보세요. 현재가: ${product.productPrice.toLocaleString()}원, 최저가: ${lowest.toLocaleString()}원`,
       sku: product.productId.toString(),
+      mpn: product.productId.toString(),
       brand: {
         '@type': 'Brand',
         name: '쿠팡',
       },
+      category: product.categoryName || '기타',
       offers: {
-        '@type': 'Offer',
+        '@type': 'AggregateOffer',
         url: product.productUrl,
         priceCurrency: 'KRW',
+        lowPrice: lowest,
+        highPrice: highest,
         price: product.productPrice,
         priceValidUntil: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         availability: 'https://schema.org/InStock',
+        offerCount: 1,
         seller: {
           '@type': 'Organization',
           name: '쿠팡',
+          url: 'https://www.coupang.com',
         },
+        shippingDetails: product.isRocket ? {
+          '@type': 'OfferShippingDetails',
+          shippingRate: {
+            '@type': 'MonetaryAmount',
+            value: 0,
+            currency: 'KRW',
+          },
+          deliveryTime: {
+            '@type': 'ShippingDeliveryTime',
+            businessDays: {
+              '@type': 'OpeningHoursSpecification',
+              dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            },
+            handlingTime: {
+              '@type': 'QuantitativeValue',
+              minValue: 0,
+              maxValue: 1,
+              unitCode: 'DAY',
+            },
+            transitTime: {
+              '@type': 'QuantitativeValue',
+              minValue: 1,
+              maxValue: 2,
+              unitCode: 'DAY',
+            },
+          },
+        } : undefined,
       },
+      additionalProperty: [
+        {
+          '@type': 'PropertyValue',
+          name: '배송',
+          value: product.isRocket ? '로켓배송' : (product.isFreeShipping ? '무료배송' : '유료배송'),
+        },
+        {
+          '@type': 'PropertyValue',
+          name: '7일 최저가',
+          value: `${lowest.toLocaleString()}원`,
+        },
+        {
+          '@type': 'PropertyValue',
+          name: '7일 최고가',
+          value: `${highest.toLocaleString()}원`,
+        },
+      ],
     };
-  }, [product]);
+  }, [product, priceHistory]);
 
   const breadcrumbJsonLd = useMemo(() => {
     if (!product) return null;
@@ -671,7 +727,7 @@ export default function ProductDetailPage() {
                   src={highResImage}
                   alt={product.productName}
                   fill
-                  className="object-contain p-4"
+                  className="object-contain p-6 sm:p-8"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
                   unoptimized

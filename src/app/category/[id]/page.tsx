@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getBestProducts, CATEGORIES, CoupangProduct } from '@/lib/coupang-api';
 import CategoryProductList from '@/components/category/CategoryProductList';
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://coupang-price.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://ddokcheck.com';
 
 // 카테고리 이모지 매핑
 const categoryEmojis: Record<number, string> = {
@@ -150,6 +150,58 @@ function generateBreadcrumbJsonLd(categoryName: string, categoryId: number) {
   };
 }
 
+// CollectionPage 스키마 생성 (카테고리 컬렉션 페이지용)
+function generateCollectionPageJsonLd(
+  categoryName: string,
+  categoryId: number,
+  products: CoupangProduct[],
+  emoji: string
+) {
+  const now = new Date();
+  const prices = products.map((p) => p.productPrice);
+  const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
+  const maxPrice = prices.length > 0 ? Math.max(...prices) : 0;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${BASE_URL}/category/${categoryId}`,
+    name: `${emoji} 쿠팡 ${categoryName} 베스트 상품`,
+    description: `쿠팡 ${categoryName} 카테고리의 베스트셀러 상품을 한눈에 확인하세요. 로켓배송, 무료배송 상품과 함께 가격 변동을 추적하고 최저가 알림을 받아보세요.`,
+    url: `${BASE_URL}/category/${categoryId}`,
+    inLanguage: 'ko-KR',
+    isPartOf: {
+      '@type': 'WebSite',
+      '@id': `${BASE_URL}/#website`,
+      name: '똑체크',
+      url: BASE_URL,
+    },
+    about: {
+      '@type': 'Thing',
+      name: categoryName,
+      description: `쿠팡 ${categoryName} 카테고리`,
+    },
+    dateModified: now.toISOString(),
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: products.length,
+      itemListOrder: 'https://schema.org/ItemListOrderDescending',
+      name: `${categoryName} 베스트 상품`,
+    },
+    specialty: `쿠팡 ${categoryName} 베스트셀러 TOP ${products.length}`,
+    // 가격 범위 정보 추가
+    ...(minPrice > 0 && {
+      offers: {
+        '@type': 'AggregateOffer',
+        priceCurrency: 'KRW',
+        lowPrice: minPrice,
+        highPrice: maxPrice,
+        offerCount: products.length,
+      },
+    }),
+  };
+}
+
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { id } = await params;
   const categoryId = parseInt(id);
@@ -164,10 +216,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const itemListJsonLd = generateItemListJsonLd(categoryName, categoryId, products);
   const breadcrumbJsonLd = generateBreadcrumbJsonLd(categoryName, categoryId);
+  const collectionPageJsonLd = generateCollectionPageJsonLd(categoryName, categoryId, products, emoji);
 
   return (
     <div className="min-h-screen bg-[#f2f4f6]">
       {/* JSON-LD 구조화 데이터 */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageJsonLd) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}

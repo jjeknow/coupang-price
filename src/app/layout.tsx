@@ -1,10 +1,14 @@
 import type { Metadata, Viewport } from 'next';
 import { Noto_Sans_KR } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import SessionProvider from '@/components/providers/SessionProvider';
 import PWAProvider from '@/components/PWAProvider';
+
+// Google Analytics 측정 ID
+const GA_MEASUREMENT_ID = 'G-E94CQH3ENW';
 
 const notoSansKr = Noto_Sans_KR({
   subsets: ['latin'],
@@ -26,7 +30,7 @@ export const metadata: Metadata = {
     template: '%s | 똑체크 - 쿠팡 가격변동 추적',
   },
   description:
-    '똑체크에서 쿠팡 가격변동을 실시간 추적하고 최저가 알림을 받으세요. 쿠팡 가격비교, 가격 그래프 확인, 가격변동 알리미 기능으로 똑똑하게 쇼핑하세요. 30일 가격변동 히스토리 무료 제공.',
+    '똑체크에서 쿠팡 가격변동을 실시간 그래프로 추적하고 최저가 알림을 받으세요. 쿠팡 가격비교, 실시간 가격 그래프 확인, 가격변동 알리미 기능으로 똑똑하게 쇼핑하세요. 30일 가격변동 히스토리 무료 제공.',
   keywords: [
     '똑체크',
     '쿠팡 가격변동',
@@ -132,10 +136,11 @@ export const metadata: Metadata = {
   // 아이콘 (네이버 SEO: 파비콘 필수)
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/favicon.png', type: 'image/png', sizes: '512x512' },
     ],
     shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
 
   // 매니페스트
@@ -298,6 +303,19 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="똑체크 RSS" href="/rss" />
         {/* 사이트맵 */}
         <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+        {/* Google Analytics */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
       </head>
       <body className={`${notoSansKr.variable} font-sans antialiased bg-gray-50`}>
         <SessionProvider>

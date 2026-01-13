@@ -1,66 +1,33 @@
-# 모든 검색로봇
+# *
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /private/
-Disallow: /_next/
 Disallow: /admin/
-Disallow: /auth/
 Disallow: /mypage/
+Disallow: /auth/
 
 # Googlebot
 User-agent: Googlebot
 Allow: /
-Disallow: /api/
-Disallow: /private/
-Disallow: /admin/
-Disallow: /auth/
+Crawl-delay: 1
 
-# Googlebot-Image
-User-agent: Googlebot-Image
-Allow: /
-Disallow: /api/
-Disallow: /private/
-
-# 네이버 Yeti
+# Yeti
 User-agent: Yeti
 Allow: /
-Disallow: /api/
-Disallow: /private/
-Disallow: /admin/
+Crawl-delay: 1
 
-# 다음 Daumoa
+# Daumoa
 User-agent: Daumoa
 Allow: /
-Disallow: /api/
-Disallow: /private/
-Disallow: /admin/
 
-# Bing
+# Bingbot
 User-agent: Bingbot
 Allow: /
-Disallow: /api/
-Disallow: /private/
-Disallow: /admin/
-
-# AI 크롤러 차단
-User-agent: GPTBot
-Disallow: /
-
-User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-User-agent: anthropic-ai
-Disallow: /
-
-User-agent: Claude-Web
-Disallow: /
+Crawl-delay: 1
 
 # Host
-Host: https://ddokcheck.com
+Host: http://localhost:3000
 
 # Sitemaps
-Sitemap: https://ddokcheck.com/sitemap.xml
+Sitemap: http://localhost:3000/sitemap.xml
+Sitemap: https://ddokcheck.com/sitemap-categories.xml
