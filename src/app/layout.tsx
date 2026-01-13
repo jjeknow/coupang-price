@@ -22,31 +22,32 @@ export const metadata: Metadata = {
 
   // 기본 메타데이터
   title: {
-    default: '쿠팡 최저가 | 실시간 가격 추적 & 역대 최저가 알림 서비스',
-    template: '%s | 쿠팡 최저가 - 가격 추적 서비스',
+    default: '똑체크 - 쿠팡 가격비교 변동 추적 & 최저가 알림(실시간 그래프)',
+    template: '%s | 똑체크 - 쿠팡 가격변동 추적',
   },
   description:
-    '쿠팡 상품의 실시간 가격 변동을 추적하고 역대 최저가 알림을 받으세요. 골드박스 특가, 로켓배송 할인 정보를 한눈에! 30일 가격 히스토리 차트로 최적의 구매 타이밍을 찾아보세요.',
+    '똑체크에서 쿠팡 가격변동을 실시간 추적하고 최저가 알림을 받으세요. 쿠팡 가격비교, 가격 그래프 확인, 가격변동 알리미 기능으로 똑똑하게 쇼핑하세요. 30일 가격변동 히스토리 무료 제공.',
   keywords: [
+    '똑체크',
+    '쿠팡 가격변동',
+    '쿠팡 가격추적',
+    '쿠팡 가격비교',
     '쿠팡 최저가',
-    '쿠팡 가격 추적',
-    '쿠팡 가격 비교',
-    '쿠팡 할인',
+    '쿠팡 최저가 알림',
+    '쿠팡 가격그래프',
+    '쿠팡 가격변동 알리미',
+    '쿠팡 가격변동 사이트',
+    '쿠팡 가격변동 어플',
+    '쿠팡 가격변동 보는법',
     '쿠팡 골드박스',
     '쿠팡 로켓배송',
-    '쿠팡 특가',
     '가격비교 사이트',
-    '최저가 알림',
     '역대 최저가',
-    '쿠팡 파트너스',
-    '오늘의 특가',
-    '쿠팡 베스트',
     '가격 변동 알림',
-    '스마트 쇼핑',
   ],
-  authors: [{ name: '쿠팡 최저가', url: BASE_URL }],
-  creator: '쿠팡 최저가',
-  publisher: '쿠팡 최저가',
+  authors: [{ name: '똑체크', url: BASE_URL }],
+  creator: '똑체크',
+  publisher: '똑체크',
 
   // 로봇 설정 - 크롤링 최적화
   robots: {
@@ -63,26 +64,34 @@ export const metadata: Metadata = {
     },
   },
 
-  // Open Graph (페이스북, 카카오톡 등) - 상세 설정
-  // OG 이미지는 opengraph-image.tsx에서 동적 생성됨
+  // Open Graph (페이스북, 카카오톡 등)
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
     url: BASE_URL,
-    siteName: '쿠팡 최저가',
-    title: '쿠팡 최저가 | 실시간 가격 추적 & 역대 최저가 알림',
+    siteName: '똑체크',
+    title: '똑체크 - 쿠팡 가격비교 변동 추적 & 최저가 알림',
     description:
-      '쿠팡 상품의 실시간 가격 변동을 추적하고 역대 최저가 알림을 받으세요. 30일 가격 차트로 최적의 구매 타이밍을 찾아보세요!',
+      '쿠팡 가격변동을 실시간 추적하고 최저가 알림을 받으세요. 가격 그래프로 최적의 구매 타이밍을 찾아보세요!',
     countryName: 'South Korea',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: '똑체크 - 쿠팡 가격변동 추적 & 최저가 알림',
+      },
+    ],
   },
 
-  // 트위터 카드 - twitter-image.tsx에서 동적 생성됨
+  // 트위터 카드
   twitter: {
     card: 'summary_large_image',
-    site: '@coupang_price',
-    creator: '@coupang_price',
-    title: '쿠팡 최저가 | 실시간 가격 추적 서비스',
-    description: '쿠팡 상품의 가격 변동을 추적하고 역대 최저가 알림을 받으세요. 스마트한 쇼핑의 시작!',
+    site: '@ddokcheck',
+    creator: '@ddokcheck',
+    title: '똑체크 - 쿠팡 가격비교 변동 추적 & 최저가 알림',
+    description: '쿠팡 가격변동을 실시간 추적! 가격 그래프, 최저가 알림으로 똑똑하게 쇼핑하세요.',
+    images: ['/twitter-image.png'],
   },
 
   // 검색엔진 인증

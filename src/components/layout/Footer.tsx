@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import {
   ArrowUp,
-  TrendingDown,
   Search,
   Package,
   Heart,
@@ -13,6 +12,7 @@ import {
   Info,
   Mail,
   Sparkles,
+  TrendingDown,
 } from 'lucide-react';
 
 export default function Footer() {
@@ -43,16 +43,16 @@ export default function Footer() {
         <div className="text-center mb-8 md:mb-12 pb-8 md:pb-12 border-b border-white/10">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 mb-3 md:mb-4">
             <Sparkles size={12} className="text-[#60a5fa]" />
-            <span className="text-[10px] md:text-[11px] text-white/70">무료로 시작하세요</span>
+            <span className="text-[10px] md:text-[11px] text-white/70">쿠팡 가격변동 알리미</span>
           </div>
           <h2 className="text-lg md:text-2xl font-bold text-white mb-2 md:mb-3">
-            스마트한 쇼핑,{' '}
+            쿠팡 가격비교,{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] to-[#a78bfa]">
               지금 시작하세요
             </span>
           </h2>
           <p className="text-[#64748b] text-[12px] md:text-[14px] mb-4 md:mb-6">
-            가격 변동을 추적하고 최저가 알림을 받아보세요
+            쿠팡 가격변동 추적, 실시간 가격 그래프로 최저가 알림을 받아보세요
           </p>
           <Link
             href="/"
@@ -70,17 +70,17 @@ export default function Footer() {
             <Link
               href="/"
               className="flex items-center gap-2 mb-3 md:mb-4"
-              aria-label="쿠팡 최저가 홈으로 이동"
+              aria-label="똑체크 홈으로 이동"
             >
               <div className="w-8 md:w-9 h-8 md:h-9 bg-gradient-to-br from-[#3b82f6] to-[#6366f1] rounded-lg md:rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
                 <TrendingDown size={16} className="md:w-[18px] md:h-[18px] text-white" />
               </div>
               <span className="text-base md:text-lg font-bold text-white tracking-tight">
-                최저가
+                똑체크
               </span>
             </Link>
             <p className="text-[12px] md:text-[13px] leading-relaxed text-[#64748b]">
-              쿠팡 상품의 가격 변동을 추적하고 역대 최저가일 때 알림을 받아보세요.
+              쿠팡 가격변동 추적 사이트. 쿠팡 가격비교, 가격 그래프 확인, 최저가 알림으로 똑똑하게 쇼핑하세요.
             </p>
           </div>
 
@@ -195,7 +195,7 @@ export default function Footer() {
         {/* 하단 저작권 */}
         <div className="flex items-center justify-between pt-4 md:pt-6 border-t border-white/10">
           <p className="text-[10px] md:text-[11px] text-[#64748b]">
-            &copy; {new Date().getFullYear()} 쿠팡 최저가. All rights reserved.
+            &copy; {new Date().getFullYear()} 똑체크 - 쿠팡 가격변동 추적. All rights reserved.
           </p>
           <button
             onClick={scrollToTop}

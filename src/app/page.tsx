@@ -35,8 +35,8 @@ export default async function HomePage() {
             <div className="flex items-center gap-2 sm:gap-3">
               <span className="text-[24px] sm:text-[32px]">🎁</span>
               <div>
-                <h2 className="text-[17px] sm:text-[20px] font-bold text-[#191f28]">오늘의 골드박스</h2>
-                <p className="text-[11px] sm:text-[13px] text-[#8b95a1]">매일 오전 7:30 업데이트</p>
+                <h2 className="text-[17px] sm:text-[20px] font-bold text-[#191f28]">쿠팡 골드박스 가격변동</h2>
+                <p className="text-[11px] sm:text-[13px] text-[#8b95a1]">실시간 최저가 추적 · 매일 업데이트</p>
               </div>
             </div>
           </div>
@@ -59,8 +59,8 @@ export default async function HomePage() {
             <div className="flex items-center gap-2 sm:gap-3">
               <span className="text-[24px] sm:text-[32px]">📺</span>
               <div>
-                <h2 className="text-[17px] sm:text-[20px] font-bold text-[#191f28]">가전/디지털 인기상품</h2>
-                <p className="text-[11px] sm:text-[13px] text-[#8b95a1]">지금 가장 많이 찾는 제품</p>
+                <h2 className="text-[17px] sm:text-[20px] font-bold text-[#191f28]">가전/디지털 가격비교</h2>
+                <p className="text-[11px] sm:text-[13px] text-[#8b95a1]">쿠팡 가격 그래프로 최저가 확인</p>
               </div>
             </div>
             <Link
@@ -90,8 +90,8 @@ export default async function HomePage() {
             <div className="flex items-center gap-2 sm:gap-3">
               <span className="text-[24px] sm:text-[32px]">🍎</span>
               <div>
-                <h2 className="text-[17px] sm:text-[20px] font-bold text-[#191f28]">식품 인기상품</h2>
-                <p className="text-[11px] sm:text-[13px] text-[#8b95a1]">신선하고 맛있는 먹거리</p>
+                <h2 className="text-[17px] sm:text-[20px] font-bold text-[#191f28]">식품 가격변동 추적</h2>
+                <p className="text-[11px] sm:text-[13px] text-[#8b95a1]">쿠팡 로켓배송 최저가 알림</p>
               </div>
             </div>
             <Link
@@ -121,8 +121,8 @@ export default async function HomePage() {
             <div className="flex items-center gap-2 sm:gap-3">
               <span className="text-[24px] sm:text-[32px]">💄</span>
               <div>
-                <h2 className="text-[17px] sm:text-[20px] font-bold text-[#191f28]">뷰티 인기상품</h2>
-                <p className="text-[11px] sm:text-[13px] text-[#8b95a1]">아름다움을 위한 선택</p>
+                <h2 className="text-[17px] sm:text-[20px] font-bold text-[#191f28]">뷰티 가격변동 알리미</h2>
+                <p className="text-[11px] sm:text-[13px] text-[#8b95a1]">쿠팡 가격비교로 똑똑한 쇼핑</p>
               </div>
             </div>
             <Link

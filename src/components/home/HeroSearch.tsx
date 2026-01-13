@@ -136,18 +136,18 @@ export default function HeroSearch() {
           {/* 뱃지 */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/10 mb-3">
             <Sparkles size={12} className="text-[#60a5fa]" />
-            <span className="text-[12px] text-white/80">스마트한 쇼핑의 시작</span>
+            <span className="text-[12px] text-white/80">쿠팡 가격변동 알리미</span>
           </div>
 
           {/* 타이틀 */}
           <h1 className="text-[22px] md:text-[36px] font-bold leading-tight mb-2 md:mb-3 tracking-tight text-white">
-            쿠팡 가격 추적을 위한{' '}
+            쿠팡 가격변동 추적{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] via-[#a78bfa] to-[#60a5fa] animate-gradient bg-[length:200%_auto]">
-              최저가 알림
+              & 최저가 알림
             </span>
           </h1>
           <p className="text-[#94a3b8] text-[13px] md:text-[15px] mb-5 md:mb-6 max-w-md">
-            가격 변동을 추적하고, 원하는 가격이 되면 알림을 받아보세요.
+            쿠팡 가격비교, 실시간 가격 그래프로 최적의 구매 타이밍을 찾아보세요.
           </p>
 
           {/* 검색창 */}
