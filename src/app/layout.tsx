@@ -14,7 +14,7 @@ const notoSansKr = Noto_Sans_KR({
   preload: true,
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://coupang-price.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://ddokcheck.com';
 
 // SEO 최적화 메타데이터 - 상위 0.01% 수준
 export const metadata: Metadata = {
@@ -295,7 +295,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://thumbnail6.coupangcdn.com" />
         <link rel="dns-prefetch" href="https://thumbnail7.coupangcdn.com" />
         {/* RSS 피드 */}
-        <link rel="alternate" type="application/rss+xml" title="쿠팡 최저가 RSS" href="/rss.xml" />
+        <link rel="alternate" type="application/rss+xml" title="똑체크 RSS" href="/rss" />
         {/* 사이트맵 */}
         <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
       </head>
