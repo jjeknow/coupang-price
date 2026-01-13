@@ -304,34 +304,8 @@ export default function ProductDetailPage() {
     }
   }, []);
 
-  // productId 기반 시드 랜덤 생성 (일관된 데모 데이터용)
-  const seededRandom = (seed: number, index: number) => {
-    const x = Math.sin(seed + index) * 10000;
-    return x - Math.floor(x);
-  };
-
-  // 데모용 가격 히스토리 생성 (실제 데이터 없을 때만 사용)
-  const generateDemoPriceHistory = (basePrice: number, productIdNum: number) => {
-    const history: PriceHistory[] = [];
-    const today = new Date();
-
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split('T')[0];
-
-      // productId 기반 일관된 변동 (새로고침해도 동일)
-      const variation = (seededRandom(productIdNum, i) - 0.5) * 0.2;
-      const price = Math.round(basePrice * (1 + variation));
-
-      history.push({ time: dateStr, price });
-    }
-
-    return history;
-  };
-
   // 실제 가격 히스토리 조회
-  const fetchPriceHistory = async (prodId: string, basePrice: number) => {
+  const fetchPriceHistory = async (prodId: string) => {
     try {
       const res = await fetch(`/api/products/${prodId}/price-history`);
       if (res.ok) {
@@ -346,8 +320,8 @@ export default function ProductDetailPage() {
       console.error('가격 히스토리 조회 실패:', error);
     }
 
-    // 실제 데이터 없으면 데모 데이터 사용
-    setPriceHistory(generateDemoPriceHistory(basePrice, parseInt(prodId)));
+    // 실제 데이터 없으면 빈 배열 유지
+    setPriceHistory([]);
     setHasRealData(false);
   };
 
@@ -364,7 +338,7 @@ export default function ProductDetailPage() {
         setProduct(productData);
 
         // 실제 가격 히스토리 조회 시도
-        fetchPriceHistory(productData.productId.toString(), productData.productPrice);
+        fetchPriceHistory(productData.productId.toString());
 
         // 최근 본 상품에 저장
         saveRecentProduct({
@@ -927,21 +901,30 @@ export default function ProductDetailPage() {
         {/* 가격 차트 */}
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="toss-card-flat p-6 border border-[#e5e8eb]">
-            {!hasRealData && (
-              <div className="mb-4 p-3 bg-[#fff8e6] border border-[#ffd43b]/30 rounded-lg">
-                <p className="text-[13px] text-[#8b6914]">
-                  <span className="font-semibold">참고:</span> 이 상품의 가격 데이터를 수집 중입니다.
-                  현재 표시된 그래프는 예상 데이터이며, 실제 가격 추적은 내일부터 시작됩니다.
+            {hasRealData && priceHistory.length > 0 ? (
+              <PriceChart
+                data={priceHistory}
+                currentPrice={product.productPrice}
+                lowestPrice={lowestPrice}
+                highestPrice={highestPrice}
+                height={350}
+              />
+            ) : (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-[#f2f4f6] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <TrendingDown size={32} className="text-[#adb5bd]" />
+                </div>
+                <h4 className="text-[17px] font-semibold text-[#191f28] mb-2">
+                  가격 추적을 시작합니다
+                </h4>
+                <p className="text-[14px] text-[#6b7684] mb-1">
+                  이 상품의 가격 데이터를 수집 중입니다.
+                </p>
+                <p className="text-[13px] text-[#8b95a1]">
+                  내일부터 실제 가격 변동 그래프를 확인할 수 있어요.
                 </p>
               </div>
             )}
-            <PriceChart
-              data={priceHistory}
-              currentPrice={product.productPrice}
-              lowestPrice={lowestPrice}
-              highestPrice={highestPrice}
-              height={350}
-            />
           </div>
         </div>
 
