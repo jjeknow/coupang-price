@@ -49,7 +49,7 @@ export interface ColumnData {
 }
 
 export const columnData: Record<string, ColumnData> = {
-  '50만원대-노트북-추천-2026': {
+  'best-budget-laptop-500k-2026': {
     title: '2026년 50만원대 노트북 추천 TOP 5',
     subtitle: '전문가가 직접 비교한 가성비 최강 가이드',
     category: '노트북',

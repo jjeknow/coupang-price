@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Calendar, Clock, ChevronRight, TrendingUp } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -16,7 +15,7 @@ export const metadata: Metadata = {
 // 칼럼 데이터 (추후 DB나 CMS로 관리 가능)
 const columns = [
   {
-    slug: '50만원대-노트북-추천-2026',
+    slug: 'best-budget-laptop-500k-2026',
     title: '2026년 50만원대 노트북 추천 TOP 5',
     subtitle: '전문가가 직접 비교한 가성비 최강 가이드',
     excerpt: '50만원대에서 라이젠7을 만나다! ASUS 비보북, HP, 레노버 아이디어패드를 실사용 관점에서 비교 분석했습니다.',
