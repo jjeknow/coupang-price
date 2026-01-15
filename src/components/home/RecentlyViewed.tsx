@@ -62,20 +62,20 @@ export default function RecentlyViewed() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Clock size={18} className="text-[#6b7684]" />
+            <Clock size={18} className="text-[#5c6470]" />
             <h2 className="text-[16px] font-bold text-[#191f28]">최근 본 상품</h2>
-            <span className="text-[12px] text-[#6b7684]">({products.length})</span>
+            <span className="text-[12px] text-[#5c6470]">({products.length})</span>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={clearAll}
-              className="text-[12px] text-[#6b7684] hover:text-[#6b7684]"
+              className="text-[12px] text-[#5c6470] hover:text-[#5c6470]"
             >
               전체 삭제
             </button>
             <button
               onClick={() => setIsVisible(false)}
-              className="p-1 text-[#6b7684] hover:text-[#6b7684]"
+              className="p-1 text-[#5c6470] hover:text-[#5c6470]"
             >
               <X size={16} />
             </button>

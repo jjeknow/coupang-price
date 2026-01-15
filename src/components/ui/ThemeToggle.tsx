@@ -32,7 +32,7 @@ export default function ThemeToggle() {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-lg text-[#6b7684] hover:bg-[#f2f4f6] dark:hover:bg-[#2a2d32] transition-colors"
+        className="p-2 rounded-lg text-[#5c6470] hover:bg-[#f2f4f6] dark:hover:bg-[#2a2d32] transition-colors"
         aria-label="테마 변경"
       >
         <CurrentIcon size={20} />
@@ -51,7 +51,7 @@ export default function ThemeToggle() {
                 }}
                 className={`w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors ${
                   theme === t.value
-                    ? 'text-[#3182f6] bg-[#e8f3ff] dark:bg-[#1e3a5f]'
+                    ? 'text-[#1d4ed8] bg-[#e8f3ff] dark:bg-[#1e3a5f]'
                     : 'text-[#4e5968] dark:text-[#9ca3af] hover:bg-[#f2f4f6] dark:hover:bg-[#2a2d32]'
                 }`}
               >

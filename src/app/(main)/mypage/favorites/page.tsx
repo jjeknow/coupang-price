@@ -89,7 +89,7 @@ export default function FavoritesPage() {
         </button>
         <div>
           <h1 className="text-2xl font-bold text-[#191f28]">관심상품</h1>
-          <p className="text-[#6b7684] text-sm">{favorites.length}개의 상품</p>
+          <p className="text-[#5c6470] text-sm">{favorites.length}개의 상품</p>
         </div>
       </div>
 
@@ -98,7 +98,7 @@ export default function FavoritesPage() {
           <div className="w-20 h-20 bg-[#f2f4f6] rounded-full flex items-center justify-center mx-auto mb-4">
             <Heart size={40} className="text-[#adb5bd]" />
           </div>
-          <p className="text-[#6b7684] mb-4">관심상품이 없습니다</p>
+          <p className="text-[#5c6470] mb-4">관심상품이 없습니다</p>
           <Link
             href="/"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[#3182f6] text-white rounded-xl font-medium hover:bg-[#1b64da]"
@@ -130,7 +130,7 @@ export default function FavoritesPage() {
               {/* 정보 */}
               <div className="flex-1 min-w-0">
                 <Link href={`/product/p-${item.coupangProductId}`}>
-                  <p className="text-[14px] text-[#191f28] line-clamp-2 hover:text-[#3182f6]">
+                  <p className="text-[14px] text-[#191f28] line-clamp-2 hover:text-[#1d4ed8]">
                     {item.productName}
                   </p>
                 </Link>
@@ -141,17 +141,17 @@ export default function FavoritesPage() {
 
                 <div className="flex flex-wrap gap-1.5 mt-2">
                   {item.isRocket && (
-                    <span className="px-2 py-0.5 bg-[#f8f9fa] text-[#3182f6] text-[11px] font-medium rounded">
+                    <span className="px-2 py-0.5 bg-[#f8f9fa] text-[#1d4ed8] text-[11px] font-medium rounded">
                       로켓배송
                     </span>
                   )}
                   {item.isFreeShipping && !item.isRocket && (
-                    <span className="px-2 py-0.5 bg-[#f8f9fa] text-[#3182f6] text-[11px] font-medium rounded">
+                    <span className="px-2 py-0.5 bg-[#f8f9fa] text-[#1d4ed8] text-[11px] font-medium rounded">
                       무료배송
                     </span>
                   )}
                   {item.categoryName && (
-                    <span className="px-2 py-0.5 bg-[#f2f4f6] text-[#6b7684] text-[11px] rounded">
+                    <span className="px-2 py-0.5 bg-[#f2f4f6] text-[#5c6470] text-[11px] rounded">
                       {item.categoryName}
                     </span>
                   )}

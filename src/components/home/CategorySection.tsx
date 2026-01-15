@@ -49,7 +49,7 @@ export default function CategorySection() {
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-[28px] bg-[#f8f9fa] group-hover:scale-110 group-hover:bg-[#e8f3ff] transition-all duration-200">
                 {cat.emoji}
               </div>
-              <span className="text-[12px] text-[#4e5968] font-medium group-hover:text-[#3182f6] transition-colors">
+              <span className="text-[12px] text-[#4e5968] font-medium group-hover:text-[#1d4ed8] transition-colors">
                 {cat.name}
               </span>
             </Link>
@@ -68,7 +68,7 @@ export default function CategorySection() {
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-[28px] bg-[#f8f9fa] group-hover:scale-110 group-hover:bg-[#e8f3ff] transition-all duration-200">
                   {cat.emoji}
                 </div>
-                <span className="text-[12px] text-[#4e5968] font-medium group-hover:text-[#3182f6] transition-colors">
+                <span className="text-[12px] text-[#4e5968] font-medium group-hover:text-[#1d4ed8] transition-colors">
                   {cat.name}
                 </span>
               </Link>

@@ -114,7 +114,7 @@ export default function MenuPage() {
               )}
               <div className="flex-1">
                 <p className="text-lg font-bold text-[#191f28]">{session.user.name || '사용자'}</p>
-                <p className="text-sm text-[#6b7684]">{session.user.email}</p>
+                <p className="text-sm text-[#5c6470]">{session.user.email}</p>
               </div>
               <ChevronRightIcon />
             </Link>
@@ -123,12 +123,12 @@ export default function MenuPage() {
               href="/auth/login"
               className="flex items-center gap-4"
             >
-              <div className="w-14 h-14 bg-[#f2f4f6] rounded-full flex items-center justify-center text-[#6b7684]">
+              <div className="w-14 h-14 bg-[#f2f4f6] rounded-full flex items-center justify-center text-[#5c6470]">
                 <UserIcon />
               </div>
               <div className="flex-1">
                 <p className="text-lg font-bold text-[#191f28]">로그인하세요</p>
-                <p className="text-sm text-[#6b7684]">관심상품, 가격 알림 기능을 이용할 수 있어요</p>
+                <p className="text-sm text-[#5c6470]">관심상품, 가격 알림 기능을 이용할 수 있어요</p>
               </div>
               <ChevronRightIcon />
             </Link>
@@ -141,7 +141,7 @@ export default function MenuPage() {
         {menuItems.map((section, sectionIndex) => (
           <div key={sectionIndex} className="mt-4">
             <div className="px-4 py-2">
-              <p className="text-xs font-medium text-[#6b7684]">{section.title}</p>
+              <p className="text-xs font-medium text-[#5c6470]">{section.title}</p>
             </div>
             <div className="bg-white">
               {section.items.map((item, itemIndex) => {
@@ -181,7 +181,7 @@ export default function MenuPage() {
 
         {/* 버전 정보 */}
         <div className="py-8 text-center">
-          <p className="text-xs text-[#6b7684]">똑체크 v1.0.0</p>
+          <p className="text-xs text-[#5c6470]">똑체크 v1.0.0</p>
         </div>
       </div>
     </div>

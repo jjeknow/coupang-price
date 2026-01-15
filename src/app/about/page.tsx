@@ -59,7 +59,7 @@ const features = [
     title: '최저가 알림',
     description:
       '원하는 가격을 설정해두면, 해당 가격 이하로 내려갈 때 알림을 보내드립니다.',
-    color: 'text-[#3182f6]',
+    color: 'text-[#1d4ed8]',
     bgColor: 'bg-[#e8f3ff]',
   },
   {
@@ -248,7 +248,7 @@ export default function AboutPage() {
             <h2 className="text-xl font-bold text-[#191f28] mb-3">
               주요 기능
             </h2>
-            <p className="text-[#6b7684] text-[14px] max-w-xl mx-auto">
+            <p className="text-[#5c6470] text-[14px] max-w-xl mx-auto">
               스마트한 쇼핑을 위한 다양한 기능을 무료로 제공합니다
             </p>
           </div>
@@ -267,7 +267,7 @@ export default function AboutPage() {
                 <h3 className="text-lg font-bold text-[#191f28] mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-[#6b7684] text-[14px] leading-relaxed">
+                <p className="text-[#5c6470] text-[14px] leading-relaxed">
                   {feature.description}
                 </p>
               </article>
@@ -283,7 +283,7 @@ export default function AboutPage() {
             <h2 className="text-xl font-bold text-[#191f28] mb-3">
               왜 우리 서비스를 사용해야 할까요?
             </h2>
-            <p className="text-[#6b7684] text-[14px]">
+            <p className="text-[#5c6470] text-[14px]">
               매일 수많은 사용자들이 현명한 쇼핑을 위해 이용하고 있습니다
             </p>
           </div>
@@ -312,7 +312,7 @@ export default function AboutPage() {
             <h2 className="text-xl font-bold text-[#191f28] mb-3">
               이용 방법
             </h2>
-            <p className="text-[#6b7684] text-[14px]">3단계로 간단하게 시작하세요</p>
+            <p className="text-[#5c6470] text-[14px]">3단계로 간단하게 시작하세요</p>
           </div>
 
           <div className="grid grid-cols-1 gap-6">
@@ -320,13 +320,13 @@ export default function AboutPage() {
               <div className="w-16 h-16 bg-[#3182f6] rounded-full flex items-center justify-center mx-auto mb-4">
                 <Search size={28} className="text-white" />
               </div>
-              <div className="text-[#3182f6] font-bold text-sm mb-2">
+              <div className="text-[#1d4ed8] font-bold text-sm mb-2">
                 STEP 1
               </div>
               <h3 className="text-lg font-bold text-[#191f28] mb-2">
                 상품 검색
               </h3>
-              <p className="text-[#6b7684] text-[14px]">
+              <p className="text-[#5c6470] text-[14px]">
                 상품명이나 쿠팡 URL을 입력해서 추적할 상품을 찾으세요
               </p>
             </div>
@@ -341,7 +341,7 @@ export default function AboutPage() {
               <h3 className="text-lg font-bold text-[#191f28] mb-2">
                 관심 등록
               </h3>
-              <p className="text-[#6b7684] text-[14px]">
+              <p className="text-[#5c6470] text-[14px]">
                 하트 버튼을 눌러 관심 상품으로 등록하세요
               </p>
             </div>
@@ -356,7 +356,7 @@ export default function AboutPage() {
               <h3 className="text-lg font-bold text-[#191f28] mb-2">
                 알림 대기
               </h3>
-              <p className="text-[#6b7684] text-[14px]">
+              <p className="text-[#5c6470] text-[14px]">
                 가격이 내려가면 알림을 받고 최적의 타이밍에 구매하세요
               </p>
             </div>
@@ -383,11 +383,11 @@ export default function AboutPage() {
                   <span className="font-semibold text-[#191f28]">
                     {faq.question}
                   </span>
-                  <span className="text-[#6b7684] group-open:rotate-180 transition-transform">
+                  <span className="text-[#5c6470] group-open:rotate-180 transition-transform">
                     <ArrowRight size={18} className="rotate-90" />
                   </span>
                 </summary>
-                <div className="px-5 pb-5 text-[#6b7684] text-[14px] leading-relaxed">
+                <div className="px-5 pb-5 text-[#5c6470] text-[14px] leading-relaxed">
                   {faq.answer}
                 </div>
               </details>
@@ -418,7 +418,7 @@ export default function AboutPage() {
       {/* 파트너스 고지 */}
       <section className="py-6 bg-[#f8f9fa] border-t border-[#e5e8eb]">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <p className="text-[#6b7684] text-[12px]">
+          <p className="text-[#5c6470] text-[12px]">
             본 서비스는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받습니다
           </p>
         </div>

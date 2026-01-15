@@ -46,7 +46,7 @@ export default function ProductFilter({
 
   return (
     <div className="flex items-center justify-between mb-6">
-      <p className="text-[14px] text-[#6b7684]">
+      <p className="text-[14px] text-[#5c6470]">
         총 <span className="font-semibold text-[#191f28]">{totalCount}</span>개 상품
       </p>
 
@@ -63,7 +63,7 @@ export default function ProductFilter({
           <SlidersHorizontal size={14} />
           필터
           {activeFilterCount > 0 && (
-            <span className="ml-1 w-5 h-5 bg-white text-[#3182f6] text-[11px] font-bold rounded-full flex items-center justify-center">
+            <span className="ml-1 w-5 h-5 bg-white text-[#1d4ed8] text-[11px] font-bold rounded-full flex items-center justify-center">
               {activeFilterCount}
             </span>
           )}
@@ -89,7 +89,7 @@ export default function ProductFilter({
                     setShowSortDropdown(false);
                   }}
                   className={`w-full px-4 py-2 text-left text-[13px] hover:bg-[#f2f4f6] first:rounded-t-lg last:rounded-b-lg ${
-                    sort === option.value ? 'text-[#3182f6] font-medium' : 'text-[#4e5968]'
+                    sort === option.value ? 'text-[#1d4ed8] font-medium' : 'text-[#4e5968]'
                   }`}
                 >
                   {option.label}
@@ -107,7 +107,7 @@ export default function ProductFilter({
             <div className="flex items-center justify-between p-4 border-b border-[#e5e8eb]">
               <h3 className="text-[16px] font-bold text-[#191f28]">필터</h3>
               <button onClick={() => setShowFilterPanel(false)}>
-                <X size={20} className="text-[#6b7684]" />
+                <X size={20} className="text-[#5c6470]" />
               </button>
             </div>
 
@@ -155,7 +155,7 @@ export default function ProductFilter({
                     })}
                     className="flex-1 px-3 py-2 border border-[#e5e8eb] rounded-lg text-[14px] focus:outline-none focus:border-[#3182f6]"
                   />
-                  <span className="text-[#6b7684]">~</span>
+                  <span className="text-[#5c6470]">~</span>
                   <input
                     type="number"
                     placeholder="최대"

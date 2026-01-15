@@ -32,7 +32,7 @@ const errorConfig = {
     icon: Search,
     defaultTitle: '검색 결과 없음',
     defaultMessage: '다른 검색어로 시도해보세요.',
-    iconColor: 'text-[#6b7684]',
+    iconColor: 'text-[#5c6470]',
     bgColor: 'bg-[#f8f9fa]',
     borderColor: 'border-[#e5e8eb]',
   },
@@ -40,7 +40,7 @@ const errorConfig = {
     icon: ShoppingBag,
     defaultTitle: '상품이 없습니다',
     defaultMessage: '다른 카테고리를 탐색해보세요.',
-    iconColor: 'text-[#6b7684]',
+    iconColor: 'text-[#5c6470]',
     bgColor: 'bg-[#f8f9fa]',
     borderColor: 'border-[#e5e8eb]',
   },
@@ -81,7 +81,7 @@ function ErrorState({
       </h3>
 
       {/* 메시지 */}
-      <p className="text-[13px] text-[#6b7684] mb-6">
+      <p className="text-[13px] text-[#5c6470] mb-6">
         {message || config.defaultMessage}
       </p>
 
@@ -141,7 +141,7 @@ export function ErrorBanner({
         {onRetry && (
           <button
             onClick={onRetry}
-            className="text-[13px] font-medium text-[#3182f6] hover:underline"
+            className="text-[13px] font-medium text-[#1d4ed8] hover:underline"
           >
             재시도
           </button>
@@ -149,7 +149,7 @@ export function ErrorBanner({
         {onDismiss && (
           <button
             onClick={onDismiss}
-            className="text-[#6b7684] hover:text-[#4e5968]"
+            className="text-[#5c6470] hover:text-[#4e5968]"
             aria-label="닫기"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,7 +170,7 @@ export function OfflineBanner() {
         <WifiOff className="w-5 h-5 text-[#ff8b00]" />
         <div>
           <p className="text-[14px] font-medium">오프라인 상태</p>
-          <p className="text-[12px] text-[#6b7684]">인터넷 연결을 확인해주세요</p>
+          <p className="text-[12px] text-[#5c6470]">인터넷 연결을 확인해주세요</p>
         </div>
       </div>
     </div>

@@ -191,13 +191,13 @@ export default function PriceChart({
   const getTrendIcon = () => {
     if (stats.change > 0) return <TrendingUp size={14} className="text-[#f04452]" />;
     if (stats.change < 0) return <TrendingDown size={14} className="text-[#00c471]" />;
-    return <Minus size={14} className="text-[#6b7684]" />;
+    return <Minus size={14} className="text-[#5c6470]" />;
   };
 
   const getTrendColor = () => {
     if (stats.change > 0) return 'text-[#f04452]';
     if (stats.change < 0) return 'text-[#00c471]';
-    return 'text-[#6b7684]';
+    return 'text-[#5c6470]';
   };
 
   return (
@@ -206,7 +206,7 @@ export default function PriceChart({
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-[15px] font-bold text-[#191f28] mb-0.5">가격 변동 추이</h3>
-          <p className="text-[11px] text-[#6b7684]">최근 30일간 가격 변동</p>
+          <p className="text-[11px] text-[#5c6470]">최근 30일간 가격 변동</p>
         </div>
         <div className="flex items-center gap-1.5">
           {isLowest && (
@@ -226,7 +226,7 @@ export default function PriceChart({
       {/* 가격 변동 요약 - 반응형 그리드 */}
       <div className="grid grid-cols-3 gap-2 mb-4">
         <div className="p-2.5 bg-[#f2f4f6] rounded-lg text-center">
-          <p className="text-[10px] text-[#6b7684] mb-0.5">30일 전 대비</p>
+          <p className="text-[10px] text-[#5c6470] mb-0.5">30일 전 대비</p>
           <div className="flex items-center justify-center gap-0.5">
             {getTrendIcon()}
             <span className={`text-[13px] font-bold ${getTrendColor()}`}>
@@ -235,8 +235,8 @@ export default function PriceChart({
           </div>
         </div>
         <div className="p-2.5 bg-[#e8f3ff] rounded-lg text-center">
-          <p className="text-[10px] text-[#3182f6] mb-0.5">평균가</p>
-          <p className="text-[12px] font-bold text-[#3182f6]">
+          <p className="text-[10px] text-[#1d4ed8] mb-0.5">평균가</p>
+          <p className="text-[12px] font-bold text-[#1d4ed8]">
             {stats.average.toLocaleString('ko-KR')}원
           </p>
         </div>
@@ -265,20 +265,20 @@ export default function PriceChart({
       <div className="flex items-center justify-center gap-4 mt-4">
         <div className="flex items-center gap-1.5">
           <div className="w-2.5 h-2.5 rounded-full bg-[#3182f6]" />
-          <span className="text-[10px] text-[#6b7684]">가격</span>
+          <span className="text-[10px] text-[#5c6470]">가격</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-0.5" style={{ borderTop: '2px dashed #0ca678' }} />
-          <span className="text-[10px] text-[#6b7684]">최저가</span>
+          <span className="text-[10px] text-[#5c6470]">최저가</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-0.5" style={{ borderTop: '2px dashed #f59f00' }} />
-          <span className="text-[10px] text-[#6b7684]">최고가</span>
+          <span className="text-[10px] text-[#5c6470]">최고가</span>
         </div>
       </div>
 
       {/* 안내 */}
-      <p className="text-[10px] text-[#6b7684] text-center mt-4">
+      <p className="text-[10px] text-[#5c6470] text-center mt-4">
         가격 정보는 실시간으로 업데이트됩니다. 정확한 가격은 쿠팡에서 확인해주세요.
       </p>
     </div>

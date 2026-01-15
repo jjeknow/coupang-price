@@ -67,7 +67,7 @@ function LoginForm() {
         {/* 헤더 */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-[#191f28] mb-2">로그인</h1>
-          <p className="text-[#6b7684]">최저가 알림을 받으려면 로그인하세요</p>
+          <p className="text-[#5c6470]">최저가 알림을 받으려면 로그인하세요</p>
         </div>
 
         {/* 소셜 로그인 */}
@@ -112,7 +112,7 @@ function LoginForm() {
             <div className="w-full border-t border-[#e5e8eb]"></div>
           </div>
           <div className="relative flex justify-center">
-            <span className="px-4 bg-white text-[#6b7684] text-sm">또는</span>
+            <span className="px-4 bg-white text-[#5c6470] text-sm">또는</span>
           </div>
         </div>
 
@@ -126,31 +126,31 @@ function LoginForm() {
           )}
 
           <div className="relative">
-            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
+            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="이메일"
               required
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
             />
           </div>
 
           <div className="relative">
-            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
+            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
             <input
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호"
               required
-              className="w-full pl-11 pr-12 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+              className="w-full pl-11 pr-12 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6b7684] hover:text-[#4e5968]"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#5c6470] hover:text-[#4e5968]"
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
@@ -166,9 +166,9 @@ function LoginForm() {
         </form>
 
         {/* 회원가입 링크 */}
-        <p className="mt-6 text-center text-[#6b7684] text-sm">
+        <p className="mt-6 text-center text-[#5c6470] text-sm">
           아직 계정이 없으신가요?{' '}
-          <Link href="/auth/signup" className="text-[#3182f6] font-medium hover:underline">
+          <Link href="/auth/signup" className="text-[#1d4ed8] font-medium hover:underline">
             회원가입
           </Link>
         </p>

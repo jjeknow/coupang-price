@@ -65,7 +65,7 @@ export default function AdminUsersPage() {
       <div className="relative mb-6">
         <Search
           size={18}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]"
         />
         <input
           type="text"
@@ -85,7 +85,7 @@ export default function AdminUsersPage() {
         ) : filteredUsers.length === 0 ? (
           <div className="p-8 text-center">
             <Users size={48} className="text-[#d1d6db] dark:text-[#4e5968] mx-auto mb-4" />
-            <p className="text-[#6b7684] dark:text-[#6b7684]">
+            <p className="text-[#5c6470] dark:text-[#5c6470]">
               {searchQuery ? '검색 결과가 없습니다' : '등록된 사용자가 없습니다'}
             </p>
           </div>
@@ -94,19 +94,19 @@ export default function AdminUsersPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[#e5e8eb] dark:border-[#3a3d42] bg-[#f9fafb] dark:bg-[#2a2d32]">
-                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#6b7684]">
+                  <th className="px-6 py-4 text-left text-sm font-medium text-[#5c6470] dark:text-[#5c6470]">
                     사용자
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#6b7684]">
+                  <th className="px-6 py-4 text-left text-sm font-medium text-[#5c6470] dark:text-[#5c6470]">
                     이메일
                   </th>
-                  <th className="px-6 py-4 text-center text-sm font-medium text-[#6b7684] dark:text-[#6b7684]">
+                  <th className="px-6 py-4 text-center text-sm font-medium text-[#5c6470] dark:text-[#5c6470]">
                     관심상품
                   </th>
-                  <th className="px-6 py-4 text-center text-sm font-medium text-[#6b7684] dark:text-[#6b7684]">
+                  <th className="px-6 py-4 text-center text-sm font-medium text-[#5c6470] dark:text-[#5c6470]">
                     알림
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#6b7684]">
+                  <th className="px-6 py-4 text-left text-sm font-medium text-[#5c6470] dark:text-[#5c6470]">
                     가입일
                   </th>
                 </tr>
@@ -141,8 +141,8 @@ export default function AdminUsersPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <Mail size={14} className="text-[#6b7684]" />
-                        <span className="text-sm text-[#6b7684] dark:text-[#6b7684]">
+                        <Mail size={14} className="text-[#5c6470]" />
+                        <span className="text-sm text-[#5c6470] dark:text-[#5c6470]">
                           {user.email || '-'}
                         </span>
                       </div>
@@ -158,7 +158,7 @@ export default function AdminUsersPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-sm text-[#6b7684] dark:text-[#6b7684]">
+                      <span className="text-sm text-[#5c6470] dark:text-[#5c6470]">
                         {new Date(user.createdAt).toLocaleDateString('ko-KR')}
                       </span>
                     </td>

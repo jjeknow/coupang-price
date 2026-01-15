@@ -368,40 +368,76 @@ export default function ProductDetailPage() {
   const [priceHistoryLoading, setPriceHistoryLoading] = useState(true);
 
   useEffect(() => {
-    // URL 쿼리에서 상품 데이터 파싱
-    const dataParam = searchParams.get('data');
+    const loadProduct = async () => {
+      // URL 쿼리에서 상품 데이터 파싱
+      const dataParam = searchParams.get('data');
 
-    if (dataParam) {
-      try {
-        const productData = JSON.parse(decodeURIComponent(dataParam)) as Product;
-        setProduct(productData);
+      if (dataParam) {
+        try {
+          const productData = JSON.parse(decodeURIComponent(dataParam)) as Product;
+          setProduct(productData);
 
-        // 상품 DB 등록 (가격 추적 시작)
-        registerProduct(productData);
+          // 상품 DB 등록 (가격 추적 시작)
+          registerProduct(productData);
 
-        // 실제 가격 히스토리 조회 시도
-        fetchPriceHistory(productData.productId.toString());
+          // 실제 가격 히스토리 조회 시도
+          fetchPriceHistory(productData.productId.toString());
 
-        // 최근 본 상품에 저장
-        saveRecentProduct({
-          productId: productData.productId,
-          productName: productData.productName,
-          productPrice: productData.productPrice,
-          productImage: productData.productImage,
-          productUrl: productData.productUrl,
-          isRocket: productData.isRocket,
-          isFreeShipping: productData.isFreeShipping,
-          categoryName: productData.categoryName,
-        });
-      } catch {
-        console.error('상품 데이터 파싱 실패');
-        setProduct(null);
+          // 최근 본 상품에 저장
+          saveRecentProduct({
+            productId: productData.productId,
+            productName: productData.productName,
+            productPrice: productData.productPrice,
+            productImage: productData.productImage,
+            productUrl: productData.productUrl,
+            isRocket: productData.isRocket,
+            isFreeShipping: productData.isFreeShipping,
+            categoryName: productData.categoryName,
+          });
+          setLoading(false);
+          return;
+        } catch {
+          console.error('상품 데이터 파싱 실패');
+        }
       }
-    } else {
-      setProduct(null);
-    }
 
-    setLoading(false);
+      // 쿼리 파라미터가 없으면 DB에서 조회 (공유 링크 등)
+      try {
+        const response = await fetch(`/api/products/${productId}`);
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success && result.data) {
+            const productData = result.data as Product;
+            setProduct(productData);
+
+            // 실제 가격 히스토리 조회 시도
+            fetchPriceHistory(productData.productId.toString());
+
+            // 최근 본 상품에 저장
+            saveRecentProduct({
+              productId: productData.productId,
+              productName: productData.productName,
+              productPrice: productData.productPrice,
+              productImage: productData.productImage,
+              productUrl: productData.productUrl,
+              isRocket: productData.isRocket,
+              isFreeShipping: productData.isFreeShipping,
+              categoryName: productData.categoryName,
+            });
+            setLoading(false);
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('DB 상품 조회 실패:', error);
+      }
+
+      // 둘 다 실패하면 상품 없음
+      setProduct(null);
+      setLoading(false);
+    };
+
+    loadProduct();
   }, [productId, searchParams]);
 
   // 관심상품/알림 상태 초기화
@@ -688,7 +724,7 @@ export default function ProductDetailPage() {
     return (
       <div className="min-h-screen bg-[#f2f4f6] flex items-center justify-center">
         <div className="text-center">
-          <p className="toss-body-1 text-[#6b7684] mb-4">상품을 찾을 수 없습니다</p>
+          <p className="toss-body-1 text-[#5c6470] mb-4">상품을 찾을 수 없습니다</p>
           <Link href="/" className="toss-btn toss-btn-primary px-6 py-3">
             홈으로 돌아가기
           </Link>
@@ -773,7 +809,7 @@ export default function ProductDetailPage() {
                     onClick={handleFavoriteClick}
                     disabled={favoriteLoading}
                     className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-lg border border-[#e5e8eb] disabled:opacity-50 ${
-                      isFavorite ? 'bg-[#f04452] text-white border-[#f04452]' : 'bg-white/95 text-[#6b7684] hover:bg-white hover:text-[#f04452]'
+                      isFavorite ? 'bg-[#f04452] text-white border-[#f04452]' : 'bg-white/95 text-[#5c6470] hover:bg-white hover:text-[#f04452]'
                     }`}
                     aria-label="관심상품"
                   >
@@ -781,6 +817,9 @@ export default function ProductDetailPage() {
                   </button>
                   <button
                     onClick={() => {
+                      // 짧은 공유 URL (쿼리 파라미터 없이)
+                      const shareUrl = `${BASE_URL}/product/${productId}`;
+
                       // 카카오톡 공유
                       if (typeof window !== 'undefined' && window.Kakao && window.Kakao.isInitialized()) {
                         window.Kakao.Share.sendDefault({
@@ -789,8 +828,8 @@ export default function ProductDetailPage() {
                             title: product.productName,
                             imageUrl: product.productImage,
                             link: {
-                              mobileWebUrl: `${BASE_URL}/product/${productId}`,
-                              webUrl: `${BASE_URL}/product/${productId}`,
+                              mobileWebUrl: shareUrl,
+                              webUrl: shareUrl,
                             },
                           },
                           commerce: {
@@ -802,8 +841,8 @@ export default function ProductDetailPage() {
                             {
                               title: '자세히 보기',
                               link: {
-                                mobileWebUrl: `${BASE_URL}/product/${productId}`,
-                                webUrl: `${BASE_URL}/product/${productId}`,
+                                mobileWebUrl: shareUrl,
+                                webUrl: shareUrl,
                               },
                             },
                           ],
@@ -814,11 +853,11 @@ export default function ProductDetailPage() {
                           navigator.share({
                             title: product.productName,
                             text: `${product.productName} - ${formatPrice(product.productPrice)}원`,
-                            url: window.location.href,
+                            url: shareUrl,
                           });
                         } else {
-                          navigator.clipboard.writeText(window.location.href);
-                          alert('링크가 복사되었습니다!');
+                          navigator.clipboard.writeText(shareUrl);
+                          toast.success('링크가 복사되었어요');
                         }
                       }
                     }}
@@ -852,8 +891,8 @@ export default function ProductDetailPage() {
                 {/* 카테고리 */}
                 {product.categoryName && (
                   <div className="flex items-center gap-1 mb-2">
-                    <span className="text-[13px] text-[#6b7684]">{product.categoryName}</span>
-                    <ChevronRight size={14} className="text-[#6b7684]" />
+                    <span className="text-[13px] text-[#5c6470]">{product.categoryName}</span>
+                    <ChevronRight size={14} className="text-[#5c6470]" />
                   </div>
                 )}
 
@@ -876,15 +915,15 @@ export default function ProductDetailPage() {
                     <table className="w-full text-[13px]">
                       <tbody>
                         <tr className="border-b border-[#e5e8eb]">
-                          <td className="py-3 px-4 bg-[#f8f9fa] text-[#6b7684] font-medium w-1/3">역대 최저가</td>
+                          <td className="py-3 px-4 bg-[#f8f9fa] text-[#5c6470] font-medium w-1/3">역대 최저가</td>
                           <td className="py-3 px-4 text-[#087f5b] font-bold text-right">{formatPrice(lowestPrice)}원</td>
                         </tr>
                         <tr className="border-b border-[#e5e8eb]">
-                          <td className="py-3 px-4 bg-[#f8f9fa] text-[#6b7684] font-medium">평균 가격</td>
+                          <td className="py-3 px-4 bg-[#f8f9fa] text-[#5c6470] font-medium">평균 가격</td>
                           <td className="py-3 px-4 text-[#191f28] font-bold text-right">{formatPrice(Math.round((lowestPrice + highestPrice) / 2))}원</td>
                         </tr>
                         <tr>
-                          <td className="py-3 px-4 bg-[#f8f9fa] text-[#6b7684] font-medium">최고 가격</td>
+                          <td className="py-3 px-4 bg-[#f8f9fa] text-[#5c6470] font-medium">최고 가격</td>
                           <td className="py-3 px-4 text-[#d9480f] font-bold text-right">{formatPrice(highestPrice)}원</td>
                         </tr>
                       </tbody>
@@ -892,10 +931,10 @@ export default function ProductDetailPage() {
                   </div>
                 ) : (
                   <div className="bg-[#f8f9fa] rounded-lg p-4 mb-4 text-center">
-                    <p className="text-[13px] text-[#6b7684] font-medium">
+                    <p className="text-[13px] text-[#5c6470] font-medium">
                       가격 데이터 수집 중입니다
                     </p>
-                    <p className="text-[11px] text-[#6b7684] mt-1">
+                    <p className="text-[11px] text-[#5c6470] mt-1">
                       내일부터 가격 변동 정보를 확인할 수 있어요
                     </p>
                   </div>
@@ -905,8 +944,8 @@ export default function ProductDetailPage() {
                 {hasHistoryData && highestPrice > product.productPrice && (
                   <div className="bg-[#e8f3ff] rounded-xl p-3 mb-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-[13px] text-[#3182f6]">최고가 대비 할인율</span>
-                      <span className="text-[16px] font-bold text-[#3182f6]">
+                      <span className="text-[13px] text-[#1d4ed8]">최고가 대비 할인율</span>
+                      <span className="text-[16px] font-bold text-[#1d4ed8]">
                         {Math.round(((highestPrice - product.productPrice) / highestPrice) * 100)}% 할인
                       </span>
                     </div>
@@ -915,7 +954,7 @@ export default function ProductDetailPage() {
 
                 {/* 파트너스 고지 */}
                 <div className="p-3 bg-[#f8f9fa] rounded-xl">
-                  <p className="text-[11px] text-[#6b7684] leading-relaxed">
+                  <p className="text-[11px] text-[#5c6470] leading-relaxed">
                     본 서비스는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며,
                     무료로 제공하는 가격 추적 서비스 유지에 사용됩니다. 구매자에게 추가 비용은 없습니다.
                   </p>
@@ -933,7 +972,7 @@ export default function ProductDetailPage() {
                 <div className="w-16 h-16 bg-[#f2f4f6] rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
                   <TrendingDown size={32} className="text-[#adb5bd]" />
                 </div>
-                <p className="text-[14px] text-[#6b7684]">가격 데이터를 불러오는 중...</p>
+                <p className="text-[14px] text-[#5c6470]">가격 데이터를 불러오는 중...</p>
               </div>
             ) : hasRealData && priceHistory.length > 0 ? (
               <PriceChart
@@ -951,10 +990,10 @@ export default function ProductDetailPage() {
                 <h4 className="text-[17px] font-semibold text-[#191f28] mb-2">
                   가격 추적을 시작합니다
                 </h4>
-                <p className="text-[14px] text-[#6b7684] mb-1">
+                <p className="text-[14px] text-[#5c6470] mb-1">
                   이 상품의 가격 데이터를 수집 중입니다.
                 </p>
-                <p className="text-[13px] text-[#6b7684]">
+                <p className="text-[13px] text-[#5c6470]">
                   내일부터 실제 가격 변동 그래프를 확인할 수 있어요.
                 </p>
               </div>
@@ -969,25 +1008,25 @@ export default function ProductDetailPage() {
             <div className="space-y-3">
               <div className="flex gap-3">
                 <div className="w-6 h-6 bg-[#3182f6]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-[12px] font-bold text-[#3182f6]">1</span>
+                  <span className="text-[12px] font-bold text-[#1d4ed8]">1</span>
                 </div>
-                <p className="toss-body-2 text-[#6b7684]">
+                <p className="toss-body-2 text-[#5c6470]">
                   현재 가격이 7일 내 최저가인지 확인하세요
                 </p>
               </div>
               <div className="flex gap-3">
                 <div className="w-6 h-6 bg-[#3182f6]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-[12px] font-bold text-[#3182f6]">2</span>
+                  <span className="text-[12px] font-bold text-[#1d4ed8]">2</span>
                 </div>
-                <p className="toss-body-2 text-[#6b7684]">
+                <p className="toss-body-2 text-[#5c6470]">
                   최저가 알림을 설정하면 가격이 떨어질 때 알려드려요
                 </p>
               </div>
               <div className="flex gap-3">
                 <div className="w-6 h-6 bg-[#3182f6]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-[12px] font-bold text-[#3182f6]">3</span>
+                  <span className="text-[12px] font-bold text-[#1d4ed8]">3</span>
                 </div>
-                <p className="toss-body-2 text-[#6b7684]">
+                <p className="toss-body-2 text-[#5c6470]">
                   가격 추이를 참고하여 구매 시점을 결정하세요
                 </p>
               </div>
@@ -1037,7 +1076,7 @@ export default function ProductDetailPage() {
             className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all border ${
               isFavorite
                 ? 'bg-[#fee] border-[#f04452] text-[#f04452]'
-                : 'bg-white border-[#e5e8eb] text-[#6b7684]'
+                : 'bg-white border-[#e5e8eb] text-[#5c6470]'
             }`}
             aria-label="관심상품"
           >
@@ -1048,7 +1087,7 @@ export default function ProductDetailPage() {
             className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all border ${
               isAlertOn
                 ? 'bg-[#fff8e6] border-[#ff9500] text-[#ff9500]'
-                : 'bg-white border-[#e5e8eb] text-[#6b7684]'
+                : 'bg-white border-[#e5e8eb] text-[#5c6470]'
             }`}
             aria-label="가격 알림"
           >
@@ -1107,9 +1146,9 @@ export default function ProductDetailPage() {
                   min={1}
                   max={product.productPrice - 1}
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6b7684]">원</span>
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#5c6470]">원</span>
               </div>
-              <p className="text-[12px] text-[#6b7684] mt-2">
+              <p className="text-[12px] text-[#5c6470] mt-2">
                 현재 가격보다 {formatPrice(product.productPrice - targetPrice)}원 낮은 가격 (
                 {Math.round(((product.productPrice - targetPrice) / product.productPrice) * 100)}% 할인)
               </p>

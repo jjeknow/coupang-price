@@ -117,7 +117,7 @@ export default function AlertsPage() {
         </button>
         <div>
           <h1 className="text-2xl font-bold text-[#191f28]">가격 알림</h1>
-          <p className="text-[#6b7684] text-sm">
+          <p className="text-[#5c6470] text-sm">
             활성 {activeAlerts.length}개 · 비활성 {inactiveAlerts.length}개
           </p>
         </div>
@@ -128,7 +128,7 @@ export default function AlertsPage() {
           <div className="w-20 h-20 bg-[#f2f4f6] rounded-full flex items-center justify-center mx-auto mb-4">
             <Bell size={40} className="text-[#adb5bd]" />
           </div>
-          <p className="text-[#6b7684] mb-2">설정된 가격 알림이 없습니다</p>
+          <p className="text-[#5c6470] mb-2">설정된 가격 알림이 없습니다</p>
           <p className="text-[#adb5bd] text-sm mb-4">상품 페이지에서 원하는 가격을 설정하세요</p>
           <Link
             href="/"
@@ -143,7 +143,7 @@ export default function AlertsPage() {
           {activeAlerts.length > 0 && (
             <div>
               <h2 className="text-lg font-bold text-[#191f28] mb-4 flex items-center gap-2">
-                <Bell size={20} className="text-[#3182f6]" />
+                <Bell size={20} className="text-[#1d4ed8]" />
                 활성 알림
               </h2>
               <div className="space-y-4">
@@ -164,7 +164,7 @@ export default function AlertsPage() {
           {/* 비활성 알림 */}
           {inactiveAlerts.length > 0 && (
             <div>
-              <h2 className="text-lg font-bold text-[#6b7684] mb-4 flex items-center gap-2">
+              <h2 className="text-lg font-bold text-[#5c6470] mb-4 flex items-center gap-2">
                 <BellOff size={20} />
                 비활성 알림
               </h2>
@@ -222,21 +222,21 @@ function AlertCard({
       {/* 정보 */}
       <div className="flex-1 min-w-0">
         <Link href={`/product/p-${alert.coupangProductId}`}>
-          <p className="text-[14px] text-[#191f28] line-clamp-2 hover:text-[#3182f6]">
+          <p className="text-[14px] text-[#191f28] line-clamp-2 hover:text-[#1d4ed8]">
             {alert.productName}
           </p>
         </Link>
 
         <div className="flex items-center gap-2 mt-2">
-          <p className="text-[#6b7684] text-[13px]">현재</p>
+          <p className="text-[#5c6470] text-[13px]">현재</p>
           <p className="text-[15px] font-medium text-[#191f28]">
             {alert.productPrice.toLocaleString()}원
           </p>
         </div>
 
         <div className="flex items-center gap-2 mt-1">
-          <p className="text-[#3182f6] text-[13px]">목표</p>
-          <p className="text-[17px] font-bold text-[#3182f6]">
+          <p className="text-[#1d4ed8] text-[13px]">목표</p>
+          <p className="text-[17px] font-bold text-[#1d4ed8]">
             {alert.targetPrice.toLocaleString()}원
           </p>
           <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-[#dbeafe] text-[#1d4ed8] text-[11px] font-semibold rounded">

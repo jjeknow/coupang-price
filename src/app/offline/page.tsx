@@ -21,7 +21,7 @@ export default function OfflinePage() {
         </h1>
 
         {/* 설명 */}
-        <p className="text-[14px] text-[#6b7684] mb-8 leading-relaxed">
+        <p className="text-[14px] text-[#5c6470] mb-8 leading-relaxed">
           인터넷 연결이 끊어졌습니다.<br />
           Wi-Fi 또는 모바일 데이터를 확인해주세요.
         </p>
@@ -36,7 +36,7 @@ export default function OfflinePage() {
         </button>
 
         {/* 안내 문구 */}
-        <p className="mt-6 text-[12px] text-[#6b7684]">
+        <p className="mt-6 text-[12px] text-[#5c6470]">
           연결이 복구되면 자동으로 페이지가 새로고침됩니다
         </p>
       </div>

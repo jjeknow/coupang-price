@@ -84,7 +84,7 @@ export default function AdminDashboard() {
                 <stat.icon size={24} className="text-white" />
               </div>
               <div>
-                <p className="text-sm text-[#6b7684] dark:text-[#6b7684]">
+                <p className="text-sm text-[#5c6470] dark:text-[#5c6470]">
                   {stat.title}
                 </p>
                 {loading ? (
@@ -109,7 +109,7 @@ export default function AdminDashboard() {
           <h2 className="text-xl font-bold text-[#191f28] dark:text-[#f2f4f6] mb-2">
             관리자 기능 준비 중
           </h2>
-          <p className="text-[#6b7684] dark:text-[#6b7684] max-w-md mx-auto">
+          <p className="text-[#5c6470] dark:text-[#5c6470] max-w-md mx-auto">
             사용자 관리, 알림 관리, 통계 분석 등 다양한 관리 기능이 곧 추가될 예정입니다.
           </p>
         </div>

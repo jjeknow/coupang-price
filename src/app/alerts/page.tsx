@@ -39,7 +39,7 @@ export default function AlertsPage() {
           <h2 className="text-lg font-bold text-[#191f28] mb-3">
             서비스 준비 중입니다
           </h2>
-          <p className="text-[#6b7684] text-[14px] mb-6 leading-relaxed">
+          <p className="text-[#5c6470] text-[14px] mb-6 leading-relaxed">
             가격 알림 기능을 열심히 개발하고 있습니다.
             <br />
             조금만 기다려주세요!
@@ -61,7 +61,7 @@ export default function AlertsPage() {
         </div>
 
         {/* 파트너스 고지 */}
-        <p className="text-[12px] text-[#6b7684] mt-8 text-center">
+        <p className="text-[12px] text-[#5c6470] mt-8 text-center">
           본 서비스는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받습니다.
         </p>
       </div>

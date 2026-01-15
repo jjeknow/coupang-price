@@ -26,7 +26,7 @@ export default function NotFound() {
         {/* 404 아이콘 */}
         <div className="mb-8">
           <div className="w-32 h-32 mx-auto bg-[#f2f4f6] rounded-full flex items-center justify-center">
-            <span className="text-6xl font-bold text-[#6b7684]">404</span>
+            <span className="text-6xl font-bold text-[#5c6470]">404</span>
           </div>
         </div>
 
@@ -34,7 +34,7 @@ export default function NotFound() {
         <h1 className="text-2xl font-bold text-[#191f28] mb-3">
           페이지를 찾을 수 없습니다
         </h1>
-        <p className="text-[#6b7684] mb-8 leading-relaxed">
+        <p className="text-[#5c6470] mb-8 leading-relaxed">
           요청하신 페이지가 삭제되었거나,
           <br />
           잘못된 주소를 입력하셨습니다.
@@ -60,9 +60,9 @@ export default function NotFound() {
 
         {/* 도움말 */}
         <div className="mt-12 p-4 bg-[#f2f4f6] rounded-xl">
-          <p className="text-sm text-[#6b7684]">
+          <p className="text-sm text-[#5c6470]">
             찾으시는 상품이 있다면{' '}
-            <Link href="/search" className="text-[#3182f6] hover:underline">
+            <Link href="/search" className="text-[#1d4ed8] hover:underline">
               검색 기능
             </Link>
             을 이용해보세요.

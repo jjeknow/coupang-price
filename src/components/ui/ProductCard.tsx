@@ -104,7 +104,7 @@ function ProductCard({
               src={productImage}
               alt={productName}
               fill
-              sizes="45vw"
+              sizes="(max-width: 640px) 45vw, 180px"
               className={`object-contain p-2 transition-transform duration-200 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}

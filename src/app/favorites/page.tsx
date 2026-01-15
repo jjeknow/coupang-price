@@ -63,7 +63,7 @@ export default function FavoritesPage() {
                 {favorites.length >= 2 && (
                   <Link
                     href="/compare"
-                    className="flex items-center gap-1 px-3 py-1.5 text-[13px] text-[#3182f6] hover:bg-[#e8f3ff] rounded-lg transition-colors"
+                    className="flex items-center gap-1 px-3 py-1.5 text-[13px] text-[#1d4ed8] hover:bg-[#e8f3ff] rounded-lg transition-colors"
                   >
                     <GitCompare size={14} />
                     비교하기
@@ -71,7 +71,7 @@ export default function FavoritesPage() {
                 )}
                 <button
                   onClick={handleClearAll}
-                  className="flex items-center gap-1 px-3 py-1.5 text-[13px] text-[#6b7684] hover:text-[#f04452] hover:bg-[#f2f4f6] rounded-lg transition-colors"
+                  className="flex items-center gap-1 px-3 py-1.5 text-[13px] text-[#5c6470] hover:text-[#f04452] hover:bg-[#f2f4f6] rounded-lg transition-colors"
                 >
                   <Trash2 size={14} />
                   전체 삭제
@@ -92,7 +92,7 @@ export default function FavoritesPage() {
             <p className="text-[16px] font-medium text-[#333d4b] mb-2">
               관심상품이 없습니다
             </p>
-            <p className="text-[14px] text-[#6b7684] mb-6">
+            <p className="text-[14px] text-[#5c6470] mb-6">
               마음에 드는 상품의 하트를 눌러<br />관심상품에 추가해보세요
             </p>
             <Link
@@ -104,7 +104,7 @@ export default function FavoritesPage() {
           </div>
         ) : (
           <>
-            <p className="text-[14px] text-[#6b7684] mb-4">
+            <p className="text-[14px] text-[#5c6470] mb-4">
               총 {favorites.length}개의 관심상품
             </p>
             <div className="grid grid-cols-2 gap-3">
@@ -127,7 +127,7 @@ export default function FavoritesPage() {
                       e.stopPropagation();
                       handleRemove(product.productId);
                     }}
-                    className="absolute top-2 right-2 w-8 h-8 bg-white/90 hover:bg-[#f04452] text-[#6b7684] hover:text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-md z-20"
+                    className="absolute top-2 right-2 w-8 h-8 bg-white/90 hover:bg-[#f04452] text-[#5c6470] hover:text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-md z-20"
                     aria-label="관심상품에서 제거"
                   >
                     <Trash2 size={14} />

@@ -34,8 +34,8 @@ const colors = {
   info: {
     bg: 'bg-[#e8f3ff]',
     border: 'border-[#3182f6]',
-    text: 'text-[#3182f6]',
-    icon: 'text-[#3182f6]',
+    text: 'text-[#1d4ed8]',
+    icon: 'text-[#1d4ed8]',
   },
 };
 

@@ -127,7 +127,7 @@ function SearchLoading() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="toss-card-flat p-16 text-center border border-[#e5e8eb]">
           <div className="spinner-lg mx-auto mb-4" />
-          <p className="toss-body-1 text-[#6b7684]">로딩 중...</p>
+          <p className="toss-body-1 text-[#5c6470]">로딩 중...</p>
         </div>
       </div>
     </div>

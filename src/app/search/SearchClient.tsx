@@ -176,7 +176,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
               className="flex-1"
             >
               <div className="relative">
-                <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
+                <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
                 <input
                   ref={inputRef}
                   type="text"
@@ -184,7 +184,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
                   onChange={(e) => setInputValue(e.target.value)}
                   onFocus={() => !query && setShowSuggestions(true)}
                   placeholder="찾고 싶은 상품을 검색해보세요"
-                  className="w-full pl-12 pr-10 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:ring-2 focus:ring-[#3182f6] focus:bg-white transition-all"
+                  className="w-full pl-12 pr-10 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:ring-2 focus:ring-[#3182f6] focus:bg-white transition-all"
                   style={{ fontSize: '16px' }}
                 />
                 {inputValue && (
@@ -213,12 +213,12 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
             <div className="bg-white border-b border-[#e5e8eb]">
               <div className="px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2 text-[14px] font-semibold text-[#191f28]">
-                  <Clock size={16} className="text-[#6b7684]" />
+                  <Clock size={16} className="text-[#5c6470]" />
                   최근 검색어
                 </div>
                 <button
                   onClick={handleClearAllRecent}
-                  className="text-[13px] text-[#6b7684] hover:text-[#4e5968]"
+                  className="text-[13px] text-[#5c6470] hover:text-[#4e5968]"
                 >
                   전체 삭제
                 </button>
@@ -237,7 +237,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
                     </button>
                     <button
                       onClick={() => handleRemoveRecent(keyword)}
-                      className="w-4 h-4 flex items-center justify-center text-[#6b7684] hover:text-[#4e5968]"
+                      className="w-4 h-4 flex items-center justify-center text-[#5c6470] hover:text-[#4e5968]"
                     >
                       <X size={12} />
                     </button>
@@ -250,7 +250,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
           {/* 인기 검색어 */}
           <div className="bg-white">
             <div className="px-4 py-3 flex items-center gap-2 text-[14px] font-semibold text-[#191f28]">
-              <TrendingUp size={16} className="text-[#3182f6]" />
+              <TrendingUp size={16} className="text-[#1d4ed8]" />
               인기 검색어
             </div>
             <div className="px-4 pb-4">
@@ -262,7 +262,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
                     className="flex items-center gap-3 px-3 py-3 hover:bg-[#f2f4f6] rounded-xl transition-colors text-left"
                   >
                     <span className={`w-6 h-6 flex items-center justify-center rounded-full text-[12px] font-bold ${
-                      index < 3 ? 'bg-[#3182f6] text-white' : 'bg-[#f2f4f6] text-[#6b7684]'
+                      index < 3 ? 'bg-[#3182f6] text-white' : 'bg-[#f2f4f6] text-[#5c6470]'
                     }`}>
                       {index + 1}
                     </span>
@@ -281,7 +281,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
           {/* 검색 결과 헤더 */}
           {query && !loading && searchData && (
             <div className="mb-4">
-              <p className="text-[14px] text-[#6b7684]">
+              <p className="text-[14px] text-[#5c6470]">
                 <span className="font-semibold text-[#191f28]">&quot;{query}&quot;</span> 검색 결과 {searchData.products.length}개
               </p>
             </div>
@@ -291,7 +291,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
           {loading && (
             <div className="bg-white rounded-2xl p-16 text-center border border-[#e5e8eb]">
               <div className="spinner-lg mx-auto mb-4" />
-              <p className="text-[15px] text-[#6b7684]">검색 중...</p>
+              <p className="text-[15px] text-[#5c6470]">검색 중...</p>
             </div>
           )}
 
@@ -300,7 +300,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
             <div className="bg-white rounded-2xl p-16 text-center border border-[#f04452]/20 bg-[#f04452]/5">
               <span className="text-[48px] block mb-4">😢</span>
               <p className="text-[15px] text-[#f04452]">{error}</p>
-              <p className="text-[13px] text-[#6b7684] mt-2">잠시 후 다시 시도해주세요</p>
+              <p className="text-[13px] text-[#5c6470] mt-2">잠시 후 다시 시도해주세요</p>
             </div>
           )}
 
@@ -312,7 +312,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
             ) : (
               <div className="toss-card-flat p-16 text-center border border-[#e5e8eb]">
                 <span className="text-[64px] block mb-4">😕</span>
-                <p className="toss-body-1 text-[#6b7684]">
+                <p className="toss-body-1 text-[#5c6470]">
                   &quot;{query}&quot;에 대한 검색 결과가 없습니다
                 </p>
                 <p className="toss-caption mt-2">다른 검색어로 시도해보세요</p>
@@ -340,7 +340,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
 
       {/* 파트너스 고지 */}
       <div className="py-8 pb-24 text-center px-4">
-        <p className="text-[11px] text-[#6b7684] leading-relaxed">
+        <p className="text-[11px] text-[#5c6470] leading-relaxed">
           본 서비스는 쿠팡 파트너스 활동의 일환으로,<br />
           이에 따른 일정액의 수수료를 제공받습니다.
         </p>

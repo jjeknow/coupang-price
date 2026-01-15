@@ -113,7 +113,7 @@ export default function BottomSheet({
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="w-8 h-8 flex items-center justify-center text-[#6b7684] hover:bg-[#f2f4f6] rounded-full transition-colors"
+                className="w-8 h-8 flex items-center justify-center text-[#5c6470] hover:bg-[#f2f4f6] rounded-full transition-colors"
                 aria-label="닫기"
               >
                 <X size={20} />

@@ -97,7 +97,7 @@ export default function SignupPage() {
         {/* 헤더 */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-[#191f28] mb-2">회원가입</h1>
-          <p className="text-[#6b7684]">최저가 알림을 받으려면 가입하세요</p>
+          <p className="text-[#5c6470]">최저가 알림을 받으려면 가입하세요</p>
         </div>
 
         {/* 소셜 로그인 */}
@@ -142,7 +142,7 @@ export default function SignupPage() {
             <div className="w-full border-t border-[#e5e8eb]"></div>
           </div>
           <div className="relative flex justify-center">
-            <span className="px-4 bg-white text-[#6b7684] text-sm">또는 이메일로 가입</span>
+            <span className="px-4 bg-white text-[#5c6470] text-sm">또는 이메일로 가입</span>
           </div>
         </div>
 
@@ -156,63 +156,63 @@ export default function SignupPage() {
           )}
 
           <div className="relative">
-            <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
+            <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="이름 (선택)"
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
             />
           </div>
 
           <div className="relative">
-            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
+            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="이메일"
               required
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
             />
           </div>
 
           <div className="relative">
-            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
+            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
             <input
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호 (6자 이상)"
               required
-              className="w-full pl-11 pr-12 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+              className="w-full pl-11 pr-12 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6b7684] hover:text-[#4e5968]"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#5c6470] hover:text-[#4e5968]"
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
 
           <div className="relative">
-            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
+            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
             <input
               type={showPassword ? 'text' : 'password'}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="비밀번호 확인"
               required
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
             />
           </div>
 
           {/* 비밀번호 체크 */}
           {password.length > 0 && (
             <div className="space-y-1 text-sm">
-              <div className={`flex items-center gap-2 ${passwordChecks.length ? 'text-green-600' : 'text-[#6b7684]'}`}>
+              <div className={`flex items-center gap-2 ${passwordChecks.length ? 'text-green-600' : 'text-[#5c6470]'}`}>
                 <CheckCircle size={14} />
                 6자 이상
               </div>
@@ -235,9 +235,9 @@ export default function SignupPage() {
         </form>
 
         {/* 로그인 링크 */}
-        <p className="mt-6 text-center text-[#6b7684] text-sm">
+        <p className="mt-6 text-center text-[#5c6470] text-sm">
           이미 계정이 있으신가요?{' '}
-          <Link href="/auth/login" className="text-[#3182f6] font-medium hover:underline">
+          <Link href="/auth/login" className="text-[#1d4ed8] font-medium hover:underline">
             로그인
           </Link>
         </p>

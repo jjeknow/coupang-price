@@ -103,7 +103,7 @@ export default function ComparePage() {
                 상품 비교
               </h1>
             </div>
-            <span className="text-[13px] text-[#6b7684]">
+            <span className="text-[13px] text-[#5c6470]">
               최대 3개 비교 가능
             </span>
           </div>
@@ -117,7 +117,7 @@ export default function ComparePage() {
             <p className="text-[16px] font-medium text-[#333d4b] mb-2">
               관심상품이 없습니다
             </p>
-            <p className="text-[14px] text-[#6b7684] mb-6">
+            <p className="text-[14px] text-[#5c6470] mb-6">
               관심상품을 추가한 후 비교해보세요
             </p>
             <Link
@@ -144,7 +144,7 @@ export default function ComparePage() {
                       onClick={() => handleRemoveProduct(product.productId)}
                       className="absolute top-2 right-2 w-6 h-6 bg-[#f2f4f6] hover:bg-[#e5e8eb] rounded-full flex items-center justify-center z-10"
                     >
-                      <X size={14} className="text-[#6b7684]" />
+                      <X size={14} className="text-[#5c6470]" />
                     </button>
 
                     {/* 최저가 배지 */}
@@ -205,9 +205,9 @@ export default function ComparePage() {
                     className="w-full h-full border-2 border-dashed border-[#e5e8eb] rounded-xl flex flex-col items-center justify-center gap-2 hover:border-[#3182f6] hover:bg-[#f8f9fa] transition-colors"
                   >
                     <div className="w-12 h-12 bg-[#f2f4f6] rounded-full flex items-center justify-center">
-                      <Plus size={24} className="text-[#6b7684]" />
+                      <Plus size={24} className="text-[#5c6470]" />
                     </div>
-                    <span className="text-[14px] text-[#6b7684]">상품 추가</span>
+                    <span className="text-[14px] text-[#5c6470]">상품 추가</span>
                   </button>
                 </div>
               )}
@@ -225,7 +225,7 @@ export default function ComparePage() {
                     const stats = priceStats[product.productId];
                     return (
                       <div key={product.productId} className="p-4">
-                        <span className=" text-[12px] text-[#6b7684] block mb-1">역대 최저가</span>
+                        <span className=" text-[12px] text-[#5c6470] block mb-1">역대 최저가</span>
                         <span className="text-[15px] font-semibold text-[#00c471]">
                           {formatPrice(stats.lowest)}원
                         </span>
@@ -243,7 +243,7 @@ export default function ComparePage() {
                     const stats = priceStats[product.productId];
                     return (
                       <div key={product.productId} className="p-4">
-                        <span className=" text-[12px] text-[#6b7684] block mb-1">평균 가격</span>
+                        <span className=" text-[12px] text-[#5c6470] block mb-1">평균 가격</span>
                         <span className="text-[15px] font-medium text-[#191f28]">
                           {formatPrice(stats.average)}원
                         </span>
@@ -261,7 +261,7 @@ export default function ComparePage() {
                     const stats = priceStats[product.productId];
                     return (
                       <div key={product.productId} className="p-4">
-                        <span className=" text-[12px] text-[#6b7684] block mb-1">최고 가격</span>
+                        <span className=" text-[12px] text-[#5c6470] block mb-1">최고 가격</span>
                         <span className="text-[15px] font-medium text-[#ff8b00]">
                           {formatPrice(stats.highest)}원
                         </span>
@@ -281,7 +281,7 @@ export default function ComparePage() {
                     const diffPercent = Math.round((diff / stats.lowest) * 100);
                     return (
                       <div key={product.productId} className="p-4">
-                        <span className=" text-[12px] text-[#6b7684] block mb-1">최저가 대비</span>
+                        <span className=" text-[12px] text-[#5c6470] block mb-1">최저가 대비</span>
                         {diff === 0 ? (
                           <span className="text-[15px] font-semibold text-[#00c471] flex items-center gap-1">
                             <TrendingDown size={16} />
@@ -304,7 +304,7 @@ export default function ComparePage() {
                   </div>
                   {selectedProducts.map((product) => (
                     <div key={product.productId} className="p-4">
-                      <span className=" text-[12px] text-[#6b7684] block mb-1">카테고리</span>
+                      <span className=" text-[12px] text-[#5c6470] block mb-1">카테고리</span>
                       <span className="text-[14px] text-[#4e5968]">
                         {product.categoryName || '-'}
                       </span>
@@ -345,7 +345,7 @@ export default function ComparePage() {
                 onClick={() => setShowSelector(false)}
                 className="p-2 hover:bg-[#f2f4f6] rounded-lg"
               >
-                <X size={20} className="text-[#6b7684]" />
+                <X size={20} className="text-[#5c6470]" />
               </button>
             </div>
             <div className="overflow-y-auto max-h-[50vh] p-4">
@@ -372,11 +372,11 @@ export default function ComparePage() {
                         {formatPrice(product.productPrice)}원
                       </p>
                     </div>
-                    <Plus size={20} className="text-[#3182f6] flex-shrink-0" />
+                    <Plus size={20} className="text-[#1d4ed8] flex-shrink-0" />
                   </button>
                 ))}
               {favorites.filter(f => !selectedProducts.find(s => s.productId === f.productId)).length === 0 && (
-                <p className="text-center text-[14px] text-[#6b7684] py-8">
+                <p className="text-center text-[14px] text-[#5c6470] py-8">
                   추가할 상품이 없습니다
                 </p>
               )}

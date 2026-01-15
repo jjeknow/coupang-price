@@ -120,7 +120,7 @@ export default function MyPage() {
             <h1 className="text-xl font-bold text-[#191f28]">
               {session.user.name || '사용자'}
             </h1>
-            <p className="text-[#6b7684] text-sm">{session.user.email}</p>
+            <p className="text-[#5c6470] text-sm">{session.user.email}</p>
           </div>
         </div>
       </div>
@@ -130,7 +130,7 @@ export default function MyPage() {
         <div className="bg-white rounded-2xl border border-[#e5e8eb] p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-[#191f28]">관심상품</h2>
-            <Link href="/mypage/favorites" className="text-[#3182f6] text-sm font-medium">
+            <Link href="/mypage/favorites" className="text-[#1d4ed8] text-sm font-medium">
               더보기
             </Link>
           </div>
@@ -161,7 +161,7 @@ export default function MyPage() {
         <div className="bg-white rounded-2xl border border-[#e5e8eb] p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-[#191f28]">가격 알림</h2>
-            <Link href="/mypage/alerts" className="text-[#3182f6] text-sm font-medium">
+            <Link href="/mypage/alerts" className="text-[#1d4ed8] text-sm font-medium">
               더보기
             </Link>
           </div>
@@ -179,8 +179,8 @@ export default function MyPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] text-[#191f28] line-clamp-1">{alert.productName}</p>
-                  <p className="text-[12px] text-[#6b7684]">
-                    목표가: <span className="text-[#3182f6] font-medium">{alert.targetPrice.toLocaleString()}원</span>
+                  <p className="text-[12px] text-[#5c6470]">
+                    목표가: <span className="text-[#1d4ed8] font-medium">{alert.targetPrice.toLocaleString()}원</span>
                   </p>
                 </div>
               </div>
@@ -200,7 +200,7 @@ export default function MyPage() {
             }`}
           >
             <div className="flex items-center gap-3">
-              <item.icon size={20} className="text-[#6b7684]" />
+              <item.icon size={20} className="text-[#5c6470]" />
               <span className="text-[15px] text-[#191f28]">{item.label}</span>
             </div>
             <div className="flex items-center gap-2">

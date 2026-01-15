@@ -56,7 +56,7 @@ function ProductGrid({
       >
         <div className="w-16 h-16 bg-[#f2f4f6] rounded-full flex items-center justify-center mx-auto mb-4">
           <svg
-            className="w-8 h-8 text-[#6b7684]"
+            className="w-8 h-8 text-[#5c6470]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -70,7 +70,7 @@ function ProductGrid({
             />
           </svg>
         </div>
-        <p className="toss-body-1 text-[#6b7684]">상품이 없습니다</p>
+        <p className="toss-body-1 text-[#5c6470]">상품이 없습니다</p>
         <p className="toss-caption mt-2">다른 카테고리를 탐색해보세요</p>
       </div>
     );

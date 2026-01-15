@@ -38,7 +38,7 @@ export default function Error({ error, reset }: ErrorProps) {
         <h1 className="text-2xl font-bold text-[#191f28] mb-3">
           문제가 발생했습니다
         </h1>
-        <p className="text-[#6b7684] mb-8 leading-relaxed">
+        <p className="text-[#5c6470] mb-8 leading-relaxed">
           일시적인 오류가 발생했습니다.
           <br />
           잠시 후 다시 시도해주세요.
@@ -46,7 +46,7 @@ export default function Error({ error, reset }: ErrorProps) {
 
         {/* 에러 다이제스트 (디버깅용) */}
         {error.digest && (
-          <p className="text-xs text-[#6b7684] mb-6 font-mono">
+          <p className="text-xs text-[#5c6470] mb-6 font-mono">
             오류 코드: {error.digest}
           </p>
         )}
@@ -71,7 +71,7 @@ export default function Error({ error, reset }: ErrorProps) {
 
         {/* 도움말 */}
         <div className="mt-12 p-4 bg-[#f2f4f6] rounded-xl">
-          <p className="text-sm text-[#6b7684]">
+          <p className="text-sm text-[#5c6470]">
             문제가 계속되면 잠시 후 다시 방문해주세요.
             <br />
             불편을 드려 죄송합니다.

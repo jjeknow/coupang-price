@@ -127,7 +127,7 @@ export default async function HomePage() {
               <span className="text-[24px]">🎁</span>
               <div>
                 <h2 className="text-[17px] font-bold text-[#191f28]">쿠팡 골드박스 가격변동</h2>
-                <p className="text-[11px] text-[#6b7684]">실시간 최저가 추적 · 매일 업데이트</p>
+                <p className="text-[11px] text-[#5c6470]">실시간 최저가 추적 · 매일 업데이트</p>
               </div>
             </div>
           </div>
@@ -137,7 +137,7 @@ export default async function HomePage() {
             <div className="bg-white rounded-2xl p-8 text-center">
               <p className="text-[32px] mb-4">⏳</p>
               <p className="text-[#191f28] font-medium mb-2">상품을 준비 중입니다</p>
-              <p className="text-[12px] text-[#6b7684]">잠시 후 다시 시도해주세요</p>
+              <p className="text-[12px] text-[#5c6470]">잠시 후 다시 시도해주세요</p>
             </div>
           )}
         </div>
@@ -151,12 +151,12 @@ export default async function HomePage() {
               <span className="text-[24px]">📺</span>
               <div>
                 <h2 className="text-[17px] font-bold text-[#191f28]">가전/디지털 가격비교</h2>
-                <p className="text-[11px] text-[#6b7684]">쿠팡 가격 그래프로 최저가 확인</p>
+                <p className="text-[11px] text-[#5c6470]">쿠팡 가격 그래프로 최저가 확인</p>
               </div>
             </div>
             <Link
               href="/category/1016"
-              className="flex items-center gap-0.5 text-[13px] text-[#3182f6] font-medium min-h-[44px] px-2 active:bg-[#e8f3ff] rounded-lg"
+              className="flex items-center gap-0.5 text-[13px] text-[#1d4ed8] font-medium min-h-[44px] px-2 active:bg-[#e8f3ff] rounded-lg"
             >
               전체보기
               <ChevronRight size={16} />
@@ -168,7 +168,7 @@ export default async function HomePage() {
             <div className="bg-[#f8f9fa] rounded-2xl p-8 text-center">
               <p className="text-[32px] mb-4">⏳</p>
               <p className="text-[#191f28] font-medium mb-2">상품을 준비 중입니다</p>
-              <p className="text-[12px] text-[#6b7684]">잠시 후 다시 시도해주세요</p>
+              <p className="text-[12px] text-[#5c6470]">잠시 후 다시 시도해주세요</p>
             </div>
           )}
         </div>
@@ -182,12 +182,12 @@ export default async function HomePage() {
               <span className="text-[24px]">🍎</span>
               <div>
                 <h2 className="text-[17px] font-bold text-[#191f28]">식품 가격변동 추적</h2>
-                <p className="text-[11px] text-[#6b7684]">쿠팡 로켓배송 최저가 알림</p>
+                <p className="text-[11px] text-[#5c6470]">쿠팡 로켓배송 최저가 알림</p>
               </div>
             </div>
             <Link
               href="/category/1012"
-              className="flex items-center gap-0.5 text-[13px] text-[#3182f6] font-medium min-h-[44px] px-2 active:bg-[#e8f3ff] rounded-lg"
+              className="flex items-center gap-0.5 text-[13px] text-[#1d4ed8] font-medium min-h-[44px] px-2 active:bg-[#e8f3ff] rounded-lg"
             >
               전체보기
               <ChevronRight size={16} />
@@ -199,7 +199,7 @@ export default async function HomePage() {
             <div className="bg-white rounded-2xl p-8 text-center">
               <p className="text-[32px] mb-4">⏳</p>
               <p className="text-[#191f28] font-medium mb-2">상품을 준비 중입니다</p>
-              <p className="text-[12px] text-[#6b7684]">잠시 후 다시 시도해주세요</p>
+              <p className="text-[12px] text-[#5c6470]">잠시 후 다시 시도해주세요</p>
             </div>
           )}
         </div>
@@ -213,12 +213,12 @@ export default async function HomePage() {
               <span className="text-[24px]">💄</span>
               <div>
                 <h2 className="text-[17px] font-bold text-[#191f28]">뷰티 가격변동 알리미</h2>
-                <p className="text-[11px] text-[#6b7684]">쿠팡 가격비교로 똑똑한 쇼핑</p>
+                <p className="text-[11px] text-[#5c6470]">쿠팡 가격비교로 똑똑한 쇼핑</p>
               </div>
             </div>
             <Link
               href="/category/1010"
-              className="flex items-center gap-0.5 text-[13px] text-[#3182f6] font-medium min-h-[44px] px-2 active:bg-[#e8f3ff] rounded-lg"
+              className="flex items-center gap-0.5 text-[13px] text-[#1d4ed8] font-medium min-h-[44px] px-2 active:bg-[#e8f3ff] rounded-lg"
             >
               전체보기
               <ChevronRight size={16} />
@@ -230,7 +230,7 @@ export default async function HomePage() {
             <div className="bg-[#f8f9fa] rounded-2xl p-8 text-center">
               <p className="text-[32px] mb-4">⏳</p>
               <p className="text-[#191f28] font-medium mb-2">상품을 준비 중입니다</p>
-              <p className="text-[12px] text-[#6b7684]">잠시 후 다시 시도해주세요</p>
+              <p className="text-[12px] text-[#5c6470]">잠시 후 다시 시도해주세요</p>
             </div>
           )}
         </div>
@@ -239,7 +239,7 @@ export default async function HomePage() {
       {/* 파트너스 고지 */}
       <footer className="py-3 pb-16">
         <div className="max-w-6xl mx-auto px-4">
-          <p className="text-[11px] text-[#6b7684] leading-[1.5]">
+          <p className="text-[11px] text-[#5c6470] leading-[1.5]">
             본 서비스는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다. 가격 및 재고는 쿠팡에서 실시간으로 변동될 수 있으며, 수수료는 서비스 운영에 사용됩니다.
           </p>
         </div>
