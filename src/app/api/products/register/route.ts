@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (existingProduct) {
-      // 이미 등록된 상품 - 현재 가격만 업데이트
+      // 이미 등록된 상품 - 현재 가격 및 조회 시간 업데이트
       await prisma.product.update({
         where: { id: existingProduct.id },
         data: {
@@ -44,6 +44,7 @@ export async function POST(request: NextRequest) {
           name: productName,
           imageUrl: productImage,
           productUrl: productUrl,
+          lastViewedAt: new Date(), // 사용자 상품 수집용
         },
       });
 
@@ -68,6 +69,7 @@ export async function POST(request: NextRequest) {
         isRocket: isRocket ?? false,
         isFreeShipping: isFreeShipping ?? false,
         categoryName: categoryName,
+        lastViewedAt: new Date(), // 사용자 상품 수집용
         priceHistory: {
           create: {
             price: productPrice,

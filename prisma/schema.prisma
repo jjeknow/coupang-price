@@ -81,6 +81,8 @@ model Product {
   highestPrice    Int?     // 역대 최고가
   averagePrice    Int?     // 평균가
 
+  lastViewedAt    DateTime? // 마지막 조회 시간 (사용자 상품 수집용)
+
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 

@@ -11,10 +11,17 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getBestProducts, getGoldboxProducts, CATEGORIES } from '@/lib/coupang-api';
+import { getBestProducts, getGoldboxProducts, searchProducts, CATEGORIES } from '@/lib/coupang-api';
 
 // Vercel Cron 시크릿 키
 const CRON_SECRET = process.env.CRON_SECRET;
+
+// 사용자 상품 수집 설정 (초안전 모드)
+const USER_PRODUCTS_CONFIG = {
+  maxProductsPerDay: 50,      // 일일 최대 50개
+  delayBetweenCalls: 6000,    // 6초 간격 (10회/분)
+  viewedWithinDays: 7,        // 7일 내 조회한 상품만
+};
 
 // 딜레이 함수
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -147,6 +154,108 @@ async function saveProductPrice(product: {
   }
 }
 
+// 사용자 조회 상품 가격 수집
+async function collectUserViewedProducts(
+  results: {
+    totalProducts: number;
+    userProducts: number;
+    errors: string[];
+  },
+  startTime: number
+) {
+  console.log('[Cron] 사용자 조회 상품 수집 시작...');
+
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - USER_PRODUCTS_CONFIG.viewedWithinDays);
+
+  try {
+    // 최근 7일 내 조회된 상품 중 카테고리 베스트/골드박스에 없는 상품
+    // 즐겨찾기에 등록된 상품 우선
+    const userProducts = await prisma.product.findMany({
+      where: {
+        lastViewedAt: {
+          gte: sevenDaysAgo,
+        },
+      },
+      orderBy: [
+        { lastViewedAt: 'desc' }, // 최근 조회순
+      ],
+      take: USER_PRODUCTS_CONFIG.maxProductsPerDay,
+      select: {
+        id: true,
+        coupangId: true,
+        name: true,
+        currentPrice: true,
+        priceHistory: {
+          orderBy: { createdAt: 'desc' },
+          take: 30,
+        },
+      },
+    });
+
+    console.log(`[Cron] 사용자 조회 상품 ${userProducts.length}개 발견`);
+
+    for (const product of userProducts) {
+      // Vercel 5분 타임아웃 - 4분 30초에서 중단
+      const elapsed = Date.now() - startTime;
+      if (elapsed > 270000) {
+        console.log('[Cron] 타임아웃 임박 - 사용자 상품 수집 중단');
+        results.errors.push('Timeout approaching - stopped early');
+        break;
+      }
+
+      try {
+        // 상품명으로 검색하여 현재 가격 확인
+        const searchResult = await safeApiCall(
+          () => searchProducts(product.name, 1),
+          `UserProduct ${product.coupangId}`
+        );
+
+        if (!searchResult || !searchResult.productData?.length) {
+          continue;
+        }
+
+        // 검색 결과에서 같은 상품 찾기 (상품 ID 매칭)
+        const foundProduct = searchResult.productData.find(
+          p => p.productId.toString() === product.coupangId
+        );
+
+        if (foundProduct) {
+          // 가격 저장
+          await saveProductPrice({
+            productId: foundProduct.productId,
+            productName: foundProduct.productName,
+            productPrice: foundProduct.productPrice,
+            productImage: foundProduct.productImage,
+            productUrl: foundProduct.productUrl,
+            categoryName: foundProduct.categoryName,
+            isRocket: foundProduct.isRocket,
+            isFreeShipping: foundProduct.isFreeShipping,
+          });
+
+          results.userProducts++;
+          results.totalProducts++;
+        }
+
+        // 6초 대기 (분당 10회, 20% 사용)
+        await delay(USER_PRODUCTS_CONFIG.delayBetweenCalls);
+      } catch (error) {
+        if (error instanceof Error && error.message === 'RATE_LIMIT_EXCEEDED') {
+          results.errors.push('User products: Rate limit exceeded - 수집 중단');
+          break;
+        }
+        // 개별 상품 에러는 계속 진행
+        console.error(`[Cron] 사용자 상품 ${product.coupangId} 수집 실패:`, error);
+      }
+    }
+
+    console.log(`[Cron] 사용자 조회 상품 수집 완료: ${results.userProducts}개`);
+  } catch (error) {
+    console.error('[Cron] 사용자 상품 수집 오류:', error);
+    results.errors.push(`User products: ${error}`);
+  }
+}
+
 export async function GET(request: NextRequest) {
   // Vercel Cron 인증 확인
   const authHeader = request.headers.get('authorization');
@@ -160,6 +269,7 @@ export async function GET(request: NextRequest) {
     totalProducts: 0,
     categories: 0,
     goldbox: 0,
+    userProducts: 0,
     errors: [] as string[],
     duration: 0,
   };
@@ -224,6 +334,9 @@ export async function GET(request: NextRequest) {
     }
 
     // 가격 히스토리는 삭제하지 않음 (장기 추이 분석용)
+
+    // 3. 사용자 조회 상품 가격 수집 (초안전 모드)
+    await collectUserViewedProducts(results, startTime);
 
     results.duration = Date.now() - startTime;
     console.log('[Cron] 가격 수집 완료:', results);
