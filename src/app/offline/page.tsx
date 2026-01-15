@@ -36,7 +36,7 @@ export default function OfflinePage() {
         </button>
 
         {/* 안내 문구 */}
-        <p className="mt-6 text-[12px] text-[#8b95a1]">
+        <p className="mt-6 text-[12px] text-[#6b7684]">
           연결이 복구되면 자동으로 페이지가 새로고침됩니다
         </p>
       </div>

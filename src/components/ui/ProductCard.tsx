@@ -83,7 +83,7 @@ function ProductCard({
           {/* 역대 최저가 배지 (빨간색) */}
           {isCurrentLowest && (
             <div className="absolute top-2 left-2 z-10">
-              <span className="inline-flex items-center gap-0.5 px-2 py-1 bg-[#fff0f0] text-[#e03131] text-[10px] font-bold rounded-lg">
+              <span className="inline-flex items-center gap-0.5 px-2 py-1 bg-[#fff0f0] text-[#c92a2a] text-[10px] font-bold rounded-lg">
                 <TrendingDown size={10} />
                 역대 최저가
               </span>
@@ -133,13 +133,13 @@ function ProductCard({
           <div itemProp="offers" itemScope itemType="https://schema.org/Offer">
             <div className="flex items-baseline gap-0.5">
               <span
-                className="text-[16px] font-bold text-[#e03131] tracking-tight"
+                className="text-[16px] font-bold text-[#c92a2a] tracking-tight"
                 itemProp="price"
                 content={productPrice.toString()}
               >
                 {formatPrice(productPrice)}
               </span>
-              <span className="text-[12px] text-[#e03131]">원</span>
+              <span className="text-[12px] text-[#c92a2a]">원</span>
               <meta itemProp="priceCurrency" content="KRW" />
             </div>
           </div>
@@ -148,17 +148,17 @@ function ProductCard({
           {(isRocket || isFreeShipping || isPriceGood) && (
             <div className="flex flex-wrap gap-1">
               {isRocket && (
-                <span className="px-1.5 py-0.5 bg-[#e8f3ff] text-[#3182f6] text-[10px] font-medium rounded border border-[#3182f6]/20">
+                <span className="px-1.5 py-0.5 bg-[#dbeafe] text-[#1d4ed8] text-[10px] font-medium rounded border border-[#1d4ed8]/20">
                   로켓배송
                 </span>
               )}
               {isFreeShipping && !isRocket && (
-                <span className="px-1.5 py-0.5 bg-[#e8f3ff] text-[#3182f6] text-[10px] font-medium rounded border border-[#3182f6]/20">
+                <span className="px-1.5 py-0.5 bg-[#dbeafe] text-[#1d4ed8] text-[10px] font-medium rounded border border-[#1d4ed8]/20">
                   무료배송
                 </span>
               )}
               {isPriceGood && (
-                <span className="px-1.5 py-0.5 bg-[#e6f9ed] text-[#0ca678] text-[10px] font-medium rounded border border-[#0ca678]/20">
+                <span className="px-1.5 py-0.5 bg-[#d1fae5] text-[#047857] text-[10px] font-medium rounded border border-[#047857]/20">
                   가격 Good
                 </span>
               )}

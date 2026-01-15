@@ -264,7 +264,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <div className="bg-white rounded-2xl p-16 text-center border border-[#e5e8eb]">
             <p className="text-[40px] mb-4">⏳</p>
             <p className="text-[15px] text-[#6b7684]">상품을 불러오는 중...</p>
-            <p className="text-[13px] text-[#8b95a1] mt-2">잠시 후 다시 시도해주세요</p>
+            <p className="text-[13px] text-[#6b7684] mt-2">잠시 후 다시 시도해주세요</p>
           </div>
         )}
       </div>

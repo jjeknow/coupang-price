@@ -28,8 +28,8 @@ const colors = {
   error: {
     bg: 'bg-[#fee]',
     border: 'border-[#e03131]',
-    text: 'text-[#e03131]',
-    icon: 'text-[#e03131]',
+    text: 'text-[#c92a2a]',
+    icon: 'text-[#c92a2a]',
   },
   info: {
     bg: 'bg-[#e8f3ff]',

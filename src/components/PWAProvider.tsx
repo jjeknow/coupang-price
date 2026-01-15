@@ -123,7 +123,7 @@ export default function PWAProvider({ children }: { children: React.ReactNode })
             </div>
             <button
               onClick={handleDismiss}
-              className="text-[#8b95a1] hover:text-[#4e5968] p-1"
+              className="text-[#6b7684] hover:text-[#4e5968] p-1"
               aria-label="닫기"
             >
               <X size={18} />
@@ -143,7 +143,7 @@ export default function PWAProvider({ children }: { children: React.ReactNode })
             </div>
             <div>
               <p className="text-[14px] font-medium">오프라인 상태</p>
-              <p className="text-[12px] text-[#8b95a1]">인터넷 연결을 확인해주세요</p>
+              <p className="text-[12px] text-[#6b7684]">인터넷 연결을 확인해주세요</p>
             </div>
           </div>
         </div>

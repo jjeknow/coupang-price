@@ -37,7 +37,7 @@ export default async function GoldboxPage() {
           <div className="bg-white rounded-2xl p-12 text-center">
             <span className="text-4xl block mb-4">⏳</span>
             <p className="text-[#191f28] font-medium mb-2">상품을 준비 중입니다</p>
-            <p className="text-sm text-[#8b95a1]">잠시 후 다시 시도해주세요</p>
+            <p className="text-sm text-[#6b7684]">잠시 후 다시 시도해주세요</p>
           </div>
         )}
       </div>

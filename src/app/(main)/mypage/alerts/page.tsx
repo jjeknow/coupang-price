@@ -239,7 +239,7 @@ function AlertCard({
           <p className="text-[17px] font-bold text-[#3182f6]">
             {alert.targetPrice.toLocaleString()}원
           </p>
-          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-[#e8f3ff] text-[#3182f6] text-[11px] font-semibold rounded">
+          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-[#dbeafe] text-[#1d4ed8] text-[11px] font-semibold rounded">
             <TrendingDown size={10} />
             {discount}% 할인
           </span>
@@ -271,7 +271,7 @@ function AlertCard({
           <button
             onClick={onDelete}
             disabled={updating}
-            className="flex items-center gap-1 px-3 py-1.5 text-[#e03131] text-[13px] rounded-lg hover:bg-red-50 disabled:opacity-50"
+            className="flex items-center gap-1 px-3 py-1.5 text-[#c92a2a] text-[13px] rounded-lg hover:bg-red-50 disabled:opacity-50"
           >
             <Trash2 size={14} />
             삭제

@@ -142,7 +142,7 @@ export default function SignupPage() {
             <div className="w-full border-t border-[#e5e8eb]"></div>
           </div>
           <div className="relative flex justify-center">
-            <span className="px-4 bg-white text-[#8b95a1] text-sm">또는 이메일로 가입</span>
+            <span className="px-4 bg-white text-[#6b7684] text-sm">또는 이메일로 가입</span>
           </div>
         </div>
 
@@ -156,63 +156,63 @@ export default function SignupPage() {
           )}
 
           <div className="relative">
-            <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8b95a1]" />
+            <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="이름 (선택)"
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#8b95a1] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
             />
           </div>
 
           <div className="relative">
-            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8b95a1]" />
+            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="이메일"
               required
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#8b95a1] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
             />
           </div>
 
           <div className="relative">
-            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8b95a1]" />
+            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
             <input
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호 (6자 이상)"
               required
-              className="w-full pl-11 pr-12 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#8b95a1] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+              className="w-full pl-11 pr-12 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8b95a1] hover:text-[#4e5968]"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6b7684] hover:text-[#4e5968]"
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
 
           <div className="relative">
-            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8b95a1]" />
+            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
             <input
               type={showPassword ? 'text' : 'password'}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="비밀번호 확인"
               required
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#8b95a1] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
             />
           </div>
 
           {/* 비밀번호 체크 */}
           {password.length > 0 && (
             <div className="space-y-1 text-sm">
-              <div className={`flex items-center gap-2 ${passwordChecks.length ? 'text-green-600' : 'text-[#8b95a1]'}`}>
+              <div className={`flex items-center gap-2 ${passwordChecks.length ? 'text-green-600' : 'text-[#6b7684]'}`}>
                 <CheckCircle size={14} />
                 6자 이상
               </div>

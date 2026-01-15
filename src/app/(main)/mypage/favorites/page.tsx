@@ -135,7 +135,7 @@ export default function FavoritesPage() {
                   </p>
                 </Link>
 
-                <p className="text-[16px] font-bold text-[#e03131] mt-2">
+                <p className="text-[16px] font-bold text-[#c92a2a] mt-2">
                   {item.productPrice.toLocaleString()}원
                 </p>
 
@@ -178,7 +178,7 @@ export default function FavoritesPage() {
                   <button
                     onClick={() => handleDelete(item.coupangProductId)}
                     disabled={deleting === item.coupangProductId}
-                    className="flex items-center gap-1 px-3 py-1.5 text-[#e03131] text-[13px] rounded-lg hover:bg-red-50 disabled:opacity-50"
+                    className="flex items-center gap-1 px-3 py-1.5 text-[#c92a2a] text-[13px] rounded-lg hover:bg-red-50 disabled:opacity-50"
                   >
                     <Trash2 size={14} />
                     삭제

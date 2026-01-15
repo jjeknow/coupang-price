@@ -87,7 +87,7 @@ export default function CategoryProductList({ products }: CategoryProductListPro
       ) : (
         <div className="bg-white rounded-2xl p-16 text-center border border-[#e5e8eb]">
           <p className="text-[15px] text-[#6b7684]">조건에 맞는 상품이 없습니다</p>
-          <p className="text-[13px] text-[#8b95a1] mt-2">필터를 조정해보세요</p>
+          <p className="text-[13px] text-[#6b7684] mt-2">필터를 조정해보세요</p>
         </div>
       )}
     </>

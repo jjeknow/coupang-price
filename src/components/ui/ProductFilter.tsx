@@ -155,7 +155,7 @@ export default function ProductFilter({
                     })}
                     className="flex-1 px-3 py-2 border border-[#e5e8eb] rounded-lg text-[14px] focus:outline-none focus:border-[#3182f6]"
                   />
-                  <span className="text-[#8b95a1]">~</span>
+                  <span className="text-[#6b7684]">~</span>
                   <input
                     type="number"
                     placeholder="최대"

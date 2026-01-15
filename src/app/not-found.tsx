@@ -26,7 +26,7 @@ export default function NotFound() {
         {/* 404 아이콘 */}
         <div className="mb-8">
           <div className="w-32 h-32 mx-auto bg-[#f2f4f6] rounded-full flex items-center justify-center">
-            <span className="text-6xl font-bold text-[#8b95a1]">404</span>
+            <span className="text-6xl font-bold text-[#6b7684]">404</span>
           </div>
         </div>
 

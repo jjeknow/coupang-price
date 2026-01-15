@@ -46,7 +46,7 @@ export default function Error({ error, reset }: ErrorProps) {
 
         {/* 에러 다이제스트 (디버깅용) */}
         {error.digest && (
-          <p className="text-xs text-[#8b95a1] mb-6 font-mono">
+          <p className="text-xs text-[#6b7684] mb-6 font-mono">
             오류 코드: {error.digest}
           </p>
         )}

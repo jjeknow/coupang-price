@@ -92,7 +92,7 @@ export default function FavoritesPage() {
             <p className="text-[16px] font-medium text-[#333d4b] mb-2">
               관심상품이 없습니다
             </p>
-            <p className="text-[14px] text-[#8b95a1] mb-6">
+            <p className="text-[14px] text-[#6b7684] mb-6">
               마음에 드는 상품의 하트를 눌러<br />관심상품에 추가해보세요
             </p>
             <Link
@@ -104,7 +104,7 @@ export default function FavoritesPage() {
           </div>
         ) : (
           <>
-            <p className="text-[14px] text-[#8b95a1] mb-4">
+            <p className="text-[14px] text-[#6b7684] mb-4">
               총 {favorites.length}개의 관심상품
             </p>
             <div className="grid grid-cols-2 gap-3">

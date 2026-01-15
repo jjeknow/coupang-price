@@ -51,7 +51,7 @@ const features = [
     title: '실시간 가격 추적',
     description:
       '관심 상품의 가격 변동을 실시간으로 모니터링합니다. 가격이 내려가면 바로 확인할 수 있어요.',
-    color: 'text-[#e03131]',
+    color: 'text-[#c92a2a]',
     bgColor: 'bg-[#fff0f0]',
   },
   {
@@ -418,7 +418,7 @@ export default function AboutPage() {
       {/* 파트너스 고지 */}
       <section className="py-6 bg-[#f8f9fa] border-t border-[#e5e8eb]">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <p className="text-[#8b95a1] text-[12px]">
+          <p className="text-[#6b7684] text-[12px]">
             본 서비스는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받습니다
           </p>
         </div>

@@ -68,7 +68,7 @@ export default function AdminAlertsPage() {
       <div className="relative mb-6">
         <Search
           size={18}
-          className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8b95a1]"
+          className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]"
         />
         <input
           type="text"
@@ -88,7 +88,7 @@ export default function AdminAlertsPage() {
         ) : filteredAlerts.length === 0 ? (
           <div className="p-8 text-center">
             <Bell size={48} className="text-[#d1d6db] dark:text-[#4e5968] mx-auto mb-4" />
-            <p className="text-[#6b7684] dark:text-[#8b95a1]">
+            <p className="text-[#6b7684] dark:text-[#6b7684]">
               {searchQuery ? '검색 결과가 없습니다' : '등록된 알림이 없습니다'}
             </p>
           </div>
@@ -97,22 +97,22 @@ export default function AdminAlertsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[#e5e8eb] dark:border-[#3a3d42] bg-[#f9fafb] dark:bg-[#2a2d32]">
-                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#8b95a1]">
+                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#6b7684]">
                     상품
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#8b95a1]">
+                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#6b7684]">
                     목표가
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#8b95a1]">
+                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#6b7684]">
                     현재가
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#8b95a1]">
+                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#6b7684]">
                     사용자
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#8b95a1]">
+                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#6b7684]">
                     상태
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#8b95a1]">
+                  <th className="px-6 py-4 text-left text-sm font-medium text-[#6b7684] dark:text-[#6b7684]">
                     등록일
                   </th>
                 </tr>
@@ -127,7 +127,7 @@ export default function AdminAlertsPage() {
                       <p className="text-sm font-medium text-[#191f28] dark:text-[#f2f4f6] line-clamp-1 max-w-xs">
                         {alert.productName}
                       </p>
-                      <p className="text-xs text-[#8b95a1]">
+                      <p className="text-xs text-[#6b7684]">
                         ID: {alert.productId}
                       </p>
                     </td>
@@ -145,7 +145,7 @@ export default function AdminAlertsPage() {
                       <p className="text-sm text-[#191f28] dark:text-[#f2f4f6]">
                         {alert.user.name || '-'}
                       </p>
-                      <p className="text-xs text-[#8b95a1]">{alert.user.email}</p>
+                      <p className="text-xs text-[#6b7684]">{alert.user.email}</p>
                     </td>
                     <td className="px-6 py-4">
                       <span
@@ -159,7 +159,7 @@ export default function AdminAlertsPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-sm text-[#6b7684] dark:text-[#8b95a1]">
+                      <span className="text-sm text-[#6b7684] dark:text-[#6b7684]">
                         {new Date(alert.createdAt).toLocaleDateString('ko-KR')}
                       </span>
                     </td>

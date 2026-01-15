@@ -123,7 +123,7 @@ export default function MenuPage() {
               href="/auth/login"
               className="flex items-center gap-4"
             >
-              <div className="w-14 h-14 bg-[#f2f4f6] rounded-full flex items-center justify-center text-[#8b95a1]">
+              <div className="w-14 h-14 bg-[#f2f4f6] rounded-full flex items-center justify-center text-[#6b7684]">
                 <UserIcon />
               </div>
               <div className="flex-1">
@@ -141,7 +141,7 @@ export default function MenuPage() {
         {menuItems.map((section, sectionIndex) => (
           <div key={sectionIndex} className="mt-4">
             <div className="px-4 py-2">
-              <p className="text-xs font-medium text-[#8b95a1]">{section.title}</p>
+              <p className="text-xs font-medium text-[#6b7684]">{section.title}</p>
             </div>
             <div className="bg-white">
               {section.items.map((item, itemIndex) => {
@@ -171,17 +171,17 @@ export default function MenuPage() {
               onClick={handleSignOut}
               className="flex items-center gap-4 px-4 py-4 w-full active:bg-red-50"
             >
-              <div className="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center text-[#e03131]">
+              <div className="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center text-[#c92a2a]">
                 <LogOutIcon />
               </div>
-              <span className="flex-1 text-left text-[15px] text-[#e03131]">로그아웃</span>
+              <span className="flex-1 text-left text-[15px] text-[#c92a2a]">로그아웃</span>
             </button>
           </div>
         )}
 
         {/* 버전 정보 */}
         <div className="py-8 text-center">
-          <p className="text-xs text-[#8b95a1]">똑체크 v1.0.0</p>
+          <p className="text-xs text-[#6b7684]">똑체크 v1.0.0</p>
         </div>
       </div>
     </div>

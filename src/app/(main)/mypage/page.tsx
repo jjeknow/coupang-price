@@ -147,7 +147,7 @@ export default function MyPage() {
                   />
                 </div>
                 <p className="text-[12px] text-[#191f28] line-clamp-1">{item.productName}</p>
-                <p className="text-[13px] font-bold text-[#e03131]">
+                <p className="text-[13px] font-bold text-[#c92a2a]">
                   {item.productPrice.toLocaleString()}원
                 </p>
               </div>
@@ -218,7 +218,7 @@ export default function MyPage() {
       {/* 로그아웃 */}
       <button
         onClick={handleSignOut}
-        className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-white rounded-2xl border border-[#e5e8eb] text-[#e03131] hover:bg-red-50 transition-colors"
+        className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-white rounded-2xl border border-[#e5e8eb] text-[#c92a2a] hover:bg-red-50 transition-colors"
       >
         <LogOut size={18} />
         <span className="font-medium">로그아웃</span>

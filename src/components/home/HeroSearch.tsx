@@ -142,7 +142,7 @@ export default function HeroSearch() {
           {/* 타이틀 */}
           <h1 className="text-[22px] font-bold leading-tight mb-2 tracking-tight text-white">
             쿠팡 가격변동 추적{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] via-[#a78bfa] to-[#60a5fa] animate-gradient bg-[length:200%_auto]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] via-[#a78bfa] to-[#60a5fa]">
               & 최저가 알림
             </span>
           </h1>
@@ -249,17 +249,6 @@ export default function HeroSearch() {
         </div>
       </div>
 
-      {/* CSS 애니메이션 */}
-      <style jsx>{`
-        @keyframes gradient {
-          0% { background-position: 0% center; }
-          50% { background-position: 100% center; }
-          100% { background-position: 0% center; }
-        }
-        .animate-gradient {
-          animation: gradient 4s ease infinite;
-        }
-      `}</style>
     </section>
   );
 }

@@ -176,7 +176,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
               className="flex-1"
             >
               <div className="relative">
-                <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8b95a1]" />
+                <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7684]" />
                 <input
                   ref={inputRef}
                   type="text"
@@ -184,7 +184,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
                   onChange={(e) => setInputValue(e.target.value)}
                   onFocus={() => !query && setShowSuggestions(true)}
                   placeholder="찾고 싶은 상품을 검색해보세요"
-                  className="w-full pl-12 pr-10 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#8b95a1] focus:outline-none focus:ring-2 focus:ring-[#3182f6] focus:bg-white transition-all"
+                  className="w-full pl-12 pr-10 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#6b7684] focus:outline-none focus:ring-2 focus:ring-[#3182f6] focus:bg-white transition-all"
                   style={{ fontSize: '16px' }}
                 />
                 {inputValue && (
@@ -213,12 +213,12 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
             <div className="bg-white border-b border-[#e5e8eb]">
               <div className="px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2 text-[14px] font-semibold text-[#191f28]">
-                  <Clock size={16} className="text-[#8b95a1]" />
+                  <Clock size={16} className="text-[#6b7684]" />
                   최근 검색어
                 </div>
                 <button
                   onClick={handleClearAllRecent}
-                  className="text-[13px] text-[#8b95a1] hover:text-[#4e5968]"
+                  className="text-[13px] text-[#6b7684] hover:text-[#4e5968]"
                 >
                   전체 삭제
                 </button>
@@ -237,7 +237,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
                     </button>
                     <button
                       onClick={() => handleRemoveRecent(keyword)}
-                      className="w-4 h-4 flex items-center justify-center text-[#8b95a1] hover:text-[#4e5968]"
+                      className="w-4 h-4 flex items-center justify-center text-[#6b7684] hover:text-[#4e5968]"
                     >
                       <X size={12} />
                     </button>
@@ -300,7 +300,7 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
             <div className="bg-white rounded-2xl p-16 text-center border border-[#f04452]/20 bg-[#f04452]/5">
               <span className="text-[48px] block mb-4">😢</span>
               <p className="text-[15px] text-[#f04452]">{error}</p>
-              <p className="text-[13px] text-[#8b95a1] mt-2">잠시 후 다시 시도해주세요</p>
+              <p className="text-[13px] text-[#6b7684] mt-2">잠시 후 다시 시도해주세요</p>
             </div>
           )}
 

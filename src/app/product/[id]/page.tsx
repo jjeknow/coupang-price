@@ -852,8 +852,8 @@ export default function ProductDetailPage() {
                 {/* 카테고리 */}
                 {product.categoryName && (
                   <div className="flex items-center gap-1 mb-2">
-                    <span className="text-[13px] text-[#8b95a1]">{product.categoryName}</span>
-                    <ChevronRight size={14} className="text-[#8b95a1]" />
+                    <span className="text-[13px] text-[#6b7684]">{product.categoryName}</span>
+                    <ChevronRight size={14} className="text-[#6b7684]" />
                   </div>
                 )}
 
@@ -863,10 +863,10 @@ export default function ProductDetailPage() {
                 {/* 현재 가격 */}
                 <div className="mb-4">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-[28px] font-bold text-[#e03131] tracking-tighter">
+                    <span className="text-[28px] font-bold text-[#c92a2a] tracking-tighter">
                       {formatPrice(product.productPrice)}
                     </span>
-                    <span className="text-[14px] text-[#e03131]">원</span>
+                    <span className="text-[14px] text-[#c92a2a]">원</span>
                   </div>
                 </div>
 
@@ -895,7 +895,7 @@ export default function ProductDetailPage() {
                     <p className="text-[13px] text-[#6b7684] font-medium">
                       가격 데이터 수집 중입니다
                     </p>
-                    <p className="text-[11px] text-[#8b95a1] mt-1">
+                    <p className="text-[11px] text-[#6b7684] mt-1">
                       내일부터 가격 변동 정보를 확인할 수 있어요
                     </p>
                   </div>
@@ -954,7 +954,7 @@ export default function ProductDetailPage() {
                 <p className="text-[14px] text-[#6b7684] mb-1">
                   이 상품의 가격 데이터를 수집 중입니다.
                 </p>
-                <p className="text-[13px] text-[#8b95a1]">
+                <p className="text-[13px] text-[#6b7684]">
                   내일부터 실제 가격 변동 그래프를 확인할 수 있어요.
                 </p>
               </div>
@@ -1109,7 +1109,7 @@ export default function ProductDetailPage() {
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6b7684]">원</span>
               </div>
-              <p className="text-[12px] text-[#8b95a1] mt-2">
+              <p className="text-[12px] text-[#6b7684] mt-2">
                 현재 가격보다 {formatPrice(product.productPrice - targetPrice)}원 낮은 가격 (
                 {Math.round(((product.productPrice - targetPrice) / product.productPrice) * 100)}% 할인)
               </p>
@@ -1137,7 +1137,7 @@ export default function ProductDetailPage() {
               {isAlertOn && (
                 <button
                   onClick={handleAlertDelete}
-                  className="flex-1 py-3.5 bg-[#f2f4f6] text-[#e03131] rounded-xl font-medium hover:bg-red-50"
+                  className="flex-1 py-3.5 bg-[#f2f4f6] text-[#c92a2a] rounded-xl font-medium hover:bg-red-50"
                 >
                   알림 해제
                 </button>
