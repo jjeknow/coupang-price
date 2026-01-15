@@ -2,11 +2,18 @@
  * 가격 수집 Cron API
  * Vercel Cron에서 매일 호출하여 가격 히스토리 저장
  *
- * 쿠팡 API 규제 준수:
- * - 분당 100회 제한 → 분당 12회만 호출 (12% 사용)
- * - 각 호출 사이 5초 딜레이
+ * ⚠️ 쿠팡 파트너스 API 규제 준수 (매우 중요!)
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * 공식 제한:
+ * - 전체 API: 분당 100회
+ * - 검색 API: 분당 50회
+ * - 3회 경고 시 API 키 영구 정지
+ *
+ * 우리 설정 (10% 룰 적용):
+ * - 전체 API: 분당 10회 이하 (10% 사용)
+ * - 검색 API: 분당 5회 이하 (10% 사용)
  * - 429/403 에러 시 즉시 중단
- * - Vercel 5분 타임아웃 내 완료 필요 (15카테고리 × 5초 = 75초 + 여유)
+ * - Vercel 5분 타임아웃 준수
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -16,10 +23,20 @@ import { getBestProducts, getGoldboxProducts, searchProducts, CATEGORIES } from 
 // Vercel Cron 시크릿 키
 const CRON_SECRET = process.env.CRON_SECRET;
 
+// ⚠️ 규제 준수 설정 (절대 수정 금지!)
+const RATE_LIMIT_CONFIG = {
+  // 전체 API: 분당 100회 제한 → 10회만 사용 (10%)
+  globalDelayMs: 6000,        // 6초 간격 = 분당 10회
+  // 검색 API: 분당 50회 제한 → 5회만 사용 (10%)
+  searchDelayMs: 12000,       // 12초 간격 = 분당 5회
+  // Vercel 타임아웃
+  maxExecutionMs: 270000,     // 4분 30초 (5분 타임아웃 전 안전 마진)
+};
+
 // 사용자 상품 수집 설정 (초안전 모드)
 const USER_PRODUCTS_CONFIG = {
-  maxProductsPerDay: 50,      // 일일 최대 50개
-  delayBetweenCalls: 6000,    // 6초 간격 (10회/분)
+  maxProductsPerDay: 30,      // 일일 최대 30개 (더 보수적)
+  delayBetweenCalls: 12000,   // 12초 간격 (분당 5회, 검색 API 10%)
   viewedWithinDays: 7,        // 7일 내 조회한 상품만
 };
 
@@ -38,9 +55,18 @@ async function safeApiCall<T>(
   } catch (error) {
     console.error(`[Cron] ${name}: 실패`, error);
 
-    // 429/403 에러면 즉시 중단 신호
+    // 429/403/한도초과 에러면 즉시 중단 신호 (API 키 보호!)
     if (error instanceof Error) {
-      if (error.message.includes('429') || error.message.includes('403')) {
+      const msg = error.message.toLowerCase();
+      if (
+        msg.includes('429') ||
+        msg.includes('403') ||
+        msg.includes('rate') ||
+        msg.includes('limit') ||
+        msg.includes('exceeded') ||
+        msg.includes('한도')
+      ) {
+        console.error('[Cron] ⚠️ RATE LIMIT 감지 - 즉시 중단!');
         throw new Error('RATE_LIMIT_EXCEEDED');
       }
     }
@@ -196,11 +222,10 @@ async function collectUserViewedProducts(
     console.log(`[Cron] 사용자 조회 상품 ${userProducts.length}개 발견`);
 
     for (const product of userProducts) {
-      // Vercel 5분 타임아웃 - 4분 30초에서 중단
-      const elapsed = Date.now() - startTime;
-      if (elapsed > 270000) {
+      // 타임아웃 체크
+      if (Date.now() - startTime > RATE_LIMIT_CONFIG.maxExecutionMs) {
         console.log('[Cron] 타임아웃 임박 - 사용자 상품 수집 중단');
-        results.errors.push('Timeout approaching - stopped early');
+        results.errors.push('Timeout - user products stopped early');
         break;
       }
 
@@ -237,7 +262,7 @@ async function collectUserViewedProducts(
           results.totalProducts++;
         }
 
-        // 6초 대기 (분당 10회, 20% 사용)
+        // 12초 대기 (분당 5회, 검색 API 10% 사용)
         await delay(USER_PRODUCTS_CONFIG.delayBetweenCalls);
       } catch (error) {
         if (error instanceof Error && error.message === 'RATE_LIMIT_EXCEEDED') {
@@ -294,13 +319,20 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // 5초 대기
-    await delay(5000);
+    // 6초 대기 (분당 10회 유지)
+    await delay(RATE_LIMIT_CONFIG.globalDelayMs);
 
     // 2. 카테고리별 베스트 상품 수집 (상위 100개씩)
     const categoryIds = Object.keys(CATEGORIES).map(Number);
 
     for (const categoryId of categoryIds) {
+      // 타임아웃 체크
+      if (Date.now() - startTime > RATE_LIMIT_CONFIG.maxExecutionMs) {
+        console.log('[Cron] 타임아웃 임박 - 카테고리 수집 중단');
+        results.errors.push('Timeout - categories stopped early');
+        break;
+      }
+
       try {
         const products = await safeApiCall(
           () => getBestProducts(categoryId, 100),
@@ -321,11 +353,11 @@ export async function GET(request: NextRequest) {
           results.categories++;
         }
 
-        // 각 카테고리 사이 5초 대기 (분당 12회, 5분 타임아웃 내 완료)
-        await delay(5000);
+        // 각 카테고리 사이 6초 대기 (분당 10회)
+        await delay(RATE_LIMIT_CONFIG.globalDelayMs);
       } catch (error) {
         if (error instanceof Error && error.message === 'RATE_LIMIT_EXCEEDED') {
-          results.errors.push('Rate limit exceeded - 수집 중단');
+          results.errors.push('⚠️ Rate limit exceeded - 수집 즉시 중단');
           results.success = false;
           break;
         }
