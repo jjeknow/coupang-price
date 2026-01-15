@@ -3,10 +3,10 @@
  * Vercel Cron에서 매일 호출하여 가격 히스토리 저장
  *
  * 쿠팡 API 규제 준수:
- * - 분당 100회 제한 → 분당 6회만 호출 (6% 사용)
- * - 각 호출 사이 10초 딜레이
+ * - 분당 100회 제한 → 분당 12회만 호출 (12% 사용)
+ * - 각 호출 사이 5초 딜레이
  * - 429/403 에러 시 즉시 중단
- * - 요리픽과 API 키 공유 고려하여 보수적 설정
+ * - Vercel 5분 타임아웃 내 완료 필요 (15카테고리 × 5초 = 75초 + 여유)
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -174,15 +174,18 @@ export async function GET(request: NextRequest) {
     );
 
     if (goldboxProducts) {
-      for (const product of goldboxProducts) {
-        await saveProductPrice(product);
-        results.goldbox++;
-        results.totalProducts++;
+      // 병렬로 저장 (5개씩 배치)
+      const batchSize = 5;
+      for (let i = 0; i < goldboxProducts.length; i += batchSize) {
+        const batch = goldboxProducts.slice(i, i + batchSize);
+        await Promise.all(batch.map(product => saveProductPrice(product)));
+        results.goldbox += batch.length;
+        results.totalProducts += batch.length;
       }
     }
 
-    // 10초 대기 (요리픽과 API 키 공유 고려)
-    await delay(10000);
+    // 5초 대기
+    await delay(5000);
 
     // 2. 카테고리별 베스트 상품 수집 (상위 100개씩)
     const categoryIds = Object.keys(CATEGORIES).map(Number);
@@ -195,18 +198,21 @@ export async function GET(request: NextRequest) {
         );
 
         if (products) {
-          for (const product of products) {
-            await saveProductPrice({
+          // 병렬로 저장 (10개씩 배치)
+          const batchSize = 10;
+          for (let i = 0; i < products.length; i += batchSize) {
+            const batch = products.slice(i, i + batchSize);
+            await Promise.all(batch.map(product => saveProductPrice({
               ...product,
               categoryName: CATEGORIES[categoryId],
-            });
-            results.totalProducts++;
+            })));
+            results.totalProducts += batch.length;
           }
           results.categories++;
         }
 
-        // 각 카테고리 사이 10초 대기 (분당 6회 유지, 요리픽과 공유 고려)
-        await delay(10000);
+        // 각 카테고리 사이 5초 대기 (분당 12회, 5분 타임아웃 내 완료)
+        await delay(5000);
       } catch (error) {
         if (error instanceof Error && error.message === 'RATE_LIMIT_EXCEEDED') {
           results.errors.push('Rate limit exceeded - 수집 중단');
