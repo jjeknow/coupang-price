@@ -180,7 +180,7 @@ async function saveProductPrice(product: {
   }
 }
 
-// 사용자 조회 상품 가격 수집
+// 사용자 조회 상품 가격 수집 (즐겨찾기 우선)
 async function collectUserViewedProducts(
   results: {
     totalProducts: number;
@@ -195,18 +195,24 @@ async function collectUserViewedProducts(
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - USER_PRODUCTS_CONFIG.viewedWithinDays);
 
   try {
-    // 최근 7일 내 조회된 상품 중 카테고리 베스트/골드박스에 없는 상품
-    // 즐겨찾기에 등록된 상품 우선
-    const userProducts = await prisma.product.findMany({
+    // 1. 즐겨찾기된 상품의 coupangId 목록 조회
+    const favoriteProductIds = await prisma.favorite.findMany({
+      select: { coupangProductId: true },
+      distinct: ['coupangProductId'],
+    });
+    const favoriteCoupangIds = new Set(favoriteProductIds.map(f => f.coupangProductId));
+
+    // 2. 최근 7일 내 조회된 상품 조회
+    const recentProducts = await prisma.product.findMany({
       where: {
         lastViewedAt: {
           gte: sevenDaysAgo,
         },
       },
       orderBy: [
-        { lastViewedAt: 'desc' }, // 최근 조회순
+        { lastViewedAt: 'desc' },
       ],
-      take: USER_PRODUCTS_CONFIG.maxProductsPerDay,
+      take: USER_PRODUCTS_CONFIG.maxProductsPerDay * 2, // 여유있게 조회
       select: {
         id: true,
         coupangId: true,
@@ -219,7 +225,18 @@ async function collectUserViewedProducts(
       },
     });
 
-    console.log(`[Cron] 사용자 조회 상품 ${userProducts.length}개 발견`);
+    // 3. 즐겨찾기 상품 우선 정렬
+    const sortedProducts = recentProducts.sort((a, b) => {
+      const aIsFavorite = favoriteCoupangIds.has(a.coupangId) ? 1 : 0;
+      const bIsFavorite = favoriteCoupangIds.has(b.coupangId) ? 1 : 0;
+      return bIsFavorite - aIsFavorite; // 즐겨찾기 먼저
+    });
+
+    // 4. 최대 개수만큼만 선택
+    const userProducts = sortedProducts.slice(0, USER_PRODUCTS_CONFIG.maxProductsPerDay);
+
+    const favoriteCount = userProducts.filter(p => favoriteCoupangIds.has(p.coupangId)).length;
+    console.log(`[Cron] 사용자 상품 ${userProducts.length}개 (즐겨찾기 ${favoriteCount}개 포함)`);
 
     for (const product of userProducts) {
       // 타임아웃 체크
@@ -233,10 +250,12 @@ async function collectUserViewedProducts(
         // 상품명으로 검색하여 현재 가격 확인
         const searchResult = await safeApiCall(
           () => searchProducts(product.name, 1),
-          `UserProduct ${product.coupangId}`
+          `UserProduct ${product.coupangId}${favoriteCoupangIds.has(product.coupangId) ? ' ⭐' : ''}`
         );
 
         if (!searchResult || !searchResult.productData?.length) {
+          // 12초 대기 후 다음 상품
+          await delay(USER_PRODUCTS_CONFIG.delayBetweenCalls);
           continue;
         }
 
