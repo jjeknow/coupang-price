@@ -206,7 +206,7 @@ export default function PriceChart({
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-[15px] font-bold text-[#191f28] mb-0.5">가격 변동 추이</h3>
-          <p className="text-[11px] text-[#5c6470]">최근 30일간 가격 변동</p>
+          <p className="text-[11px] text-[#5c6470]">전체 가격 히스토리</p>
         </div>
         <div className="flex items-center gap-1.5">
           {isLowest && (
@@ -226,7 +226,7 @@ export default function PriceChart({
       {/* 가격 변동 요약 - 반응형 그리드 */}
       <div className="grid grid-cols-3 gap-2 mb-4">
         <div className="p-2.5 bg-[#f2f4f6] rounded-lg text-center">
-          <p className="text-[10px] text-[#5c6470] mb-0.5">30일 전 대비</p>
+          <p className="text-[10px] text-[#5c6470] mb-0.5">첫 기록 대비</p>
           <div className="flex items-center justify-center gap-0.5">
             {getTrendIcon()}
             <span className={`text-[13px] font-bold ${getTrendColor()}`}>

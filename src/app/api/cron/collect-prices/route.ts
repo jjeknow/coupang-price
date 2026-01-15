@@ -223,17 +223,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // 30일 이상 된 가격 히스토리 정리
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-    await prisma.priceHistory.deleteMany({
-      where: {
-        createdAt: {
-          lt: thirtyDaysAgo,
-        },
-      },
-    });
+    // 가격 히스토리는 삭제하지 않음 (장기 추이 분석용)
 
     results.duration = Date.now() - startTime;
     console.log('[Cron] 가격 수집 완료:', results);

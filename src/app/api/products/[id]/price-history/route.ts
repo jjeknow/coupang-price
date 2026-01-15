@@ -14,13 +14,12 @@ export async function GET(
     const { id } = await params;
     const coupangId = id;
 
-    // 상품 조회
+    // 상품 조회 (전체 히스토리)
     const product = await prisma.product.findUnique({
       where: { coupangId },
       include: {
         priceHistory: {
           orderBy: { createdAt: 'asc' },
-          take: 30,
         },
       },
     });
