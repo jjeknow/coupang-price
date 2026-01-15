@@ -349,18 +349,23 @@ export default function ProductDetailPage() {
         if (data.success && data.data.hasHistory && data.data.history.length > 0) {
           setPriceHistory(data.data.history);
           setHasRealData(true);
-          return;
+        } else {
+          // 데이터 없음
+          setPriceHistory([]);
+          setHasRealData(false);
         }
+      } else {
+        // API 실패
+        setPriceHistory([]);
+        setHasRealData(false);
       }
     } catch (error) {
       console.error('가격 히스토리 조회 실패:', error);
+      setPriceHistory([]);
+      setHasRealData(false);
     } finally {
       setPriceHistoryLoading(false);
     }
-
-    // 실제 데이터 없으면 빈 배열 유지
-    setPriceHistory([]);
-    setHasRealData(false);
   };
 
   // 실제 데이터 여부 상태
