@@ -210,13 +210,13 @@ export default function AboutPage() {
           <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#6366f1]/20 rounded-full blur-[100px]" />
         </div>
 
-        <div className="relative max-w-4xl mx-auto px-4 py-16 md:py-24 text-center">
+        <div className="relative max-w-4xl mx-auto px-4 py-16 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/10 mb-4">
             <Shield size={14} className="text-[#60a5fa]" />
             <span className="text-[12px] text-white/80">안전하고 신뢰할 수 있는 서비스</span>
           </div>
 
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-2xl font-bold text-white mb-4 leading-tight">
             쿠팡 가격 추적으로
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] to-[#a78bfa]">
@@ -225,9 +225,9 @@ export default function AboutPage() {
             을 시작하세요
           </h1>
 
-          <p className="text-[#94a3b8] text-base md:text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-[#94a3b8] text-base mb-8 max-w-2xl mx-auto">
             원하는 상품의 가격 변동을 실시간으로 추적하고,
-            <br className="hidden md:block" />
+            <br />
             최저가가 되면 알림을 받아 현명하게 쇼핑하세요.
           </p>
 
@@ -242,18 +242,18 @@ export default function AboutPage() {
       </section>
 
       {/* 주요 기능 섹션 */}
-      <section className="py-16 md:py-24 bg-[#f8f9fa]">
+      <section className="py-12 bg-[#f8f9fa]">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#191f28] mb-3">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-bold text-[#191f28] mb-3">
               주요 기능
             </h2>
-            <p className="text-[#6b7684] max-w-xl mx-auto">
+            <p className="text-[#6b7684] text-[14px] max-w-xl mx-auto">
               스마트한 쇼핑을 위한 다양한 기능을 무료로 제공합니다
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-4">
             {features.map((feature) => (
               <article
                 key={feature.title}
@@ -277,18 +277,18 @@ export default function AboutPage() {
       </section>
 
       {/* 장점 섹션 */}
-      <section className="py-16 md:py-24">
+      <section className="py-12">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#191f28] mb-3">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-bold text-[#191f28] mb-3">
               왜 우리 서비스를 사용해야 할까요?
             </h2>
-            <p className="text-[#6b7684]">
+            <p className="text-[#6b7684] text-[14px]">
               매일 수많은 사용자들이 현명한 쇼핑을 위해 이용하고 있습니다
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-3">
             {benefits.map((benefit, index) => (
               <div
                 key={index}
@@ -306,16 +306,16 @@ export default function AboutPage() {
       </section>
 
       {/* 이용 방법 섹션 */}
-      <section className="py-16 md:py-24 bg-[#f8f9fa]">
+      <section className="py-12 bg-[#f8f9fa]">
         <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#191f28] mb-3">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-bold text-[#191f28] mb-3">
               이용 방법
             </h2>
-            <p className="text-[#6b7684]">3단계로 간단하게 시작하세요</p>
+            <p className="text-[#6b7684] text-[14px]">3단계로 간단하게 시작하세요</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-6">
             <div className="text-center">
               <div className="w-16 h-16 bg-[#3182f6] rounded-full flex items-center justify-center mx-auto mb-4">
                 <Search size={28} className="text-white" />
@@ -365,10 +365,10 @@ export default function AboutPage() {
       </section>
 
       {/* FAQ 섹션 */}
-      <section className="py-16 md:py-24">
+      <section id="faq" className="py-12 scroll-mt-4">
         <div className="max-w-3xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#191f28] mb-3">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-bold text-[#191f28] mb-3">
               자주 묻는 질문
             </h2>
           </div>
@@ -397,9 +397,9 @@ export default function AboutPage() {
       </section>
 
       {/* CTA 섹션 */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]">
+      <section className="py-12 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h2 className="text-xl font-bold text-white mb-4">
             지금 바로 가격 추적을 시작하세요
           </h2>
           <p className="text-[#94a3b8] mb-8">

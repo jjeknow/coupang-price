@@ -13,6 +13,8 @@ interface Product {
   isRocket?: boolean;
   isFreeShipping?: boolean;
   categoryName?: string;
+  lowestPrice?: number | null;
+  highestPrice?: number | null;
 }
 
 interface CategoryProductListProps {
@@ -64,7 +66,7 @@ export default function CategoryProductList({ products }: CategoryProductListPro
       />
 
       {filteredAndSortedProducts.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           {filteredAndSortedProducts.map((product, index) => (
             <ProductCard
               key={product.productId}
@@ -76,6 +78,8 @@ export default function CategoryProductList({ products }: CategoryProductListPro
               isRocket={product.isRocket}
               isFreeShipping={product.isFreeShipping}
               categoryName={product.categoryName}
+              lowestPrice={product.lowestPrice}
+              highestPrice={product.highestPrice}
               priority={index < 10}
             />
           ))}

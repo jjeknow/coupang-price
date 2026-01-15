@@ -32,24 +32,24 @@ export default function CategorySection() {
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <section className="bg-white py-10">
+    <section className="bg-white py-6">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-[15px] sm:text-[18px] font-bold text-[#191f28] text-center mb-6 sm:mb-8 px-2">
+        <h2 className="text-[15px] font-bold text-[#191f28] text-center mb-6 px-2">
           🔍 찾고 싶은 카테고리를 선택해 보세요!
         </h2>
 
         {/* 메인 카테고리 */}
-        <div className="grid grid-cols-4 md:grid-cols-8 gap-4 mb-4">
+        <div className="grid grid-cols-4 gap-4 mb-4">
           {CATEGORY_MAIN.map((cat) => (
             <Link
               key={cat.id}
               href={`/category/${cat.id}`}
               className="flex flex-col items-center gap-2 group"
             >
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center text-[32px] md:text-[40px] bg-[#f8f9fa] group-hover:scale-110 group-hover:bg-[#e8f3ff] transition-all duration-200">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-[28px] bg-[#f8f9fa] group-hover:scale-110 group-hover:bg-[#e8f3ff] transition-all duration-200">
                 {cat.emoji}
               </div>
-              <span className="text-[13px] text-[#4e5968] font-medium group-hover:text-[#3182f6] transition-colors">
+              <span className="text-[12px] text-[#4e5968] font-medium group-hover:text-[#3182f6] transition-colors">
                 {cat.name}
               </span>
             </Link>
@@ -58,17 +58,17 @@ export default function CategorySection() {
 
         {/* 추가 카테고리 (토글) */}
         {showMore && (
-          <div className="grid grid-cols-4 md:grid-cols-8 gap-4 mb-4 animate-fadeIn">
+          <div className="grid grid-cols-4 gap-4 mb-4 animate-fadeIn">
             {CATEGORY_MORE.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/category/${cat.id}`}
                 className="flex flex-col items-center gap-2 group"
               >
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center text-[32px] md:text-[40px] bg-[#f8f9fa] group-hover:scale-110 group-hover:bg-[#e8f3ff] transition-all duration-200">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-[28px] bg-[#f8f9fa] group-hover:scale-110 group-hover:bg-[#e8f3ff] transition-all duration-200">
                   {cat.emoji}
                 </div>
-                <span className="text-[13px] text-[#4e5968] font-medium group-hover:text-[#3182f6] transition-colors">
+                <span className="text-[12px] text-[#4e5968] font-medium group-hover:text-[#3182f6] transition-colors">
                   {cat.name}
                 </span>
               </Link>
@@ -77,10 +77,10 @@ export default function CategorySection() {
         )}
 
         {/* 더보기/접기 버튼 */}
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-center mt-4">
           <button
             onClick={() => setShowMore(!showMore)}
-            className="flex items-center gap-2 px-6 py-2.5 text-[14px] text-[#4e5968] bg-[#f2f4f6] hover:bg-[#e5e8eb] rounded-full transition-colors"
+            className="flex items-center gap-2 px-5 py-2 text-[13px] text-[#4e5968] bg-[#f2f4f6] hover:bg-[#e5e8eb] rounded-full transition-colors"
           >
             {showMore ? (
               <>

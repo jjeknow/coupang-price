@@ -67,10 +67,14 @@ export default function PriceChart({
       },
       timeScale: {
         borderVisible: false,
-        timeVisible: true,
+        timeVisible: false,
         secondsVisible: false,
         fixLeftEdge: true,
         fixRightEdge: true,
+      },
+      localization: {
+        locale: 'ko-KR',
+        dateFormat: 'M월 d일',
       },
       crosshair: {
         mode: 1,
@@ -122,10 +126,11 @@ export default function PriceChart({
       if (lowestPrice) {
         areaSeries.createPriceLine({
           price: lowestPrice,
-          color: '#00c471',
+          color: '#0ca678',
           lineWidth: 1,
           lineStyle: 2,
           axisLabelVisible: true,
+          axisLabelColor: '#0ca678',
           title: '',
         });
       }
@@ -134,10 +139,11 @@ export default function PriceChart({
       if (highestPrice) {
         areaSeries.createPriceLine({
           price: highestPrice,
-          color: '#ff8b00',
+          color: '#f59f00',
           lineWidth: 1,
           lineStyle: 2,
           axisLabelVisible: true,
+          axisLabelColor: '#f59f00',
           title: '',
         });
       }
@@ -197,20 +203,20 @@ export default function PriceChart({
   return (
     <div>
       {/* 헤더 */}
-      <div className="flex items-center justify-between mb-4 sm:mb-6">
+      <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-[15px] sm:text-[17px] font-bold text-[#191f28] mb-0.5 sm:mb-1">가격 변동 추이</h3>
-          <p className="text-[11px] sm:text-[12px] text-[#8b95a1]">최근 30일간 가격 변동</p>
+          <h3 className="text-[15px] font-bold text-[#191f28] mb-0.5">가격 변동 추이</h3>
+          <p className="text-[11px] text-[#8b95a1]">최근 30일간 가격 변동</p>
         </div>
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex items-center gap-1.5">
           {isLowest && (
-            <span className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 bg-[#fff0f0] text-[#e03131] text-[10px] sm:text-[11px] font-semibold rounded-md sm:rounded-lg">
-              <TrendingDown size={10} className="sm:w-3 sm:h-3" />
+            <span className="flex items-center gap-1 px-2 py-1 bg-[#fff0f0] text-[#e03131] text-[10px] font-semibold rounded-md">
+              <TrendingDown size={10}  />
               역대 최저가
             </span>
           )}
           {stats.changePercent < -5 && !isLowest && (
-            <span className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 bg-[#e6f9ed] text-[#0ca678] text-[10px] sm:text-[11px] font-semibold rounded-md sm:rounded-lg">
+            <span className="flex items-center gap-1 px-2 py-1 bg-[#e6f9ed] text-[#0ca678] text-[10px] font-semibold rounded-md">
               구매 적기
             </span>
           )}
@@ -218,25 +224,25 @@ export default function PriceChart({
       </div>
 
       {/* 가격 변동 요약 - 반응형 그리드 */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6">
-        <div className="p-2.5 sm:p-4 bg-[#f2f4f6] rounded-lg sm:rounded-xl text-center">
-          <p className="text-[10px] sm:text-[11px] text-[#8b95a1] mb-0.5 sm:mb-1">30일 전 대비</p>
-          <div className="flex items-center justify-center gap-0.5 sm:gap-1">
+      <div className="grid grid-cols-3 gap-2 mb-4">
+        <div className="p-2.5 bg-[#f2f4f6] rounded-lg text-center">
+          <p className="text-[10px] text-[#8b95a1] mb-0.5">30일 전 대비</p>
+          <div className="flex items-center justify-center gap-0.5">
             {getTrendIcon()}
-            <span className={`text-[13px] sm:text-[15px] font-bold ${getTrendColor()}`}>
+            <span className={`text-[13px] font-bold ${getTrendColor()}`}>
               {stats.changePercent > 0 ? '+' : ''}{stats.changePercent.toFixed(1)}%
             </span>
           </div>
         </div>
-        <div className="p-2.5 sm:p-4 bg-[#e8f3ff] rounded-lg sm:rounded-xl text-center">
-          <p className="text-[10px] sm:text-[11px] text-[#3182f6] mb-0.5 sm:mb-1">평균가</p>
-          <p className="text-[12px] sm:text-[15px] font-bold text-[#3182f6]">
+        <div className="p-2.5 bg-[#e8f3ff] rounded-lg text-center">
+          <p className="text-[10px] text-[#3182f6] mb-0.5">평균가</p>
+          <p className="text-[12px] font-bold text-[#3182f6]">
             {stats.average.toLocaleString('ko-KR')}원
           </p>
         </div>
-        <div className="p-2.5 sm:p-4 bg-[#fff0f0] rounded-lg sm:rounded-xl text-center">
-          <p className="text-[10px] sm:text-[11px] text-[#e03131] mb-0.5 sm:mb-1">최저가</p>
-          <p className="text-[12px] sm:text-[15px] font-bold text-[#e03131]">
+        <div className="p-2.5 bg-[#fff0f0] rounded-lg text-center">
+          <p className="text-[10px] text-[#e03131] mb-0.5">최저가</p>
+          <p className="text-[12px] font-bold text-[#e03131]">
             {stats.lowest.toLocaleString('ko-KR')}원
           </p>
         </div>
@@ -256,23 +262,23 @@ export default function PriceChart({
       </div>
 
       {/* 범례 */}
-      <div className="flex items-center justify-center gap-4 sm:gap-6 mt-4 sm:mt-6">
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-[#3182f6]" />
-          <span className="text-[10px] sm:text-[11px] text-[#8b95a1]">가격</span>
+      <div className="flex items-center justify-center gap-4 mt-4">
+        <div className="flex items-center gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#3182f6]" />
+          <span className="text-[10px] text-[#8b95a1]">가격</span>
         </div>
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="w-3 sm:w-4 h-0.5 bg-[#00c471]" style={{ borderTop: '2px dashed #00c471' }} />
-          <span className="text-[10px] sm:text-[11px] text-[#8b95a1]">최저가</span>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-0.5" style={{ borderTop: '2px dashed #0ca678' }} />
+          <span className="text-[10px] text-[#8b95a1]">최저가</span>
         </div>
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="w-3 sm:w-4 h-0.5 bg-[#ff8b00]" style={{ borderTop: '2px dashed #ff8b00' }} />
-          <span className="text-[10px] sm:text-[11px] text-[#8b95a1]">최고가</span>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-0.5" style={{ borderTop: '2px dashed #f59f00' }} />
+          <span className="text-[10px] text-[#8b95a1]">최고가</span>
         </div>
       </div>
 
       {/* 안내 */}
-      <p className="text-[10px] sm:text-[11px] text-[#8b95a1] text-center mt-4 sm:mt-6">
+      <p className="text-[10px] text-[#8b95a1] text-center mt-4">
         가격 정보는 실시간으로 업데이트됩니다. 정확한 가격은 쿠팡에서 확인해주세요.
       </p>
     </div>

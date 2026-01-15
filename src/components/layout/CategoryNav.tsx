@@ -57,7 +57,7 @@ export default function CategoryNav() {
 
         {/* 스크롤 스냅 + 터치 스크롤 최적화 */}
         <div
-          className="flex overflow-x-auto scrollbar-hide py-2 sm:py-3 px-4 gap-2"
+          className="flex overflow-x-auto scrollbar-hide py-2 px-4 gap-2"
           style={{
             WebkitOverflowScrolling: 'touch',
             scrollSnapType: 'x mandatory',
@@ -71,17 +71,17 @@ export default function CategoryNav() {
               <Link
                 key={category.id}
                 href={`/category/${category.id}`}
-                className={`group flex items-center gap-1.5 px-3 sm:px-4 py-2.5 sm:py-2 min-h-[44px] rounded-full whitespace-nowrap transition-all duration-200 select-none ${
+                className={`group flex items-center gap-1.5 px-3 py-2.5 min-h-[44px] rounded-full whitespace-nowrap transition-all duration-200 select-none ${
                   isActive
                     ? 'bg-gradient-to-r from-[#3182f6] to-[#6366f1] text-white shadow-md shadow-blue-200'
-                    : 'bg-[#f2f4f6] text-[#4e5968] active:scale-95 active:bg-[#e5e8eb] sm:hover:bg-gradient-to-r sm:hover:from-[#e8f3ff] sm:hover:to-[#f0f3ff] sm:hover:text-[#3182f6] sm:hover:shadow-sm'
+                    : 'bg-[#f2f4f6] text-[#4e5968] active:scale-95 active:bg-[#e5e8eb]'
                 }`}
                 style={{ scrollSnapAlign: 'center' }}
               >
-                <span className="text-[14px] sm:text-[16px]">
+                <span className="text-[14px]">
                   {categoryEmojis[category.id] || '📦'}
                 </span>
-                <span className="text-[12px] sm:text-[13px] font-medium">{category.name}</span>
+                <span className="text-[12px] font-medium">{category.name}</span>
               </Link>
             );
           })}

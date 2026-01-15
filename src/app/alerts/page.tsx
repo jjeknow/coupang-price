@@ -32,14 +32,14 @@ export default function AlertsPage() {
 
       {/* 콘텐츠 */}
       <div className="max-w-2xl mx-auto px-4 py-16">
-        <div className="bg-white rounded-2xl p-8 md:p-12 text-center border border-[#e5e8eb] shadow-sm">
-          <div className="w-20 h-20 bg-[#fff9db] rounded-full flex items-center justify-center mx-auto mb-6">
-            <Clock size={40} className="text-[#fab005]" />
+        <div className="bg-white rounded-2xl p-8 text-center border border-[#e5e8eb] shadow-sm">
+          <div className="w-16 h-16 bg-[#fff9db] rounded-full flex items-center justify-center mx-auto mb-4">
+            <Clock size={32} className="text-[#fab005]" />
           </div>
-          <h2 className="text-xl md:text-2xl font-bold text-[#191f28] mb-3">
+          <h2 className="text-lg font-bold text-[#191f28] mb-3">
             서비스 준비 중입니다
           </h2>
-          <p className="text-[#6b7684] text-[14px] md:text-[15px] mb-6 leading-relaxed">
+          <p className="text-[#6b7684] text-[14px] mb-6 leading-relaxed">
             가격 알림 기능을 열심히 개발하고 있습니다.
             <br />
             조금만 기다려주세요!

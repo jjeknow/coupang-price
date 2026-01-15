@@ -44,7 +44,7 @@ export default function ProductCardSkeleton() {
 export function ProductGridSkeleton({ count = 10 }: { count?: number }) {
   return (
     <div
-      className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+      className="grid grid-cols-2 gap-3"
       role="status"
       aria-label="상품 로딩 중"
     >

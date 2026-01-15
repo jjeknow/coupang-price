@@ -66,22 +66,22 @@ function ErrorState({
 
   return (
     <div
-      className={`rounded-2xl p-8 sm:p-12 text-center ${config.bgColor} border ${config.borderColor}`}
+      className={`rounded-2xl p-8 text-center ${config.bgColor} border ${config.borderColor}`}
       role="alert"
       aria-live="polite"
     >
       {/* 아이콘 */}
-      <div className={`w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-white flex items-center justify-center shadow-sm`}>
-        <Icon className={`w-8 h-8 sm:w-10 sm:h-10 ${config.iconColor}`} />
+      <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-white flex items-center justify-center shadow-sm`}>
+        <Icon className={`w-8 h-8 ${config.iconColor}`} />
       </div>
 
       {/* 제목 */}
-      <h3 className="text-[17px] sm:text-[20px] font-bold text-[#191f28] mb-2">
+      <h3 className="text-[17px] font-bold text-[#191f28] mb-2">
         {title || config.defaultTitle}
       </h3>
 
       {/* 메시지 */}
-      <p className="text-[13px] sm:text-[14px] text-[#6b7684] mb-6">
+      <p className="text-[13px] text-[#6b7684] mb-6">
         {message || config.defaultMessage}
       </p>
 
@@ -135,7 +135,7 @@ export function ErrorBanner({
     >
       <div className="flex items-center gap-3">
         <AlertCircle className="w-5 h-5 text-[#f04452] flex-shrink-0" />
-        <p className="text-[13px] sm:text-[14px] text-[#191f28]">{message}</p>
+        <p className="text-[13px] text-[#191f28]">{message}</p>
       </div>
       <div className="flex items-center gap-2">
         {onRetry && (
@@ -165,7 +165,7 @@ export function ErrorBanner({
 // 오프라인 상태 배너
 export function OfflineBanner() {
   return (
-    <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-80 bg-[#191f28] text-white rounded-xl p-4 shadow-lg z-50 animate-fadeIn">
+    <div className="fixed bottom-4 left-4 right-4 bg-[#191f28] text-white rounded-xl p-4 shadow-lg z-50 animate-fadeIn">
       <div className="flex items-center gap-3">
         <WifiOff className="w-5 h-5 text-[#ff8b00]" />
         <div>

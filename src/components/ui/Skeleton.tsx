@@ -19,19 +19,19 @@ export function ProductCardSkeleton() {
   return (
     <div className="animate-fadeIn">
       {/* 이미지 영역 */}
-      <div className="relative aspect-square bg-[#f2f4f6] rounded-xl overflow-hidden mb-2 sm:mb-3 border border-[#e5e8eb]">
+      <div className="relative aspect-square bg-[#f2f4f6] rounded-xl overflow-hidden mb-2 border border-[#e5e8eb]">
         <div className="absolute inset-0 bg-gradient-to-r from-[#f2f4f6] via-[#e5e8eb] to-[#f2f4f6] bg-[length:200%_100%] animate-shimmer" />
       </div>
 
       {/* 상품명 */}
       <div className="space-y-2 px-1">
-        <Skeleton className="h-3 sm:h-4 w-full" />
-        <Skeleton className="h-3 sm:h-4 w-3/4" />
+        <Skeleton className="h-3 w-full" />
+        <Skeleton className="h-3 w-3/4" />
       </div>
 
       {/* 가격 */}
-      <div className="mt-2 sm:mt-3 px-1">
-        <Skeleton className="h-5 sm:h-6 w-24" />
+      <div className="mt-2 px-1">
+        <Skeleton className="h-5 w-24" />
       </div>
 
       {/* 배지 영역 */}
@@ -46,7 +46,7 @@ export function ProductCardSkeleton() {
 // 상품 그리드 스켈레톤
 export function ProductGridSkeleton({ count = 10 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    <div className="grid grid-cols-2 gap-3">
       {Array.from({ length: count }).map((_, i) => (
         <ProductCardSkeleton key={i} />
       ))}
@@ -58,8 +58,8 @@ export function ProductGridSkeleton({ count = 10 }: { count?: number }) {
 export function ProductDetailSkeleton() {
   return (
     <div className="min-h-screen bg-[#f2f4f6]">
-      <div className="max-w-6xl mx-auto px-4 py-4 sm:py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
+      <div className="max-w-6xl mx-auto px-4 py-4">
+        <div className="grid gap-4">
           {/* 이미지 영역 */}
           <div className="aspect-square bg-white rounded-2xl overflow-hidden">
             <Skeleton className="w-full h-full rounded-none" />
@@ -150,15 +150,15 @@ export function SearchResultSkeleton() {
 // 홈페이지 섹션 스켈레톤
 export function HomeSectionSkeleton() {
   return (
-    <div className="py-6 sm:py-10">
+    <div className="py-6">
       <div className="max-w-6xl mx-auto px-4">
         {/* 섹션 헤더 */}
-        <div className="flex items-center justify-between mb-4 sm:mb-6">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <Skeleton className="w-8 h-8 sm:w-10 sm:h-10 rounded-full" />
+            <Skeleton className="w-8 h-8 rounded-full" />
             <div>
-              <Skeleton className="h-5 sm:h-6 w-32 mb-1" />
-              <Skeleton className="h-3 sm:h-4 w-24" />
+              <Skeleton className="h-5 w-32 mb-1" />
+              <Skeleton className="h-3 w-24" />
             </div>
           </div>
           <Skeleton className="h-8 w-16 rounded-lg" />

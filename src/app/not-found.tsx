@@ -41,7 +41,7 @@ export default function NotFound() {
         </p>
 
         {/* 액션 버튼들 */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col gap-3 justify-center">
           <Link
             href="/"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#3182f6] text-white rounded-xl font-medium hover:bg-[#1b64da] transition-colors"

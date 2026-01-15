@@ -21,6 +21,8 @@ import PriceChart from '@/components/chart/PriceChart';
 import ProductCard from '@/components/ui/ProductCard';
 import { saveRecentProduct } from '@/components/home/RecentlyViewed';
 import { isFavorite as checkIsFavorite, toggleFavorite } from '@/lib/favorites';
+import { useToast } from '@/components/providers/ToastProvider';
+import BottomSheet from '@/components/ui/BottomSheet';
 
 // 카카오 SDK 타입
 declare global {
@@ -152,6 +154,7 @@ export default function ProductDetailPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const { data: session } = useSession();
+  const toast = useToast();
   const rawId = params.id as string;
   const productId = extractProductId(rawId);
 
@@ -166,10 +169,19 @@ export default function ProductDetailPage() {
   const [alertLoading, setAlertLoading] = useState(false);
   const [favoriteLoading, setFavoriteLoading] = useState(false);
 
-  // 가격 통계 계산 (priceHistory가 비어있어도 안전하게 처리)
-  const { lowestPrice, highestPrice, isCurrentLowest } = useMemo(() => {
-    if (priceHistory.length === 0 || !product) {
-      return { lowestPrice: 0, highestPrice: 0, isCurrentLowest: false };
+  // 가격 통계 계산 (priceHistory가 비어있으면 현재 가격 사용)
+  const { lowestPrice, highestPrice, isCurrentLowest, hasHistoryData } = useMemo(() => {
+    if (!product) {
+      return { lowestPrice: 0, highestPrice: 0, isCurrentLowest: false, hasHistoryData: false };
+    }
+    if (priceHistory.length === 0) {
+      // 데이터 없음 - 현재 가격으로 표시 (역대 최저가 배지는 표시 안함)
+      return {
+        lowestPrice: product.productPrice,
+        highestPrice: product.productPrice,
+        isCurrentLowest: false,
+        hasHistoryData: false,
+      };
     }
     const prices = priceHistory.map((p) => p.price);
     const lowest = Math.min(...prices);
@@ -178,6 +190,7 @@ export default function ProductDetailPage() {
       lowestPrice: lowest,
       highestPrice: highest,
       isCurrentLowest: product.productPrice <= lowest,
+      hasHistoryData: true,
     };
   }, [priceHistory, product]);
 
@@ -304,8 +317,31 @@ export default function ProductDetailPage() {
     }
   }, []);
 
+  // 상품 DB 등록 (가격 추적 시작) - 쿠팡 API 호출 없음
+  const registerProduct = async (productData: Product) => {
+    try {
+      await fetch('/api/products/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: productData.productId,
+          productName: productData.productName,
+          productPrice: productData.productPrice,
+          productImage: productData.productImage,
+          productUrl: productData.productUrl,
+          categoryName: productData.categoryName,
+          isRocket: productData.isRocket,
+          isFreeShipping: productData.isFreeShipping,
+        }),
+      });
+    } catch {
+      // 등록 실패해도 무시 (백그라운드 작업)
+    }
+  };
+
   // 실제 가격 히스토리 조회
   const fetchPriceHistory = async (prodId: string) => {
+    setPriceHistoryLoading(true);
     try {
       const res = await fetch(`/api/products/${prodId}/price-history`);
       if (res.ok) {
@@ -318,6 +354,8 @@ export default function ProductDetailPage() {
       }
     } catch (error) {
       console.error('가격 히스토리 조회 실패:', error);
+    } finally {
+      setPriceHistoryLoading(false);
     }
 
     // 실제 데이터 없으면 빈 배열 유지
@@ -327,6 +365,7 @@ export default function ProductDetailPage() {
 
   // 실제 데이터 여부 상태
   const [hasRealData, setHasRealData] = useState(false);
+  const [priceHistoryLoading, setPriceHistoryLoading] = useState(true);
 
   useEffect(() => {
     // URL 쿼리에서 상품 데이터 파싱
@@ -336,6 +375,9 @@ export default function ProductDetailPage() {
       try {
         const productData = JSON.parse(decodeURIComponent(dataParam)) as Product;
         setProduct(productData);
+
+        // 상품 DB 등록 (가격 추적 시작)
+        registerProduct(productData);
 
         // 실제 가격 히스토리 조회 시도
         fetchPriceHistory(productData.productId.toString());
@@ -428,6 +470,7 @@ export default function ProductDetailPage() {
         categoryName: product.categoryName,
       });
       setIsFavorite(newState);
+      toast.success(newState ? '관심상품에 추가했어요' : '관심상품에서 삭제했어요');
       return;
     }
 
@@ -439,7 +482,10 @@ export default function ProductDetailPage() {
         const res = await fetch(`/api/user/favorites?productId=${product.productId}`, {
           method: 'DELETE',
         });
-        if (res.ok) setIsFavorite(false);
+        if (res.ok) {
+          setIsFavorite(false);
+          toast.success('관심상품에서 삭제했어요');
+        }
       } else {
         // 추가
         const res = await fetch('/api/user/favorites', {
@@ -456,10 +502,14 @@ export default function ProductDetailPage() {
             isFreeShipping: product.isFreeShipping,
           }),
         });
-        if (res.ok) setIsFavorite(true);
+        if (res.ok) {
+          setIsFavorite(true);
+          toast.success('관심상품에 추가했어요');
+        }
       }
     } catch (error) {
       console.error('관심상품 토글 실패:', error);
+      toast.error('오류가 발생했어요');
     } finally {
       setFavoriteLoading(false);
     }
@@ -495,13 +545,14 @@ export default function ProductDetailPage() {
       if (res.ok) {
         setIsAlertOn(true);
         setShowAlertModal(false);
+        toast.success(`${formatPrice(targetPrice)}원 이하가 되면 알려드릴게요`);
       } else {
         const data = await res.json();
-        alert(data.error || '알림 설정 실패');
+        toast.error(data.error || '알림 설정에 실패했어요');
       }
     } catch (error) {
       console.error('알림 설정 실패:', error);
-      alert('알림 설정 중 오류가 발생했습니다.');
+      toast.error('오류가 발생했어요');
     } finally {
       setAlertLoading(false);
     }
@@ -521,10 +572,12 @@ export default function ProductDetailPage() {
           await fetch(`/api/user/alerts?alertId=${found.id}`, { method: 'DELETE' });
           setIsAlertOn(false);
           setShowAlertModal(false);
+          toast.success('가격 알림을 해제했어요');
         }
       }
     } catch (error) {
       console.error('알림 삭제 실패:', error);
+      toast.error('오류가 발생했어요');
     }
   };
 
@@ -681,7 +734,7 @@ export default function ProductDetailPage() {
       <div className="min-h-screen bg-[#f2f4f6]">
         {/* 상단 네비게이션 - 뒤로가기만 */}
         <div className="bg-white border-b border-[#e5e8eb]">
-          <div className="max-w-6xl mx-auto px-4">
+          <div className="px-4">
             <div className="flex items-center h-12">
               <Link href="/" className="p-2 -ml-2 text-[#4e5968] hover:bg-[#f2f4f6] rounded-lg flex items-center gap-2">
                 <ArrowLeft size={20} />
@@ -693,20 +746,20 @@ export default function ProductDetailPage() {
 
         {/* 상품 정보 */}
         <div className="bg-white">
-          <div className="max-w-6xl mx-auto px-4 py-6">
-            <div className="grid md:grid-cols-2 gap-8">
+          <div className="px-4 py-4">
+            <div className="space-y-4">
               {/* 이미지 - 고화질 */}
               <div className="relative aspect-square bg-white rounded-2xl overflow-hidden border border-[#e5e8eb]">
                 <Image
                   src={highResImage}
                   alt={product.productName}
                   fill
-                  className="object-contain p-6 sm:p-8"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-contain p-6"
+                  sizes="100vw"
                   priority
                   unoptimized
                 />
-                {isCurrentLowest && (
+                {hasHistoryData && isCurrentLowest && (
                   <div className="absolute top-4 left-4">
                     <span className="bg-[#f04452] text-white text-[12px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1">
                       <TrendingDown size={14} />
@@ -805,90 +858,64 @@ export default function ProductDetailPage() {
                 )}
 
                 {/* 상품명 */}
-                <h1 className="text-[20px] md:text-[24px] font-bold text-[#191f28] mb-6 leading-snug">{product.productName}</h1>
+                <h1 className="text-[18px] font-bold text-[#191f28] mb-4 leading-snug">{product.productName}</h1>
 
                 {/* 현재 가격 */}
-                <div className="mb-6">
+                <div className="mb-4">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-[32px] sm:text-[36px] font-bold text-[#e03131] tracking-tighter">
+                    <span className="text-[28px] font-bold text-[#e03131] tracking-tighter">
                       {formatPrice(product.productPrice)}
                     </span>
-                    <span className="text-[16px] sm:text-[18px] text-[#e03131]">원</span>
-                    {isCurrentLowest && (
-                      <span className="bg-[#f04452] text-white text-[12px] font-bold px-2 py-0.5 rounded ml-2">
-                        최저
-                      </span>
-                    )}
+                    <span className="text-[14px] text-[#e03131]">원</span>
                   </div>
                 </div>
 
-                {/* 가격 정보 테이블 - 2x2 레이아웃 */}
-                <div className="border border-[#e5e8eb] rounded-xl overflow-hidden mb-6">
-                  <table className="w-full">
-                    <tbody>
-                      <tr className="border-b border-[#e5e8eb]">
-                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 bg-[#f8f9fa] text-[12px] sm:text-[13px] text-[#6b7684] w-1/4 border-r border-[#e5e8eb]">역대최저가</td>
-                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 text-[13px] sm:text-[14px] font-semibold text-[#00c471] w-1/4 border-r border-[#e5e8eb]">
-                          {formatPrice(lowestPrice)}원
-                        </td>
-                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 bg-[#f8f9fa] text-[12px] sm:text-[13px] text-[#6b7684] w-1/4 border-r border-[#e5e8eb]">최근가격</td>
-                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 text-[13px] sm:text-[14px] font-medium text-[#191f28] w-1/4">
-                          {formatPrice(product.productPrice)}원
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 bg-[#f8f9fa] text-[12px] sm:text-[13px] text-[#6b7684] border-r border-[#e5e8eb]">평균가격</td>
-                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 text-[13px] sm:text-[14px] font-medium text-[#191f28] border-r border-[#e5e8eb]">
-                          {formatPrice(Math.round((lowestPrice + highestPrice) / 2))}원
-                        </td>
-                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 bg-[#f8f9fa] text-[12px] sm:text-[13px] text-[#6b7684] border-r border-[#e5e8eb]">최고가격</td>
-                        <td className="py-2.5 sm:py-3 px-3 sm:px-4 text-[13px] sm:text-[14px] font-medium text-[#ff8b00]">
-                          {formatPrice(highestPrice)}원
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                {/* 가격 정보 테이블 */}
+                {hasHistoryData ? (
+                  <div className="border border-[#e5e8eb] rounded-lg overflow-hidden mb-4">
+                    <table className="w-full text-[13px]">
+                      <tbody>
+                        <tr className="border-b border-[#e5e8eb]">
+                          <td className="py-3 px-4 bg-[#f8f9fa] text-[#6b7684] font-medium w-1/3">역대 최저가</td>
+                          <td className="py-3 px-4 text-[#087f5b] font-bold text-right">{formatPrice(lowestPrice)}원</td>
+                        </tr>
+                        <tr className="border-b border-[#e5e8eb]">
+                          <td className="py-3 px-4 bg-[#f8f9fa] text-[#6b7684] font-medium">평균 가격</td>
+                          <td className="py-3 px-4 text-[#191f28] font-bold text-right">{formatPrice(Math.round((lowestPrice + highestPrice) / 2))}원</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 px-4 bg-[#f8f9fa] text-[#6b7684] font-medium">최고 가격</td>
+                          <td className="py-3 px-4 text-[#d9480f] font-bold text-right">{formatPrice(highestPrice)}원</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className="bg-[#f8f9fa] rounded-lg p-4 mb-4 text-center">
+                    <p className="text-[13px] text-[#6b7684] font-medium">
+                      가격 데이터 수집 중입니다
+                    </p>
+                    <p className="text-[11px] text-[#8b95a1] mt-1">
+                      내일부터 가격 변동 정보를 확인할 수 있어요
+                    </p>
+                  </div>
+                )}
 
                 {/* 가격하락률 */}
-                {highestPrice > product.productPrice && (
-                  <div className="bg-[#e8f3ff] rounded-xl p-4 mb-6">
+                {hasHistoryData && highestPrice > product.productPrice && (
+                  <div className="bg-[#e8f3ff] rounded-xl p-3 mb-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-[14px] text-[#3182f6]">최고가 대비 할인율</span>
-                      <span className="text-[20px] font-bold text-[#3182f6]">
+                      <span className="text-[13px] text-[#3182f6]">최고가 대비 할인율</span>
+                      <span className="text-[16px] font-bold text-[#3182f6]">
                         {Math.round(((highestPrice - product.productPrice) / highestPrice) * 100)}% 할인
                       </span>
                     </div>
                   </div>
                 )}
 
-                {/* 버튼 */}
-                <div className="flex gap-3">
-                  <button
-                    onClick={handleAlertClick}
-                    className={`flex-1 py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
-                      isAlertOn
-                        ? 'bg-[#f04452]/10 text-[#f04452] border-2 border-[#f04452]'
-                        : 'bg-[#f2f4f6] text-[#4e5968] hover:bg-[#e5e8eb]'
-                    }`}
-                  >
-                    <Bell size={20} fill={isAlertOn ? '#f04452' : 'none'} />
-                    {isAlertOn ? `${formatPrice(targetPrice)}원 알림` : '최저가 알림'}
-                  </button>
-                  <a
-                    href={product.productUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 py-4 bg-[#3182f6] hover:bg-[#1b64da] text-white rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
-                  >
-                    쿠팡에서 구매
-                    <ExternalLink size={18} />
-                  </a>
-                </div>
-
                 {/* 파트너스 고지 */}
-                <div className="mt-4 p-4 bg-[#f8f9fa] rounded-xl">
-                  <p className="text-[12px] text-[#6b7684] leading-relaxed">
+                <div className="p-3 bg-[#f8f9fa] rounded-xl">
+                  <p className="text-[11px] text-[#6b7684] leading-relaxed">
                     본 서비스는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받으며,
                     무료로 제공하는 가격 추적 서비스 유지에 사용됩니다. 구매자에게 추가 비용은 없습니다.
                   </p>
@@ -899,9 +926,16 @@ export default function ProductDetailPage() {
         </div>
 
         {/* 가격 차트 */}
-        <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="px-4 py-6">
           <div className="toss-card-flat p-6 border border-[#e5e8eb]">
-            {hasRealData && priceHistory.length > 0 ? (
+            {priceHistoryLoading ? (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-[#f2f4f6] rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                  <TrendingDown size={32} className="text-[#adb5bd]" />
+                </div>
+                <p className="text-[14px] text-[#6b7684]">가격 데이터를 불러오는 중...</p>
+              </div>
+            ) : hasRealData && priceHistory.length > 0 ? (
               <PriceChart
                 data={priceHistory}
                 currentPrice={product.productPrice}
@@ -929,7 +963,7 @@ export default function ProductDetailPage() {
         </div>
 
         {/* 구매 가이드 */}
-        <div className="max-w-6xl mx-auto px-4 pb-6">
+        <div className="px-4 pb-6">
           <div className="toss-card-flat p-6 border border-[#e5e8eb]">
             <h3 className="toss-title-3 mb-4">구매 가이드</h3>
             <div className="space-y-3">
@@ -963,7 +997,7 @@ export default function ProductDetailPage() {
 
         {/* 비슷한 상품 */}
         {relatedProducts.length > 0 && (
-          <div className="max-w-6xl mx-auto px-4 pb-6">
+          <div className="px-4 pb-36">
             <div className="bg-white rounded-xl border border-[#e5e8eb] overflow-hidden">
               <div className="px-6 py-4 border-b border-[#e5e8eb] bg-[#f8f9fa]">
                 <h3 className="text-[16px] font-bold text-[#191f28] flex items-center gap-2">
@@ -972,10 +1006,10 @@ export default function ProductDetailPage() {
                 </h3>
               </div>
               <div className="p-4">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                  {relatedProducts.map((relatedProduct) => (
+                <div className="grid grid-cols-2 gap-3">
+                  {relatedProducts.map((relatedProduct, index) => (
                     <ProductCard
-                      key={relatedProduct.productId}
+                      key={`${relatedProduct.productId}-${index}`}
                       productId={relatedProduct.productId}
                       productName={relatedProduct.productName}
                       productPrice={relatedProduct.productPrice}
@@ -994,103 +1028,131 @@ export default function ProductDetailPage() {
 
       </div>
 
-      {/* 알림 설정 모달 */}
-      {showAlertModal && product && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden animate-fadeIn">
-            {/* 모달 헤더 */}
-            <div className="flex items-center justify-between p-4 border-b border-[#e5e8eb]">
-              <h3 className="text-lg font-bold text-[#191f28]">가격 알림 설정</h3>
-              <button
-                onClick={() => setShowAlertModal(false)}
-                className="p-2 hover:bg-[#f2f4f6] rounded-lg"
-              >
-                <X size={20} className="text-[#6b7684]" />
-              </button>
-            </div>
+      {/* 하단 고정 버튼 */}
+      <div className="fixed bottom-14 z-40 bg-white border-t border-[#e5e8eb] px-4 py-3 bottom-action-bar">
+        <div className="flex gap-3">
+          <button
+            onClick={handleFavoriteClick}
+            disabled={favoriteLoading}
+            className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all border ${
+              isFavorite
+                ? 'bg-[#fee] border-[#f04452] text-[#f04452]'
+                : 'bg-white border-[#e5e8eb] text-[#6b7684]'
+            }`}
+            aria-label="관심상품"
+          >
+            <Heart size={22} fill={isFavorite ? '#f04452' : 'none'} />
+          </button>
+          <button
+            onClick={handleAlertClick}
+            className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all border ${
+              isAlertOn
+                ? 'bg-[#fff8e6] border-[#ff9500] text-[#ff9500]'
+                : 'bg-white border-[#e5e8eb] text-[#6b7684]'
+            }`}
+            aria-label="가격 알림"
+          >
+            <Bell size={22} fill={isAlertOn ? '#ff9500' : 'none'} />
+          </button>
+          <a
+            href={product?.productUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 h-12 bg-[#3182f6] hover:bg-[#1b64da] text-white rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
+          >
+            쿠팡에서 구매
+            <ExternalLink size={18} />
+          </a>
+        </div>
+      </div>
 
-            {/* 모달 내용 */}
-            <div className="p-4">
-              {/* 상품 정보 */}
-              <div className="flex gap-3 mb-6">
-                <div className="relative w-16 h-16 bg-[#f8f9fa] rounded-lg overflow-hidden flex-shrink-0">
-                  <Image
-                    src={product.productImage}
-                    alt={product.productName}
-                    fill
-                    className="object-contain p-1"
-                    unoptimized
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13px] text-[#191f28] line-clamp-2">{product.productName}</p>
-                  <p className="text-[15px] font-bold text-[#191f28] mt-1">
-                    현재 {formatPrice(product.productPrice)}원
-                  </p>
-                </div>
+      {/* 알림 설정 바텀시트 */}
+      <BottomSheet
+        isOpen={showAlertModal && !!product}
+        onClose={() => setShowAlertModal(false)}
+        title="가격 알림 설정"
+      >
+        {product && (
+          <div className="p-4 pb-8">
+            {/* 상품 정보 */}
+            <div className="flex gap-3 mb-6">
+              <div className="relative w-16 h-16 bg-[#f8f9fa] rounded-lg overflow-hidden flex-shrink-0">
+                <Image
+                  src={product.productImage}
+                  alt={product.productName}
+                  fill
+                  className="object-contain p-1"
+                  unoptimized
+                />
               </div>
-
-              {/* 목표 가격 입력 */}
-              <div className="mb-6">
-                <label className="block text-[14px] font-medium text-[#191f28] mb-2">
-                  목표 가격
-                </label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={targetPrice}
-                    onChange={(e) => setTargetPrice(Number(e.target.value))}
-                    className="w-full px-4 py-3 bg-[#f2f4f6] rounded-xl text-[16px] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
-                    min={1}
-                    max={product.productPrice - 1}
-                  />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6b7684]">원</span>
-                </div>
-                <p className="text-[12px] text-[#8b95a1] mt-2">
-                  현재 가격보다 {formatPrice(product.productPrice - targetPrice)}원 낮은 가격 (
-                  {Math.round(((product.productPrice - targetPrice) / product.productPrice) * 100)}% 할인)
+              <div className="flex-1 min-w-0">
+                <p className="text-[13px] text-[#191f28] line-clamp-2">{product.productName}</p>
+                <p className="text-[15px] font-bold text-[#191f28] mt-1">
+                  현재 {formatPrice(product.productPrice)}원
                 </p>
               </div>
+            </div>
 
-              {/* 빠른 선택 버튼 */}
-              <div className="flex gap-2 mb-6">
-                {[5, 10, 15, 20].map((percent) => (
-                  <button
-                    key={percent}
-                    onClick={() => setTargetPrice(Math.round(product.productPrice * (1 - percent / 100)))}
-                    className={`flex-1 py-2 text-[13px] rounded-lg transition-colors ${
-                      Math.round(((product.productPrice - targetPrice) / product.productPrice) * 100) === percent
-                        ? 'bg-[#3182f6] text-white'
-                        : 'bg-[#f2f4f6] text-[#4e5968] hover:bg-[#e5e8eb]'
-                    }`}
-                  >
-                    {percent}% 할인
-                  </button>
-                ))}
+            {/* 목표 가격 입력 */}
+            <div className="mb-6">
+              <label className="block text-[14px] font-medium text-[#191f28] mb-2">
+                목표 가격
+              </label>
+              <div className="relative">
+                <input
+                  type="number"
+                  value={targetPrice}
+                  onChange={(e) => setTargetPrice(Number(e.target.value))}
+                  className="w-full px-4 py-3 bg-[#f2f4f6] rounded-xl text-[16px] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
+                  min={1}
+                  max={product.productPrice - 1}
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6b7684]">원</span>
               </div>
+              <p className="text-[12px] text-[#8b95a1] mt-2">
+                현재 가격보다 {formatPrice(product.productPrice - targetPrice)}원 낮은 가격 (
+                {Math.round(((product.productPrice - targetPrice) / product.productPrice) * 100)}% 할인)
+              </p>
+            </div>
 
-              {/* 버튼 */}
-              <div className="flex gap-3">
-                {isAlertOn && (
-                  <button
-                    onClick={handleAlertDelete}
-                    className="flex-1 py-3 bg-[#f2f4f6] text-[#e03131] rounded-xl font-medium hover:bg-red-50"
-                  >
-                    알림 해제
-                  </button>
-                )}
+            {/* 빠른 선택 버튼 */}
+            <div className="flex gap-2 mb-6">
+              {[5, 10, 15, 20].map((percent) => (
                 <button
-                  onClick={handleAlertSubmit}
-                  disabled={alertLoading || targetPrice >= product.productPrice}
-                  className="flex-1 py-3 bg-[#3182f6] text-white rounded-xl font-medium hover:bg-[#1b64da] disabled:opacity-50 disabled:cursor-not-allowed"
+                  key={percent}
+                  onClick={() => setTargetPrice(Math.round(product.productPrice * (1 - percent / 100)))}
+                  className={`flex-1 py-2.5 text-[13px] rounded-lg transition-colors ${
+                    Math.round(((product.productPrice - targetPrice) / product.productPrice) * 100) === percent
+                      ? 'bg-[#3182f6] text-white'
+                      : 'bg-[#f2f4f6] text-[#4e5968] hover:bg-[#e5e8eb]'
+                  }`}
                 >
-                  {alertLoading ? '설정 중...' : isAlertOn ? '알림 수정' : '알림 설정'}
+                  {percent}% 할인
                 </button>
-              </div>
+              ))}
+            </div>
+
+            {/* 버튼 */}
+            <div className="flex gap-3">
+              {isAlertOn && (
+                <button
+                  onClick={handleAlertDelete}
+                  className="flex-1 py-3.5 bg-[#f2f4f6] text-[#e03131] rounded-xl font-medium hover:bg-red-50"
+                >
+                  알림 해제
+                </button>
+              )}
+              <button
+                onClick={handleAlertSubmit}
+                disabled={alertLoading || targetPrice >= product.productPrice}
+                className="flex-1 py-3.5 bg-[#3182f6] text-white rounded-xl font-medium hover:bg-[#1b64da] disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {alertLoading ? '설정 중...' : isAlertOn ? '알림 수정' : '알림 설정'}
+              </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </BottomSheet>
     </>
   );
 }

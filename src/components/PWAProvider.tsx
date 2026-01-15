@@ -94,7 +94,7 @@ export default function PWAProvider({ children }: { children: React.ReactNode })
 
       {/* PWA 설치 배너 */}
       {showInstallBanner && deferredPrompt && (
-        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 bg-white rounded-2xl shadow-2xl border border-[#e5e8eb] p-4 z-50 animate-fadeIn">
+        <div className="fixed bottom-4 left-4 right-4 bg-white rounded-2xl shadow-2xl border border-[#e5e8eb] p-4 z-50 animate-fadeIn">
           <div className="flex items-start gap-3">
             <div className="w-12 h-12 bg-[#3182f6] rounded-xl flex items-center justify-center flex-shrink-0">
               <Download className="w-6 h-6 text-white" />
@@ -134,7 +134,7 @@ export default function PWAProvider({ children }: { children: React.ReactNode })
 
       {/* 오프라인 알림 */}
       {!isOnline && (
-        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-80 bg-[#191f28] text-white rounded-xl p-4 shadow-lg z-50 animate-fadeIn">
+        <div className="fixed bottom-4 left-4 right-4 bg-[#191f28] text-white rounded-xl p-4 shadow-lg z-50 animate-fadeIn">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-[#ff8b00]/20 rounded-full flex items-center justify-center">
               <svg className="w-4 h-4 text-[#ff8b00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

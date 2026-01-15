@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, memo, useMemo } from 'react';
+import { useState, memo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { TrendingDown, ThumbsUp } from 'lucide-react';
+import { TrendingDown } from 'lucide-react';
 
 interface ProductCardProps {
   productId: number;
@@ -14,42 +14,10 @@ interface ProductCardProps {
   isRocket?: boolean;
   isFreeShipping?: boolean;
   categoryName?: string;
+  priority?: boolean;
+  // 가격 히스토리 데이터 (DB에서 조회된 경우)
   lowestPrice?: number | null;
   highestPrice?: number | null;
-  averagePrice?: number | null;
-  priority?: boolean;
-}
-
-// 실제 가격 데이터 기반 인사이트 계산
-function calculatePriceInsight(
-  currentPrice: number,
-  lowestPrice: number | null | undefined,
-  highestPrice: number | null | undefined,
-  averagePrice: number | null | undefined
-) {
-  let status: 'lowest' | 'good' | 'normal' = 'normal';
-  let discountPercent = 0;
-
-  // 가격 데이터가 없으면 표시 안함
-  if (!lowestPrice || !highestPrice) {
-    return { status: 'normal' as const, discountPercent: 0 };
-  }
-
-  // 최고가 대비 할인율 계산
-  if (highestPrice > currentPrice) {
-    discountPercent = Math.round(((highestPrice - currentPrice) / highestPrice) * 100);
-  }
-
-  // 역대 최저가 체크 (현재가가 최저가와 같거나 5% 이내)
-  const lowestThreshold = lowestPrice * 1.05;
-  if (currentPrice <= lowestThreshold) {
-    status = 'lowest';
-  } else if (averagePrice && currentPrice < averagePrice) {
-    // 평균가보다 낮으면 "가격 Good"
-    status = 'good';
-  }
-
-  return { status, discountPercent };
 }
 
 function ProductCard({
@@ -61,10 +29,9 @@ function ProductCard({
   isRocket = false,
   isFreeShipping = false,
   categoryName,
+  priority = false,
   lowestPrice,
   highestPrice,
-  averagePrice,
-  priority = false,
 }: ProductCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -74,10 +41,15 @@ function ProductCard({
 
   const formatPrice = (price: number) => price.toLocaleString('ko-KR');
 
-  // 실제 가격 데이터 기반으로 인사이트 계산
-  const { status, discountPercent } = useMemo(() => {
-    return calculatePriceInsight(productPrice, lowestPrice, highestPrice, averagePrice);
-  }, [productPrice, lowestPrice, highestPrice, averagePrice]);
+  // 실제 가격 데이터 기반 상태 계산
+  const hasRealData = lowestPrice != null && highestPrice != null;
+  const isCurrentLowest = hasRealData && productPrice <= lowestPrice;
+  const discountFromHighest = hasRealData && highestPrice > productPrice
+    ? Math.round(((highestPrice - productPrice) / highestPrice) * 100)
+    : 0;
+  // 가격 Good: 최저가는 아니지만 평균가 이하이면서 10% 이상 할인 중
+  const averagePrice = hasRealData ? Math.round((lowestPrice + highestPrice) / 2) : 0;
+  const isPriceGood = hasRealData && !isCurrentLowest && productPrice <= averagePrice && discountFromHighest >= 10;
 
   const productData = encodeURIComponent(
     JSON.stringify({
@@ -106,16 +78,18 @@ function ProductCard({
         className="block"
         aria-label={`${productName} - ${formatPrice(productPrice)}원`}
       >
-        {/* 이미지 - 모바일: 터치 피드백, 데스크톱: 호버 그림자 */}
-        <div className="relative aspect-square bg-[#fafafa] rounded-xl overflow-hidden mb-2 sm:mb-3 border border-[#e5e8eb] shadow-[0_2px_8px_rgba(0,0,0,0.08)] sm:group-hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] active:scale-[0.98] sm:active:scale-100 transition-all duration-200">
-          {/* 할인율 배지 - 실제 데이터 있을 때만 표시 */}
-          {discountPercent > 0 && (
+        {/* 이미지 */}
+        <div className="relative aspect-square bg-[#fafafa] rounded-xl overflow-hidden mb-2 border border-[#e5e8eb] shadow-[0_2px_8px_rgba(0,0,0,0.08)] active:scale-[0.98] transition-all duration-200">
+          {/* 역대 최저가 배지 (빨간색) */}
+          {isCurrentLowest && (
             <div className="absolute top-2 left-2 z-10">
-              <span className="inline-block px-2 py-1 bg-[#3182f6] text-white text-[11px] sm:text-[12px] font-bold rounded-lg">
-                {discountPercent}%
+              <span className="inline-flex items-center gap-0.5 px-2 py-1 bg-[#fff0f0] text-[#e03131] text-[10px] font-bold rounded-lg">
+                <TrendingDown size={10} />
+                역대 최저가
               </span>
             </div>
           )}
+
 
           {!imageLoaded && !imageError && (
             <div className="absolute inset-0 bg-[#fafafa] animate-pulse" />
@@ -128,10 +102,10 @@ function ProductCard({
           ) : (
             <Image
               src={productImage}
-              alt={`${productName} - ${formatPrice(productPrice)}원${isRocket ? ' 로켓배송' : ''}${categoryName ? ` ${categoryName}` : ''}`}
+              alt={productName}
               fill
-              sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 18vw"
-              className={`object-contain p-2 sm:p-3 sm:group-hover:scale-105 transition-transform duration-200 ${
+              sizes="45vw"
+              className={`object-contain p-2 transition-transform duration-200 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
               onLoad={() => setImageLoaded(true)}
@@ -146,10 +120,10 @@ function ProductCard({
         </div>
 
         {/* 정보 */}
-        <div className="space-y-1.5 sm:space-y-2">
-          {/* 상품명 - 모바일에서 2줄 표시 */}
+        <div className="space-y-1.5">
+          {/* 상품명 */}
           <p
-            className="text-[13px] sm:text-[14px] text-[#333d4b] line-clamp-2 sm:line-clamp-1 leading-snug min-h-[36px] sm:min-h-0"
+            className="text-[13px] text-[#333d4b] line-clamp-2 leading-snug min-h-[36px]"
             itemProp="name"
           >
             {productName}
@@ -159,42 +133,37 @@ function ProductCard({
           <div itemProp="offers" itemScope itemType="https://schema.org/Offer">
             <div className="flex items-baseline gap-0.5">
               <span
-                className="text-[16px] sm:text-[18px] font-bold text-[#e03131] tracking-tight"
+                className="text-[16px] font-bold text-[#e03131] tracking-tight"
                 itemProp="price"
                 content={productPrice.toString()}
               >
                 {formatPrice(productPrice)}
               </span>
-              <span className="text-[12px] sm:text-[14px] text-[#e03131]">원</span>
+              <span className="text-[12px] text-[#e03131]">원</span>
               <meta itemProp="priceCurrency" content="KRW" />
             </div>
           </div>
 
-          {/* 상태 배지 - 실제 데이터 있을 때만 표시 */}
-          <div className="flex flex-wrap gap-1">
-            {status === 'lowest' && (
-              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#fff0f0] text-[#e03131] text-[10px] sm:text-[11px] font-semibold rounded">
-                <TrendingDown size={10} className="sm:w-3 sm:h-3" />
-                역대 최저가
-              </span>
-            )}
-            {status === 'good' && (
-              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#e6f9ed] text-[#0ca678] text-[10px] sm:text-[11px] font-semibold rounded">
-                <ThumbsUp size={10} className="sm:w-3 sm:h-3" />
-                가격 Good
-              </span>
-            )}
-            {isRocket && (
-              <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#e8f3ff] text-[#3182f6] text-[10px] sm:text-[11px] font-medium rounded border border-[#3182f6]/20">
-                로켓배송
-              </span>
-            )}
-            {isFreeShipping && !isRocket && (
-              <span className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-[#e8f3ff] text-[#3182f6] text-[10px] sm:text-[11px] font-medium rounded border border-[#3182f6]/20">
-                무료배송
-              </span>
-            )}
-          </div>
+          {/* 배송/가격 배지 */}
+          {(isRocket || isFreeShipping || isPriceGood) && (
+            <div className="flex flex-wrap gap-1">
+              {isRocket && (
+                <span className="px-1.5 py-0.5 bg-[#e8f3ff] text-[#3182f6] text-[10px] font-medium rounded border border-[#3182f6]/20">
+                  로켓배송
+                </span>
+              )}
+              {isFreeShipping && !isRocket && (
+                <span className="px-1.5 py-0.5 bg-[#e8f3ff] text-[#3182f6] text-[10px] font-medium rounded border border-[#3182f6]/20">
+                  무료배송
+                </span>
+              )}
+              {isPriceGood && (
+                <span className="px-1.5 py-0.5 bg-[#e6f9ed] text-[#0ca678] text-[10px] font-medium rounded border border-[#0ca678]/20">
+                  가격 Good
+                </span>
+              )}
+            </div>
+          )}
         </div>
       </Link>
     </article>

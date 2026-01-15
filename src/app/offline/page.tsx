@@ -9,7 +9,7 @@ export default function OfflinePage() {
 
   return (
     <div className="min-h-screen bg-[#f2f4f6] flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl p-8 sm:p-12 text-center max-w-md w-full shadow-lg">
+      <div className="bg-white rounded-2xl p-8 text-center max-w-md w-full shadow-lg">
         {/* 아이콘 */}
         <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-[#fff8f0] flex items-center justify-center">
           <WifiOff className="w-10 h-10 text-[#ff8b00]" />

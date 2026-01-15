@@ -66,6 +66,10 @@ export async function GET(
           ? null
           : '가격 데이터 수집 중입니다. 내일 다시 확인해주세요.',
       },
+    }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      },
     });
   } catch (error) {
     console.error('Price history error:', error);

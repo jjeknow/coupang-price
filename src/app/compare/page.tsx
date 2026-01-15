@@ -130,9 +130,7 @@ export default function ComparePage() {
         ) : (
           <div className="bg-white rounded-xl border border-[#e5e8eb] overflow-hidden">
             {/* 상품 카드들 */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-x divide-[#e5e8eb]">
-              {/* 빈 라벨 셀 (PC에서만) */}
-              <div className="hidden lg:block p-4 bg-[#f8f9fa]" />
+            <div className="grid grid-cols-2 divide-x divide-[#e5e8eb]">
 
               {/* 선택된 상품들 */}
               {selectedProducts.map((product) => {
@@ -219,65 +217,62 @@ export default function ComparePage() {
             {selectedProducts.length > 0 && (
               <div className="divide-y divide-[#e5e8eb]">
                 {/* 역대 최저가 */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-x divide-[#e5e8eb]">
-                  <div className="hidden lg:flex items-center p-4 bg-[#f8f9fa]">
+                <div className="grid grid-cols-2 divide-x divide-[#e5e8eb]">
+                  <div className="hidden">
                     <span className="text-[14px] font-medium text-[#4e5968]">역대 최저가</span>
                   </div>
                   {selectedProducts.map((product) => {
                     const stats = priceStats[product.productId];
                     return (
                       <div key={product.productId} className="p-4">
-                        <span className="lg:hidden text-[12px] text-[#8b95a1] block mb-1">역대 최저가</span>
+                        <span className=" text-[12px] text-[#8b95a1] block mb-1">역대 최저가</span>
                         <span className="text-[15px] font-semibold text-[#00c471]">
                           {formatPrice(stats.lowest)}원
                         </span>
                       </div>
                     );
                   })}
-                  {selectedProducts.length < 3 && <div className="hidden md:block p-4" />}
-                </div>
+                                  </div>
 
                 {/* 평균 가격 */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-x divide-[#e5e8eb]">
-                  <div className="hidden lg:flex items-center p-4 bg-[#f8f9fa]">
+                <div className="grid grid-cols-2 divide-x divide-[#e5e8eb]">
+                  <div className="hidden">
                     <span className="text-[14px] font-medium text-[#4e5968]">평균 가격</span>
                   </div>
                   {selectedProducts.map((product) => {
                     const stats = priceStats[product.productId];
                     return (
                       <div key={product.productId} className="p-4">
-                        <span className="lg:hidden text-[12px] text-[#8b95a1] block mb-1">평균 가격</span>
+                        <span className=" text-[12px] text-[#8b95a1] block mb-1">평균 가격</span>
                         <span className="text-[15px] font-medium text-[#191f28]">
                           {formatPrice(stats.average)}원
                         </span>
                       </div>
                     );
                   })}
-                  {selectedProducts.length < 3 && <div className="hidden md:block p-4" />}
-                </div>
+                                  </div>
 
                 {/* 최고 가격 */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-x divide-[#e5e8eb]">
-                  <div className="hidden lg:flex items-center p-4 bg-[#f8f9fa]">
+                <div className="grid grid-cols-2 divide-x divide-[#e5e8eb]">
+                  <div className="hidden">
                     <span className="text-[14px] font-medium text-[#4e5968]">최고 가격</span>
                   </div>
                   {selectedProducts.map((product) => {
                     const stats = priceStats[product.productId];
                     return (
                       <div key={product.productId} className="p-4">
-                        <span className="lg:hidden text-[12px] text-[#8b95a1] block mb-1">최고 가격</span>
+                        <span className=" text-[12px] text-[#8b95a1] block mb-1">최고 가격</span>
                         <span className="text-[15px] font-medium text-[#ff8b00]">
                           {formatPrice(stats.highest)}원
                         </span>
                       </div>
                     );
                   })}
-                  {selectedProducts.length < 3 && <div className="hidden md:block p-4" />}
-                </div>
+                                  </div>
 
                 {/* 현재 vs 최저가 대비 */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-x divide-[#e5e8eb]">
-                  <div className="hidden lg:flex items-center p-4 bg-[#f8f9fa]">
+                <div className="grid grid-cols-2 divide-x divide-[#e5e8eb]">
+                  <div className="hidden">
                     <span className="text-[14px] font-medium text-[#4e5968]">최저가 대비</span>
                   </div>
                   {selectedProducts.map((product) => {
@@ -286,7 +281,7 @@ export default function ComparePage() {
                     const diffPercent = Math.round((diff / stats.lowest) * 100);
                     return (
                       <div key={product.productId} className="p-4">
-                        <span className="lg:hidden text-[12px] text-[#8b95a1] block mb-1">최저가 대비</span>
+                        <span className=" text-[12px] text-[#8b95a1] block mb-1">최저가 대비</span>
                         {diff === 0 ? (
                           <span className="text-[15px] font-semibold text-[#00c471] flex items-center gap-1">
                             <TrendingDown size={16} />
@@ -300,28 +295,26 @@ export default function ComparePage() {
                       </div>
                     );
                   })}
-                  {selectedProducts.length < 3 && <div className="hidden md:block p-4" />}
-                </div>
+                                  </div>
 
                 {/* 카테고리 */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-x divide-[#e5e8eb]">
-                  <div className="hidden lg:flex items-center p-4 bg-[#f8f9fa]">
+                <div className="grid grid-cols-2 divide-x divide-[#e5e8eb]">
+                  <div className="hidden">
                     <span className="text-[14px] font-medium text-[#4e5968]">카테고리</span>
                   </div>
                   {selectedProducts.map((product) => (
                     <div key={product.productId} className="p-4">
-                      <span className="lg:hidden text-[12px] text-[#8b95a1] block mb-1">카테고리</span>
+                      <span className=" text-[12px] text-[#8b95a1] block mb-1">카테고리</span>
                       <span className="text-[14px] text-[#4e5968]">
                         {product.categoryName || '-'}
                       </span>
                     </div>
                   ))}
-                  {selectedProducts.length < 3 && <div className="hidden md:block p-4" />}
-                </div>
+                                  </div>
 
                 {/* 구매 버튼 */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-x divide-[#e5e8eb]">
-                  <div className="hidden lg:block p-4 bg-[#f8f9fa]" />
+                <div className="grid grid-cols-2 divide-x divide-[#e5e8eb]">
+                  <div className="hidden" />
                   {selectedProducts.map((product) => (
                     <div key={product.productId} className="p-4">
                       <a
@@ -335,8 +328,7 @@ export default function ComparePage() {
                       </a>
                     </div>
                   ))}
-                  {selectedProducts.length < 3 && <div className="hidden md:block p-4" />}
-                </div>
+                                  </div>
               </div>
             )}
           </div>
@@ -345,8 +337,8 @@ export default function ComparePage() {
 
       {/* 상품 선택 모달 */}
       {showSelector && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-end md:items-center justify-center p-4">
-          <div className="bg-white rounded-t-2xl md:rounded-2xl w-full max-w-md max-h-[70vh] overflow-hidden animate-fadeIn">
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-end items-center justify-center p-4">
+          <div className="bg-white rounded-t-2xl w-full max-w-md max-h-[70vh] overflow-hidden animate-fadeIn">
             <div className="flex items-center justify-between p-4 border-b border-[#e5e8eb]">
               <h3 className="text-[16px] font-bold text-[#191f28]">비교할 상품 선택</h3>
               <button

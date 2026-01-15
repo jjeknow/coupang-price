@@ -102,8 +102,8 @@ export default function ProductFilter({
 
       {/* 필터 패널 */}
       {showFilterPanel && (
-        <div className="fixed inset-0 bg-black/30 z-50 flex items-end md:items-center justify-center">
-          <div className="bg-white w-full md:w-[400px] md:rounded-xl rounded-t-xl max-h-[80vh] overflow-auto">
+        <div className="fixed inset-0 bg-black/30 z-50 flex items-end items-center justify-center">
+          <div className="bg-white w-full  rounded-t-xl max-h-[80vh] overflow-auto">
             <div className="flex items-center justify-between p-4 border-b border-[#e5e8eb]">
               <h3 className="text-[16px] font-bold text-[#191f28]">필터</h3>
               <button onClick={() => setShowFilterPanel(false)}>

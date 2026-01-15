@@ -3,8 +3,9 @@ import { Noto_Sans_KR } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import BottomTabBar from '@/components/layout/BottomTabBar';
 import SessionProvider from '@/components/providers/SessionProvider';
+import { ToastProvider } from '@/components/providers/ToastProvider';
 import PWAProvider from '@/components/PWAProvider';
 
 // Google Analytics 측정 ID
@@ -297,8 +298,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://thumbnail8.coupangcdn.com" />
         <link rel="preconnect" href="https://thumbnail9.coupangcdn.com" />
         <link rel="preconnect" href="https://thumbnail10.coupangcdn.com" />
+        <link rel="preconnect" href="https://image.coupangcdn.com" />
+        <link rel="preconnect" href="https://static.coupangcdn.com" />
         <link rel="dns-prefetch" href="https://thumbnail6.coupangcdn.com" />
         <link rel="dns-prefetch" href="https://thumbnail7.coupangcdn.com" />
+        <link rel="dns-prefetch" href="https://image.coupangcdn.com" />
+        <link rel="dns-prefetch" href="https://static.coupangcdn.com" />
         {/* RSS 피드 */}
         <link rel="alternate" type="application/rss+xml" title="똑체크 RSS" href="/rss" />
         {/* 사이트맵 */}
@@ -317,22 +322,27 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${notoSansKr.variable} font-sans antialiased bg-gray-50`}>
+      <body className={`${notoSansKr.variable} font-sans antialiased bg-[#e5e8eb]`}>
         <SessionProvider>
-          <PWAProvider>
-            {/* 스킵 네비게이션 - 접근성 */}
-            <a
-              href="#main-content"
-              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#3182f6] focus:text-white focus:rounded-lg"
-            >
-              본문으로 바로가기
-            </a>
-            <Header />
-            <main id="main-content" className="min-h-screen" role="main">
-              {children}
-            </main>
-            <Footer />
-          </PWAProvider>
+          <ToastProvider>
+            <PWAProvider>
+              {/* 앱 컨테이너 - PC에서도 모바일 앱처럼 중앙 정렬 */}
+              <div className="app-container">
+                {/* 스킵 네비게이션 - 접근성 */}
+                <a
+                  href="#main-content"
+                  className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#3182f6] focus:text-white focus:rounded-lg"
+                >
+                  본문으로 바로가기
+                </a>
+                <Header />
+                <main id="main-content" className="min-h-screen pb-16 bg-[#f2f4f6]" role="main">
+                  {children}
+                </main>
+                <BottomTabBar />
+              </div>
+            </PWAProvider>
+          </ToastProvider>
         </SessionProvider>
       </body>
     </html>

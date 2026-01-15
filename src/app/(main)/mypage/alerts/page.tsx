@@ -208,7 +208,7 @@ function AlertCard({
       {/* 이미지 */}
       <Link
         href={`/product/p-${alert.coupangProductId}`}
-        className="relative w-20 h-20 md:w-24 md:h-24 bg-[#f8f9fa] rounded-xl overflow-hidden flex-shrink-0"
+        className="relative w-20 h-20 bg-[#f8f9fa] rounded-xl overflow-hidden flex-shrink-0"
       >
         <Image
           src={alert.productImage}

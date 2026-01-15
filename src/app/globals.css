@@ -818,75 +818,109 @@ input:focus-visible {
   /* 상세 페이지 전용 스타일 */
 }
 
-/* ========== 모바일 최적화 ========== */
+/* ========== 앱 스타일 레이아웃 (PC에서도 모바일처럼) ========== */
+.app-container {
+  max-width: 540px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  background: var(--background);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+}
 
-/* 모바일 터치 스크롤 최적화 */
-@media (max-width: 768px) {
-  html {
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
+/* 하단 탭바 */
+.bottom-tab-bar {
+  width: 100%;
+  max-width: 540px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 하단 고정 액션바 */
+.bottom-action-bar {
+  width: 100%;
+  max-width: 540px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 토스트 컨테이너 */
+.toast-container {
+  width: 100%;
+  max-width: 540px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* PC에서 앱 컨테이너 스타일 */
+@media (min-width: 541px) {
+  body {
+    background: linear-gradient(180deg, #d1d6db 0%, #e5e8eb 100%);
   }
 
-  /* 모바일 타이틀 크기 조정 */
-  .toss-title-1 {
-    font-size: 22px;
-  }
-
-  .toss-title-2 {
-    font-size: 18px;
-  }
-
-  .toss-title-3 {
-    font-size: 16px;
-  }
-
-  /* 모바일 버튼 터치 영역 확대 */
-  .toss-btn {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  /* 모바일 카드 간격 */
-  .toss-card,
-  .toss-card-flat {
-    border-radius: var(--radius-md);
-  }
-
-  /* 모바일 입력 필드 최적화 */
-  .toss-input {
-    font-size: 16px; /* iOS 줌 방지 */
-    padding: 12px 14px;
-  }
-
-  /* 모바일 그리드 간격 조정 */
-  .grid {
-    gap: 12px;
-  }
-
-  /* 모바일에서 FAB 위치 조정 */
-  .fab {
-    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-    right: 16px;
-    width: 52px;
-    height: 52px;
+  .app-container {
+    border-left: 1px solid var(--toss-gray-200);
+    border-right: 1px solid var(--toss-gray-200);
   }
 }
 
-/* 작은 모바일 (SE, Mini 등) */
-@media (max-width: 375px) {
-  .toss-title-1 {
-    font-size: 20px;
-  }
+/* 앱 컨테이너 내부 요소들 너비 조정 */
+.app-container .max-w-6xl,
+.app-container .max-w-7xl,
+.app-container .max-w-4xl {
+  max-width: 100%;
+}
 
-  .toss-title-2 {
-    font-size: 16px;
-  }
+/* ========== 앱 스타일 (모바일 스타일 전역 적용) ========== */
 
-  /* 더 작은 패딩 */
-  .max-w-6xl {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
+/* 모바일 스타일을 모든 화면에 적용 */
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 타이틀 크기 - 모바일 스타일 */
+.toss-title-1 {
+  font-size: 22px;
+}
+
+.toss-title-2 {
+  font-size: 18px;
+}
+
+.toss-title-3 {
+  font-size: 16px;
+}
+
+/* 버튼 터치 영역 */
+.toss-btn {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* 카드 스타일 */
+.toss-card,
+.toss-card-flat {
+  border-radius: var(--radius-md);
+}
+
+/* 입력 필드 */
+.toss-input {
+  font-size: 16px;
+  padding: 12px 14px;
+}
+
+/* 그리드 간격 */
+.grid {
+  gap: 12px;
+}
+
+/* FAB 위치 */
+.fab {
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  right: 16px;
+  width: 52px;
+  height: 52px;
 }
 
 /* 모바일 하단 네비게이션 공간 확보 */
@@ -894,15 +928,13 @@ input:focus-visible {
   padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
 }
 
-/* 모바일 풀스크린 모달 */
-@media (max-width: 768px) {
-  .modal-fullscreen-mobile {
-    position: fixed;
-    inset: 0;
-    border-radius: 0;
-    max-height: 100vh;
-    max-height: 100dvh;
-  }
+/* 풀스크린 모달 */
+.modal-fullscreen-mobile {
+  position: fixed;
+  inset: 0;
+  border-radius: 0;
+  max-height: 100vh;
+  max-height: 100dvh;
 }
 
 /* 모바일 가로 스크롤 컨테이너 */
@@ -927,18 +959,14 @@ input:focus-visible {
   flex-shrink: 0;
 }
 
-/* 모바일 풀 너비 버튼 */
-@media (max-width: 768px) {
-  .btn-mobile-full {
-    width: 100%;
-  }
+/* 풀 너비 버튼 */
+.btn-mobile-full {
+  width: 100%;
 }
 
-/* 모바일 이미지 최적화 */
-@media (max-width: 768px) {
-  img {
-    content-visibility: auto;
-  }
+/* 이미지 최적화 */
+img {
+  content-visibility: auto;
 }
 
 /* 모바일 텍스트 선택 방지 (UI 요소) */

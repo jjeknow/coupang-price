@@ -52,7 +52,7 @@ export default function Error({ error, reset }: ErrorProps) {
         )}
 
         {/* 액션 버튼들 */}
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col gap-3 justify-center">
           <button
             onClick={reset}
             className="toss-btn toss-btn-primary inline-flex items-center justify-center gap-2"

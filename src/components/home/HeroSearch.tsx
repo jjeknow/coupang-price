@@ -131,7 +131,7 @@ export default function HeroSearch() {
         />
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8 md:py-12 relative z-10">
+      <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
         <div className="flex flex-col items-center text-center">
           {/* 뱃지 */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/10 mb-3">
@@ -140,13 +140,13 @@ export default function HeroSearch() {
           </div>
 
           {/* 타이틀 */}
-          <h1 className="text-[22px] md:text-[36px] font-bold leading-tight mb-2 md:mb-3 tracking-tight text-white">
+          <h1 className="text-[22px] font-bold leading-tight mb-2 tracking-tight text-white">
             쿠팡 가격변동 추적{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] via-[#a78bfa] to-[#60a5fa] animate-gradient bg-[length:200%_auto]">
               & 최저가 알림
             </span>
           </h1>
-          <p className="text-[#94a3b8] text-[13px] md:text-[15px] mb-5 md:mb-6 max-w-md">
+          <p className="text-[#94a3b8] text-[13px] mb-5 max-w-md">
             쿠팡 가격비교, 실시간 가격 그래프로 최적의 구매 타이밍을 찾아보세요.
           </p>
 
@@ -160,15 +160,6 @@ export default function HeroSearch() {
                     : 'border-white/10 hover:border-white/20'
                 }`}
               >
-                {/* 플랫폼 선택 (데스크톱) */}
-                <div className="hidden md:flex items-center absolute left-4 top-1/2 -translate-y-1/2 border-r border-white/10 pr-3">
-                  <span className="text-[13px] text-white font-medium flex items-center gap-1.5">
-                    <div className="w-4 h-4 bg-gradient-to-br from-[#f04452] to-[#ff6b6b] rounded flex items-center justify-center">
-                      <span className="text-[8px] font-bold text-white">C</span>
-                    </div>
-                    쿠팡
-                  </span>
-                </div>
                 <input
                   ref={inputRef}
                   type="text"
@@ -177,14 +168,14 @@ export default function HeroSearch() {
                   onFocus={() => { setIsFocused(true); setShowDropdown(true); }}
                   onBlur={() => setIsFocused(false)}
                   placeholder="상품명 or 쿠팡 URL 입력"
-                  className="w-full pl-4 md:pl-24 pr-20 md:pr-24 py-3 md:py-3.5 text-[14px] md:text-[15px] text-white placeholder:text-[#64748b] bg-transparent rounded-xl focus:outline-none"
+                  className="w-full pl-4 pr-20 py-3 text-[14px] text-white placeholder:text-[#64748b] bg-transparent rounded-xl focus:outline-none"
                 />
                 <button
                   type="submit"
                   className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-gradient-to-r from-[#3b82f6] to-[#6366f1] hover:from-[#2563eb] hover:to-[#4f46e5] text-white text-[13px] font-semibold rounded-lg transition-all duration-200 flex items-center gap-1.5"
                 >
                   <Search size={14} />
-                  <span className="hidden sm:inline">검색</span>
+                  검색
                 </button>
               </div>
 
@@ -247,22 +238,11 @@ export default function HeroSearch() {
                 #{keyword}
               </button>
             ))}
-            <span className="hidden md:inline-flex">
-              {TRENDING_KEYWORDS.slice(4).map((keyword) => (
-                <button
-                  key={keyword}
-                  onClick={() => handleKeywordClick(keyword)}
-                  className="px-2.5 py-1 ml-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-[#94a3b8] hover:text-white text-[11px] rounded-full transition-all duration-200"
-                >
-                  #{keyword}
-                </button>
-              ))}
-            </span>
           </div>
 
           {/* 파트너스 고지 */}
-          <div className="mx-2 md:mx-0 px-4 py-2.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/10">
-            <p className="text-[#94a3b8] text-[10px] md:text-[11px]">
+          <div className="mx-2 px-4 py-2.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/10">
+            <p className="text-[#94a3b8] text-[10px]">
               본 서비스는 쿠팡 파트너스 활동의 일환으로 수수료를 제공받습니다
             </p>
           </div>

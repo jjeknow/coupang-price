@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { searchProducts } from '@/lib/coupang-api';
 import { getFromCache, setCache, createCacheKey, CACHE_TTL } from '@/lib/cache';
+import { prisma } from '@/lib/prisma';
 
 // 상품 검색 API (캐싱 적용 - 5분)
 export async function GET(request: NextRequest) {
@@ -41,6 +42,13 @@ export async function GET(request: NextRequest) {
 
     console.log(`[CACHE MISS] ${cacheKey} - API 호출`);
     const result = await searchProducts(trimmedKeyword, limit);
+
+    // 검색어 카운트 증가 (비동기, 에러 무시)
+    prisma.searchKeyword.upsert({
+      where: { keyword: trimmedKeyword },
+      update: { count: { increment: 1 } },
+      create: { keyword: trimmedKeyword, count: 1 },
+    }).catch(() => {});
 
     const responseData = {
       keyword: trimmedKeyword,

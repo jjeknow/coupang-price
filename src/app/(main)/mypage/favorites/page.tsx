@@ -116,7 +116,7 @@ export default function FavoritesPage() {
               {/* 이미지 */}
               <Link
                 href={`/product/p-${item.coupangProductId}`}
-                className="relative w-24 h-24 md:w-32 md:h-32 bg-[#f8f9fa] rounded-xl overflow-hidden flex-shrink-0"
+                className="relative w-20 h-20 bg-[#f8f9fa] rounded-xl overflow-hidden flex-shrink-0"
               >
                 <Image
                   src={item.productImage}
@@ -130,12 +130,12 @@ export default function FavoritesPage() {
               {/* 정보 */}
               <div className="flex-1 min-w-0">
                 <Link href={`/product/p-${item.coupangProductId}`}>
-                  <p className="text-[14px] md:text-[15px] text-[#191f28] line-clamp-2 hover:text-[#3182f6]">
+                  <p className="text-[14px] text-[#191f28] line-clamp-2 hover:text-[#3182f6]">
                     {item.productName}
                   </p>
                 </Link>
 
-                <p className="text-[18px] md:text-[20px] font-bold text-[#e03131] mt-2">
+                <p className="text-[16px] font-bold text-[#e03131] mt-2">
                   {item.productPrice.toLocaleString()}원
                 </p>
 

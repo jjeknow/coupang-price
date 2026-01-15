@@ -44,16 +44,8 @@ function ProductGrid({
     });
   }, [products]);
 
-  // 그리드 컬럼 클래스 매핑
-  const gridColsClass = useMemo(() => {
-    const colsMap: Record<number, string> = {
-      2: 'grid-cols-2',
-      3: 'grid-cols-2 sm:grid-cols-3',
-      4: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4',
-      5: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5',
-    };
-    return colsMap[columns] || colsMap[5];
-  }, [columns]);
+  // 그리드 컬럼 클래스 - 앱 스타일이므로 항상 2열
+  const gridColsClass = 'grid-cols-2';
 
   if (uniqueProducts.length === 0) {
     return (

@@ -107,7 +107,7 @@ export default function FavoritesPage() {
             <p className="text-[14px] text-[#8b95a1] mb-4">
               총 {favorites.length}개의 관심상품
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               {favorites.map((product) => (
                 <div key={product.productId} className="relative group">
                   <ProductCard

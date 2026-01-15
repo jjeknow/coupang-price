@@ -29,5 +29,15 @@ export default function SearchLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      {/* 검색 페이지는 자체 검색바가 있으므로 모바일에서 Header 숨김 */}
+      <style>{`
+        @media (max-width: 767px) {
+          header { display: none !important; }
+        }
+      `}</style>
+      {children}
+    </>
+  );
 }

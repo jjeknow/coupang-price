@@ -13,6 +13,8 @@ interface RecentProduct {
   isRocket?: boolean;
   isFreeShipping?: boolean;
   categoryName?: string;
+  lowestPrice?: number | null;
+  highestPrice?: number | null;
   viewedAt: number;
 }
 
@@ -56,18 +58,18 @@ export default function RecentlyViewed() {
   if (products.length === 0 || !isVisible) return null;
 
   return (
-    <section className="bg-white py-10 border-t border-[#e5e8eb]">
+    <section className="bg-white py-6 border-t border-[#e5e8eb]">
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <Clock size={20} className="text-[#6b7684]" />
-            <h2 className="text-[18px] font-bold text-[#191f28]">최근 본 상품</h2>
-            <span className="text-[13px] text-[#8b95a1]">({products.length})</span>
+            <Clock size={18} className="text-[#6b7684]" />
+            <h2 className="text-[16px] font-bold text-[#191f28]">최근 본 상품</h2>
+            <span className="text-[12px] text-[#8b95a1]">({products.length})</span>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={clearAll}
-              className="text-[13px] text-[#8b95a1] hover:text-[#6b7684]"
+              className="text-[12px] text-[#8b95a1] hover:text-[#6b7684]"
             >
               전체 삭제
             </button>
@@ -75,13 +77,13 @@ export default function RecentlyViewed() {
               onClick={() => setIsVisible(false)}
               className="p-1 text-[#8b95a1] hover:text-[#6b7684]"
             >
-              <X size={18} />
+              <X size={16} />
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {products.slice(0, 5).map((product) => (
+        <div className="grid grid-cols-2 gap-3">
+          {products.slice(0, 4).map((product) => (
             <ProductCard
               key={product.productId}
               productId={product.productId}
@@ -92,6 +94,8 @@ export default function RecentlyViewed() {
               isRocket={product.isRocket}
               isFreeShipping={product.isFreeShipping}
               categoryName={product.categoryName}
+              lowestPrice={product.lowestPrice}
+              highestPrice={product.highestPrice}
             />
           ))}
         </div>
