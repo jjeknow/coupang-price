@@ -1,46 +1,12 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError(result.error);
-      } else {
-        router.push(callbackUrl);
-        router.refresh();
-      }
-    } catch {
-      setError('로그인 중 오류가 발생했습니다.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSocialLogin = (provider: string) => {
     signIn(provider, { callbackUrl });
@@ -105,73 +71,6 @@ function LoginForm() {
             Google로 시작하기
           </button>
         </div>
-
-        {/* 구분선 */}
-        <div className="relative mb-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[#e5e8eb]"></div>
-          </div>
-          <div className="relative flex justify-center">
-            <span className="px-4 bg-white text-[#5c6470] text-sm">또는</span>
-          </div>
-        </div>
-
-        {/* 이메일 로그인 폼 */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="flex items-center gap-2 p-3 bg-red-50 text-red-600 rounded-xl text-sm">
-              <AlertCircle size={16} />
-              {error}
-            </div>
-          )}
-
-          <div className="relative">
-            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="이메일"
-              required
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
-            />
-          </div>
-
-          <div className="relative">
-            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="비밀번호"
-              required
-              className="w-full pl-11 pr-12 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#5c6470] hover:text-[#4e5968]"
-            >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-[#3182f6] text-white rounded-xl font-medium hover:bg-[#1b64da] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? '로그인 중...' : '이메일로 로그인'}
-          </button>
-        </form>
-
-        {/* 회원가입 링크 */}
-        <p className="mt-6 text-center text-[#5c6470] text-sm">
-          아직 계정이 없으신가요?{' '}
-          <Link href="/auth/signup" className="text-[#1d4ed8] font-medium hover:underline">
-            회원가입
-          </Link>
-        </p>
       </div>
     </div>
   );

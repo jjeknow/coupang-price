@@ -1,77 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Mail, Lock, User, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
 
 export default function SignupPage() {
-  const router = useRouter();
-
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const passwordChecks = {
-    length: password.length >= 6,
-    match: password === confirmPassword && confirmPassword.length > 0,
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-
-    if (!passwordChecks.length) {
-      setError('비밀번호는 6자 이상이어야 합니다.');
-      return;
-    }
-
-    if (!passwordChecks.match) {
-      setError('비밀번호가 일치하지 않습니다.');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || '회원가입에 실패했습니다.');
-        return;
-      }
-
-      // 회원가입 성공 시 자동 로그인
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        router.push('/auth/login');
-      } else {
-        router.push('/');
-        router.refresh();
-      }
-    } catch {
-      setError('회원가입 중 오류가 발생했습니다.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSocialLogin = (provider: string) => {
     signIn(provider, { callbackUrl: '/' });
   };
@@ -101,7 +32,7 @@ export default function SignupPage() {
         </div>
 
         {/* 소셜 로그인 */}
-        <div className="space-y-3 mb-6">
+        <div className="space-y-3">
           <button
             onClick={() => handleSocialLogin('kakao')}
             className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[#FEE500] text-[#191f28] rounded-xl font-medium hover:bg-[#FADA0A] transition-colors"
@@ -135,112 +66,6 @@ export default function SignupPage() {
             Google로 시작하기
           </button>
         </div>
-
-        {/* 구분선 */}
-        <div className="relative mb-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[#e5e8eb]"></div>
-          </div>
-          <div className="relative flex justify-center">
-            <span className="px-4 bg-white text-[#5c6470] text-sm">또는 이메일로 가입</span>
-          </div>
-        </div>
-
-        {/* 이메일 회원가입 폼 */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="flex items-center gap-2 p-3 bg-red-50 text-red-600 rounded-xl text-sm">
-              <AlertCircle size={16} />
-              {error}
-            </div>
-          )}
-
-          <div className="relative">
-            <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="이름 (선택)"
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
-            />
-          </div>
-
-          <div className="relative">
-            <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="이메일"
-              required
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
-            />
-          </div>
-
-          <div className="relative">
-            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="비밀번호 (6자 이상)"
-              required
-              className="w-full pl-11 pr-12 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#5c6470] hover:text-[#4e5968]"
-            >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-          </div>
-
-          <div className="relative">
-            <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c6470]" />
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="비밀번호 확인"
-              required
-              className="w-full pl-11 pr-4 py-3 bg-[#f2f4f6] rounded-xl text-[15px] placeholder:text-[#5c6470] focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#3182f6]"
-            />
-          </div>
-
-          {/* 비밀번호 체크 */}
-          {password.length > 0 && (
-            <div className="space-y-1 text-sm">
-              <div className={`flex items-center gap-2 ${passwordChecks.length ? 'text-green-600' : 'text-[#5c6470]'}`}>
-                <CheckCircle size={14} />
-                6자 이상
-              </div>
-              {confirmPassword.length > 0 && (
-                <div className={`flex items-center gap-2 ${passwordChecks.match ? 'text-green-600' : 'text-red-500'}`}>
-                  <CheckCircle size={14} />
-                  비밀번호 일치
-                </div>
-              )}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-[#3182f6] text-white rounded-xl font-medium hover:bg-[#1b64da] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? '가입 중...' : '회원가입'}
-          </button>
-        </form>
-
-        {/* 로그인 링크 */}
-        <p className="mt-6 text-center text-[#5c6470] text-sm">
-          이미 계정이 있으신가요?{' '}
-          <Link href="/auth/login" className="text-[#1d4ed8] font-medium hover:underline">
-            로그인
-          </Link>
-        </p>
       </div>
     </div>
   );
