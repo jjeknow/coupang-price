@@ -370,7 +370,7 @@ export default function ProductDetailPage() {
 
   // 실제 데이터 여부 상태
   const [hasRealData, setHasRealData] = useState(false);
-  const [priceHistoryLoading, setPriceHistoryLoading] = useState(true);
+  const [priceHistoryLoading, setPriceHistoryLoading] = useState(false);
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -972,14 +972,7 @@ export default function ProductDetailPage() {
         {/* 가격 차트 */}
         <div className="px-4 py-6">
           <div className="toss-card-flat p-6 border border-[#e5e8eb]">
-            {priceHistoryLoading ? (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-[#f2f4f6] rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                  <TrendingDown size={32} className="text-[#adb5bd]" />
-                </div>
-                <p className="text-[14px] text-[#5c6470]">가격 데이터를 불러오는 중...</p>
-              </div>
-            ) : hasRealData && priceHistory.length > 0 ? (
+            {hasRealData && priceHistory.length > 0 ? (
               <PriceChart
                 data={priceHistory}
                 currentPrice={product.productPrice}
@@ -989,18 +982,20 @@ export default function ProductDetailPage() {
               />
             ) : (
               <div className="text-center py-12">
-                <div className="w-16 h-16 bg-[#f2f4f6] rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className={`w-16 h-16 bg-[#f2f4f6] rounded-full flex items-center justify-center mx-auto mb-4 ${priceHistoryLoading ? 'animate-pulse' : ''}`}>
                   <TrendingDown size={32} className="text-[#adb5bd]" />
                 </div>
                 <h4 className="text-[17px] font-semibold text-[#191f28] mb-2">
-                  가격 추적을 시작합니다
+                  {priceHistoryLoading ? '가격 데이터 확인 중...' : '가격 추적을 시작합니다'}
                 </h4>
                 <p className="text-[14px] text-[#5c6470] mb-1">
-                  이 상품의 가격 데이터를 수집 중입니다.
+                  {priceHistoryLoading ? '잠시만 기다려주세요' : '이 상품의 가격 데이터를 수집 중입니다.'}
                 </p>
-                <p className="text-[13px] text-[#5c6470]">
-                  내일부터 실제 가격 변동 그래프를 확인할 수 있어요.
-                </p>
+                {!priceHistoryLoading && (
+                  <p className="text-[13px] text-[#5c6470]">
+                    내일부터 실제 가격 변동 그래프를 확인할 수 있어요.
+                  </p>
+                )}
               </div>
             )}
           </div>
