@@ -1068,7 +1068,7 @@ export default function ProductDetailPage() {
       </div>
 
       {/* 하단 고정 버튼 */}
-      <div className="fixed bottom-14 z-40 bg-white border-t border-[#e5e8eb] px-4 py-3 bottom-action-bar">
+      <div className="fixed bottom-14 left-0 right-0 w-full z-40 bg-white border-t border-[#e5e8eb] px-4 py-3 bottom-action-bar">
         <div className="flex gap-3">
           <button
             onClick={handleFavoriteClick}
