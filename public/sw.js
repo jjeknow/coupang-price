@@ -233,8 +233,33 @@ self.addEventListener('sync', (event) => {
   }
 });
 
+// 주기적 백그라운드 동기화 (Periodic Sync)
+self.addEventListener('periodicsync', (event) => {
+  if (event.tag === 'update-prices') {
+    event.waitUntil(updatePrices());
+  }
+  if (event.tag === 'check-alerts') {
+    event.waitUntil(checkAlerts());
+  }
+});
+
 async function syncFavorites() {
   // 오프라인에서 추가된 관심상품 동기화
-  // 실제 구현은 IndexedDB와 연동 필요
   console.log('관심상품 동기화 중...');
+}
+
+async function updatePrices() {
+  // 주기적으로 관심상품 가격 업데이트
+  console.log('가격 업데이트 중...');
+  try {
+    const cache = await caches.open(DYNAMIC_CACHE);
+    await cache.add('/api/products/goldbox');
+  } catch (error) {
+    console.error('가격 업데이트 실패:', error);
+  }
+}
+
+async function checkAlerts() {
+  // 가격 알림 체크
+  console.log('가격 알림 체크 중...');
 }
