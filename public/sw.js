@@ -1,7 +1,7 @@
-// Service Worker for PWA - 최저가 알림 서비스
-const CACHE_NAME = 'choejaga-v1';
-const STATIC_CACHE = 'choejaga-static-v1';
-const DYNAMIC_CACHE = 'choejaga-dynamic-v1';
+// Service Worker for PWA - 똑체크 가격변동 추적 서비스
+const CACHE_NAME = 'ddokcheck-v2';
+const STATIC_CACHE = 'ddokcheck-static-v2';
+const DYNAMIC_CACHE = 'ddokcheck-dynamic-v2';
 
 // 정적 자원 - 앱 셸
 const STATIC_ASSETS = [

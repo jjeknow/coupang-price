@@ -1,41 +1,58 @@
 {
-  "name": "쿠팡 최저가 - 실시간 가격 추적",
-  "short_name": "쿠팡 최저가",
-  "description": "쿠팡 상품의 실시간 가격 변동을 추적하고 역대 최저가 알림을 받으세요.",
-  "start_url": "/",
+  "id": "com.ddokcheck.app",
+  "name": "똑체크 - 쿠팡 가격변동 추적 & 최저가 알림",
+  "short_name": "똑체크",
+  "description": "쿠팡 상품의 실시간 가격 변동을 추적하고 역대 최저가 알림을 받아보세요. 가격 그래프로 구매 타이밍을 잡으세요!",
+  "start_url": "/?utm_source=pwa&utm_medium=homescreen",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "background_color": "#ffffff",
   "theme_color": "#3182f6",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "ko-KR",
-  "categories": ["shopping", "lifestyle", "utilities"],
+  "dir": "ltr",
+  "categories": ["shopping", "lifestyle", "utilities", "finance"],
+  "iarc_rating_id": "",
   "icons": [
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
   "screenshots": [
     {
-      "src": "/screenshot-wide.png",
-      "sizes": "1280x720",
+      "src": "/og-image-v2.png",
+      "sizes": "1200x630",
       "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "/screenshot-narrow.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "wide",
+      "label": "똑체크 메인 화면 - 쿠팡 가격 추적 서비스"
     }
   ],
   "shortcuts": [
@@ -43,17 +60,48 @@
       "name": "상품 검색",
       "short_name": "검색",
       "description": "쿠팡 상품 검색하기",
-      "url": "/search",
-      "icons": [{ "src": "/icon-search.png", "sizes": "96x96" }]
+      "url": "/search?utm_source=pwa_shortcut"
     },
     {
       "name": "골드박스 특가",
       "short_name": "골드박스",
       "description": "오늘의 골드박스 특가 보기",
-      "url": "/",
-      "icons": [{ "src": "/icon-goldbox.png", "sizes": "96x96" }]
+      "url": "/?tab=goldbox&utm_source=pwa_shortcut"
+    },
+    {
+      "name": "내 관심상품",
+      "short_name": "관심상품",
+      "description": "저장한 관심상품 보기",
+      "url": "/favorites?utm_source=pwa_shortcut"
+    },
+    {
+      "name": "가격 알림",
+      "short_name": "알림",
+      "description": "설정한 가격 알림 관리",
+      "url": "/alerts?utm_source=pwa_shortcut"
     }
   ],
-  "related_applications": [],
+  "share_target": {
+    "action": "/search",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://ddokcheck.com/manifest.json"
+    }
+  ],
   "prefer_related_applications": false
 }
