@@ -1,14 +1,19 @@
 import webpush from 'web-push';
 
-// VAPID 키 설정
-const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!;
-const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY!;
+// VAPID 키 설정 (환경변수가 있을 때만)
+const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
 
-webpush.setVapidDetails(
-  'mailto:support@ddokcheck.com',
-  vapidPublicKey,
-  vapidPrivateKey
-);
+if (vapidPublicKey && vapidPrivateKey) {
+  webpush.setVapidDetails(
+    'mailto:support@ddokcheck.com',
+    vapidPublicKey,
+    vapidPrivateKey
+  );
+}
+
+// VAPID 키 설정 여부 확인
+export const isVapidConfigured = !!(vapidPublicKey && vapidPrivateKey);
 
 export interface PushPayload {
   title: string;
@@ -33,6 +38,11 @@ export async function sendPushNotification(
   subscription: PushSubscriptionData,
   payload: PushPayload
 ): Promise<boolean> {
+  if (!isVapidConfigured) {
+    console.warn('VAPID keys not configured, skipping push notification');
+    return false;
+  }
+
   try {
     await webpush.sendNotification(
       {
