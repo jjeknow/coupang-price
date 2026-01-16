@@ -458,7 +458,8 @@ export default function ProductDetailPage() {
         checkUserAlert();
       }
     }
-  }, [product, session]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product?.productId, session?.user]);
 
   const checkUserFavorite = async () => {
     if (!product) return;
@@ -711,7 +712,8 @@ export default function ProductDetailPage() {
     if (productId && product) {
       fetchRelatedProducts();
     }
-  }, [productId, product]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productId, product?.productId]);
 
   const formatPrice = (price: number) => price.toLocaleString('ko-KR');
 

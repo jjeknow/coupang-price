@@ -26,8 +26,8 @@ Allow: /
 Crawl-delay: 1
 
 # Host
-Host: https://ddokcheck.com
+Host: http://localhost:3000
 
 # Sitemaps
-Sitemap: https://ddokcheck.com/sitemap.xml
+Sitemap: http://localhost:3000/sitemap.xml
 Sitemap: https://ddokcheck.com/sitemap-categories.xml

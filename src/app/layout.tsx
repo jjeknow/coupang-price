@@ -7,6 +7,7 @@ import BottomTabBar from '@/components/layout/BottomTabBar';
 import SessionProvider from '@/components/providers/SessionProvider';
 import { ToastProvider } from '@/components/providers/ToastProvider';
 import PWAProvider from '@/components/PWAProvider';
+import CapacitorProvider from '@/components/providers/CapacitorProvider';
 
 // Google Analytics 측정 ID
 const GA_MEASUREMENT_ID = 'G-E94CQH3ENW';
@@ -411,8 +412,9 @@ export default function RootLayout({
       </head>
       <body className={`${notoSansKr.variable} font-sans antialiased bg-[#e5e8eb]`}>
         <SessionProvider>
-          <ToastProvider>
-            <PWAProvider>
+          <CapacitorProvider>
+            <ToastProvider>
+              <PWAProvider>
               {/* 앱 컨테이너 - PC에서도 모바일 앱처럼 중앙 정렬 */}
               <div className="app-container">
                 {/* 스킵 네비게이션 - 접근성 */}
@@ -428,8 +430,9 @@ export default function RootLayout({
                 </main>
                 <BottomTabBar />
               </div>
-            </PWAProvider>
-          </ToastProvider>
+              </PWAProvider>
+            </ToastProvider>
+          </CapacitorProvider>
         </SessionProvider>
       </body>
     </html>

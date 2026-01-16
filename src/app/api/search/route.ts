@@ -43,8 +43,8 @@ export async function GET(request: NextRequest) {
     console.log(`[CACHE MISS] ${cacheKey} - API 호출`);
     const result = await searchProducts(trimmedKeyword, limit);
 
-    // 검색어 카운트 증가 (비동기, 에러 무시)
-    prisma.searchKeyword.upsert({
+    // 검색어 카운트 증가 (백그라운드, 에러 무시)
+    void prisma.searchKeyword.upsert({
       where: { keyword: trimmedKeyword },
       update: { count: { increment: 1 } },
       create: { keyword: trimmedKeyword, count: 1 },

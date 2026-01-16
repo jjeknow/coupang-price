@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -18,18 +18,30 @@ const BellIcon = ({ size = 24 }: { size?: number }) => (
   </svg>
 );
 
-export default function Header() {
+function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { data: session } = useSession();
 
-  // 스크롤 시 그림자 추가
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+  // 스크롤 시 그림자 추가 (throttle 적용)
+  const handleScroll = useCallback(() => {
+    const scrolled = window.scrollY > 0;
+    setIsScrolled((prev) => prev !== scrolled ? scrolled : prev);
   }, []);
+
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [handleScroll]);
 
   return (
     <header className={`sticky top-0 z-50 bg-white safe-area-top transition-shadow ${isScrolled ? 'shadow-sm' : ''}`}>
@@ -74,3 +86,5 @@ export default function Header() {
     </header>
   );
 }
+
+export default memo(Header);

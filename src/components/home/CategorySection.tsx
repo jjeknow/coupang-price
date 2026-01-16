@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
 import Link from 'next/link';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -28,8 +28,9 @@ const CATEGORY_MORE = [
   { id: 1021, name: '문구', emoji: '✏️' },
 ];
 
-export default function CategorySection() {
+function CategorySection() {
   const [showMore, setShowMore] = useState(false);
+  const toggleShowMore = useCallback(() => setShowMore((prev) => !prev), []);
 
   return (
     <section className="bg-white py-6">
@@ -79,8 +80,10 @@ export default function CategorySection() {
         {/* 더보기/접기 버튼 */}
         <div className="flex justify-center mt-4">
           <button
-            onClick={() => setShowMore(!showMore)}
-            className="flex items-center gap-2 px-5 py-2 text-[13px] text-[#4e5968] bg-[#f2f4f6] hover:bg-[#e5e8eb] rounded-full transition-colors"
+            onClick={toggleShowMore}
+            aria-expanded={showMore}
+            aria-label={showMore ? '카테고리 접기' : '더 많은 카테고리 보기'}
+            className="flex items-center gap-2 px-5 py-2 text-[13px] text-[#4e5968] bg-[#f2f4f6] hover:bg-[#e5e8eb] rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3182f6]"
           >
             {showMore ? (
               <>
@@ -99,3 +102,5 @@ export default function CategorySection() {
     </section>
   );
 }
+
+export default memo(CategorySection);

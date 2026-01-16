@@ -21,7 +21,6 @@ interface ProductGridProps {
   products: Product[];
   title?: string;
   showMoreLink?: string;
-  columns?: 2 | 3 | 4 | 5;
   priorityCount?: number;
 }
 
@@ -29,7 +28,6 @@ function ProductGrid({
   products,
   title,
   showMoreLink,
-  columns = 5,
   priorityCount = 4,
 }: ProductGridProps) {
   // 중복 상품 제거 (productId 기준)
@@ -44,8 +42,8 @@ function ProductGrid({
     });
   }, [products]);
 
-  // 그리드 컬럼 클래스 - 앱 스타일이므로 항상 2열
-  const gridColsClass = 'grid-cols-2';
+  // 반응형 그리드 컬럼 클래스 - 모바일 2열, 태블릿 3열, 데스크탑 4열
+  const gridColsClass = 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5';
 
   if (uniqueProducts.length === 0) {
     return (

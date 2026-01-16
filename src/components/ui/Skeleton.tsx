@@ -43,13 +43,18 @@ export function ProductCardSkeleton() {
   );
 }
 
-// 상품 그리드 스켈레톤
+// 상품 그리드 스켈레톤 (반응형)
 export function ProductGridSkeleton({ count = 10 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div
+      className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+      role="status"
+      aria-label="상품 로딩 중"
+    >
       {Array.from({ length: count }).map((_, i) => (
         <ProductCardSkeleton key={i} />
       ))}
+      <span className="sr-only">상품을 불러오는 중입니다...</span>
     </div>
   );
 }

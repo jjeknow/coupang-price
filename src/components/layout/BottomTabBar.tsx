@@ -122,8 +122,12 @@ export default function BottomTabBar() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 w-full z-50 bg-[#f8f9fa] border-t border-[#e5e8eb] safe-area-bottom bottom-tab-bar">
-      <div className="flex items-center justify-around h-14 w-full">
+    <nav
+      className="fixed bottom-0 left-0 right-0 w-full z-50 bg-[#f8f9fa] border-t border-[#e5e8eb] safe-area-bottom bottom-tab-bar"
+      role="navigation"
+      aria-label="메인 내비게이션"
+    >
+      <div className="flex items-center justify-around h-14 w-full" role="tablist">
         {tabs.map((tab) => {
           const active = isActive(tab);
           const IconComponent = tab.icon;
@@ -133,12 +137,18 @@ export default function BottomTabBar() {
               key={tab.href}
               href={tab.href}
               prefetch={true}
-              className={`flex flex-col items-center justify-center flex-1 h-full pt-1.5 pb-1 touch-manipulation ${
+              role="tab"
+              aria-selected={active}
+              aria-label={`${tab.label}${active ? ' (현재 페이지)' : ''}`}
+              className={`flex flex-col items-center justify-center flex-1 h-full pt-1.5 pb-1 touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3182f6] focus-visible:ring-inset ${
                 active ? 'text-[#191f28]' : 'text-[#5c6470] active:text-[#191f28]'
               }`}
             >
               <IconComponent filled={active} />
-              <span className={`text-[10px] mt-0.5 ${active ? 'font-semibold' : 'font-medium'}`}>
+              <span
+                className={`text-[10px] mt-0.5 ${active ? 'font-semibold' : 'font-medium'}`}
+                aria-hidden="true"
+              >
                 {tab.label}
               </span>
             </Link>
