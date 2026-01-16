@@ -38,7 +38,7 @@ export default function Header() {
           {/* 모바일 스타일 헤더 (PC에서도 동일) */}
           <div className="flex items-center justify-between h-14">
             {/* 로고 */}
-            <Link href="/" className="flex items-center">
+            <Link href="/" prefetch={true} className="flex items-center touch-manipulation">
               <Image
                 src="/logo.png"
                 alt="똑체크"
@@ -53,14 +53,16 @@ export default function Header() {
             <div className="flex items-center gap-1">
               <Link
                 href="/search"
-                className="w-10 h-10 flex items-center justify-center text-[#4e5968] hover:bg-[#f2f4f6] active:bg-[#f2f4f6] rounded-full transition-colors"
+                prefetch={true}
+                className="w-10 h-10 flex items-center justify-center text-[#4e5968] active:bg-[#f2f4f6] rounded-full touch-manipulation"
                 aria-label="검색"
               >
                 <SearchIcon size={22} />
               </Link>
               <Link
                 href={session ? '/mypage/alerts' : '/auth/login?callbackUrl=/mypage/alerts'}
-                className="w-10 h-10 flex items-center justify-center text-[#4e5968] hover:bg-[#f2f4f6] active:bg-[#f2f4f6] rounded-full transition-colors"
+                prefetch={true}
+                className="w-10 h-10 flex items-center justify-center text-[#4e5968] active:bg-[#f2f4f6] rounded-full touch-manipulation"
                 aria-label="알림"
               >
                 <BellIcon size={22} />

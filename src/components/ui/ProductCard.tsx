@@ -145,25 +145,23 @@ function ProductCard({
           </div>
 
           {/* 배송/가격 배지 */}
-          {(isRocket || isFreeShipping || isPriceGood) && (
-            <div className="flex flex-wrap gap-1">
-              {isRocket && (
-                <span className="px-1.5 py-0.5 bg-[#dbeafe] text-[#1d4ed8] text-[10px] font-medium rounded border border-[#1d4ed8]/20">
-                  로켓배송
-                </span>
-              )}
-              {isFreeShipping && !isRocket && (
-                <span className="px-1.5 py-0.5 bg-[#dbeafe] text-[#1d4ed8] text-[10px] font-medium rounded border border-[#1d4ed8]/20">
-                  무료배송
-                </span>
-              )}
-              {isPriceGood && (
-                <span className="px-1.5 py-0.5 bg-[#d1fae5] text-[#047857] text-[10px] font-medium rounded border border-[#047857]/20">
-                  가격 Good
-                </span>
-              )}
-            </div>
-          )}
+          <div className="flex flex-wrap gap-1">
+            {isRocket && (
+              <span className="px-1.5 py-0.5 bg-[#dbeafe] text-[#1d4ed8] text-[10px] font-medium rounded border border-[#1d4ed8]/20">
+                로켓배송
+              </span>
+            )}
+            {isFreeShipping && !isRocket && (
+              <span className="px-1.5 py-0.5 bg-[#dbeafe] text-[#1d4ed8] text-[10px] font-medium rounded border border-[#1d4ed8]/20">
+                무료배송
+              </span>
+            )}
+            {isPriceGood && (
+              <span className="px-1.5 py-0.5 bg-[#d1fae5] text-[#047857] text-[10px] font-medium rounded border border-[#047857]/20">
+                가격 Good
+              </span>
+            )}
+          </div>
         </div>
       </Link>
     </article>

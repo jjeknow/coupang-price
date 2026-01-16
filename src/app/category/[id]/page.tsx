@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getBestProducts, CATEGORIES, CoupangProduct } from '@/lib/coupang-api';
+import { getBestProductsWithPriceData, CATEGORIES, CoupangProduct } from '@/lib/coupang-api';
 import CategoryProductList from '@/components/category/CategoryProductList';
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://ddokcheck.com';
@@ -211,7 +211,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  const products = await getBestProducts(categoryId, 100).catch(() => []);
+  const products = await getBestProductsWithPriceData(categoryId, 100).catch(() => []);
   const emoji = categoryEmojis[categoryId] || '📦';
 
   const itemListJsonLd = generateItemListJsonLd(categoryName, categoryId, products);

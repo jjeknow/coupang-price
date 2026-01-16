@@ -1,9 +1,20 @@
 import { MetadataRoute } from 'next';
 import { CATEGORIES } from '@/lib/coupang-api';
+import { prisma } from '@/lib/prisma';
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://coupang-price.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://ddokcheck.com';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// 슬러그 생성 함수
+function createSlug(productName: string, productId: string): string {
+  const slug = productName
+    .replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '')
+    .replace(/\s+/g, '-')
+    .slice(0, 50)
+    .toLowerCase();
+  return `${slug}-${productId}`;
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   // 핵심 페이지들 (높은 우선순위)
@@ -103,5 +114,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  return [...corePages, ...categoryPages, ...remainingCategories, ...legalPages];
+  // 상품 페이지들 (가격 히스토리가 있는 상품만)
+  let productPages: MetadataRoute.Sitemap = [];
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        priceHistory: { some: {} },
+      },
+      orderBy: { updatedAt: 'desc' },
+      take: 500, // 최근 업데이트된 500개 상품
+      select: {
+        coupangId: true,
+        name: true,
+        updatedAt: true,
+        currentPrice: true,
+        lowestPrice: true,
+      },
+    });
+
+    productPages = products.map((product) => {
+      // 최저가인 상품은 우선순위 높게
+      const isLowestPrice = product.lowestPrice && product.currentPrice <= product.lowestPrice;
+      return {
+        url: `${BASE_URL}/product/${createSlug(product.name, product.coupangId)}`,
+        lastModified: product.updatedAt,
+        changeFrequency: 'daily' as const,
+        priority: isLowestPrice ? 0.8 : 0.6,
+      };
+    });
+  } catch (error) {
+    console.error('상품 사이트맵 생성 오류:', error);
+  }
+
+  return [...corePages, ...categoryPages, ...remainingCategories, ...productPages, ...legalPages];
 }

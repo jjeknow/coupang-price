@@ -183,3 +183,16 @@ model SearchKeyword {
 
   @@index([count])
 }
+
+// 푸시 알림 구독 모델
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String?
+  endpoint  String   @unique
+  p256dh    String   // 암호화 키
+  auth      String   // 인증 키
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}

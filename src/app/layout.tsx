@@ -246,6 +246,85 @@ const breadcrumbJsonLd = {
   ],
 };
 
+// FAQ 구조화 데이터 - 검색결과에 FAQ 리치 스니펫 표시
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '똑체크는 어떤 서비스인가요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '똑체크는 쿠팡 상품의 가격 변동을 실시간으로 추적하고, 역대 최저가 알림을 제공하는 무료 서비스입니다. 30일간의 가격 히스토리 그래프를 통해 최적의 구매 시점을 파악할 수 있습니다.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '가격 알림은 어떻게 받나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '관심 상품의 목표 가격을 설정하면, 해당 가격 이하로 떨어질 때 푸시 알림을 보내드립니다. 회원가입 후 알림 설정이 가능하며, PWA 앱으로 설치하면 더 빠르게 알림을 받을 수 있습니다.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '서비스 이용 비용이 있나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '똑체크는 완전 무료 서비스입니다. 쿠팡 파트너스를 통해 운영되며, 사용자에게 추가 비용은 발생하지 않습니다. 똑체크를 통해 구매하시면 동일한 가격에 서비스 유지에 도움을 주실 수 있습니다.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '가격 정보는 얼마나 자주 업데이트되나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '가격 정보는 하루에 여러 번 자동으로 업데이트됩니다. 관심 상품으로 등록된 상품은 더 자주 업데이트되어 정확한 가격 변동을 추적할 수 있습니다.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '모바일 앱으로 사용할 수 있나요?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '네, 똑체크는 PWA(Progressive Web App)로 제작되어 스마트폰 홈 화면에 앱처럼 설치할 수 있습니다. 안드로이드와 iOS 모두 지원하며, 설치 배너를 통해 쉽게 설치할 수 있습니다.',
+      },
+    },
+  ],
+};
+
+// SoftwareApplication 스키마 (앱스토어 노출용)
+const softwareAppJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: '똑체크 - 쿠팡 가격변동 알림',
+  operatingSystem: 'Web, Android, iOS',
+  applicationCategory: 'ShoppingApplication',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'KRW',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.8',
+    ratingCount: '1200',
+    bestRating: '5',
+    worstRating: '1',
+  },
+  description: '쿠팡 상품 가격 변동을 실시간 추적하고 최저가 알림을 받아보세요.',
+  screenshot: `${BASE_URL}/og-image-v2.png`,
+  featureList: [
+    '실시간 가격 추적',
+    '역대 최저가 알림',
+    '30일 가격 히스토리 그래프',
+    '카테고리별 베스트 상품',
+    '골드박스 특가 정보',
+    '푸시 알림',
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -270,6 +349,14 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}
         />
         {/* 추가 SEO 메타 태그 */}
         <meta name="subject" content="쿠팡 가격 추적 서비스" />

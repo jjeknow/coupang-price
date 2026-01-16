@@ -15,7 +15,6 @@ import {
   Truck,
   TrendingDown,
   ChevronRight,
-  X,
 } from 'lucide-react';
 import PriceChart from '@/components/chart/PriceChart';
 import ProductCard from '@/components/ui/ProductCard';
@@ -168,6 +167,7 @@ export default function ProductDetailPage() {
   const [targetPrice, setTargetPrice] = useState(0);
   const [alertLoading, setAlertLoading] = useState(false);
   const [favoriteLoading, setFavoriteLoading] = useState(false);
+  const [purchaseLoading, setPurchaseLoading] = useState(false);
 
   // 가격 통계 계산 (priceHistory가 비어있으면 현재 가격 사용)
   const { lowestPrice, highestPrice, isCurrentLowest, hasHistoryData } = useMemo(() => {
@@ -715,6 +715,39 @@ export default function ProductDetailPage() {
 
   const formatPrice = (price: number) => price.toLocaleString('ko-KR');
 
+  // 쿠팡 구매 버튼 클릭 핸들러 (딥링크 새로 생성)
+  const handlePurchaseClick = async () => {
+    if (!product) return;
+
+    setPurchaseLoading(true);
+
+    try {
+      // 딥링크 새로 생성 시도
+      const res = await fetch('/api/deeplink', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: product.productId,
+          productUrl: product.productUrl,
+        }),
+      });
+
+      const result = await res.json();
+
+      // 새 딥링크가 있으면 사용, 없으면 기존 URL 사용
+      const targetUrl = result.data?.shortenUrl || result.data?.landingUrl || product.productUrl;
+
+      // 새 창으로 열기
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
+    } catch (error) {
+      console.error('딥링크 생성 실패:', error);
+      // 실패 시 기존 URL로 열기
+      window.open(product.productUrl, '_blank', 'noopener,noreferrer');
+    } finally {
+      setPurchaseLoading(false);
+    }
+  };
+
   // 로딩 상태
   if (loading) {
     return (
@@ -1093,15 +1126,23 @@ export default function ProductDetailPage() {
           >
             <Bell size={22} fill={isAlertOn ? '#ff9500' : 'none'} />
           </button>
-          <a
-            href={product?.productUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 h-12 bg-[#3182f6] hover:bg-[#1b64da] text-white rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
+          <button
+            onClick={handlePurchaseClick}
+            disabled={purchaseLoading}
+            className="flex-1 h-12 bg-[#3182f6] hover:bg-[#1b64da] text-white rounded-xl font-semibold transition-all flex items-center justify-center gap-2 disabled:opacity-70"
           >
-            쿠팡에서 구매
-            <ExternalLink size={18} />
-          </a>
+            {purchaseLoading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                이동 중...
+              </>
+            ) : (
+              <>
+                쿠팡에서 구매
+                <ExternalLink size={18} />
+              </>
+            )}
+          </button>
         </div>
       </div>
 

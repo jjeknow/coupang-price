@@ -132,8 +132,9 @@ export default function BottomTabBar() {
             <Link
               key={tab.href}
               href={tab.href}
-              className={`flex flex-col items-center justify-center flex-1 h-full pt-1.5 pb-1 transition-colors ${
-                active ? 'text-[#191f28]' : 'text-[#5c6470]'
+              prefetch={true}
+              className={`flex flex-col items-center justify-center flex-1 h-full pt-1.5 pb-1 touch-manipulation ${
+                active ? 'text-[#191f28]' : 'text-[#5c6470] active:text-[#191f28]'
               }`}
             >
               <IconComponent filled={active} />
