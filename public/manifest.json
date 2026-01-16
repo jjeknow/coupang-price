@@ -13,7 +13,6 @@
   "lang": "ko-KR",
   "dir": "ltr",
   "categories": ["shopping", "lifestyle", "utilities", "finance"],
-  "iarc_rating_id": "",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -120,35 +119,15 @@
   ],
   "scope_extensions": [
     {
-      "origin": "https://*.coupang.com"
+      "origin": "https://www.coupang.com"
+    },
+    {
+      "origin": "https://m.coupang.com"
     }
   ],
   "note_taking": {
     "new_note_url": "/alerts?action=new"
   },
-  "widgets": [
-    {
-      "name": "오늘의 최저가",
-      "description": "관심상품 최저가 알림",
-      "tag": "lowest-price",
-      "ms_ac_template": "widget/lowest-price.json",
-      "data": "/api/widgets/lowest-price",
-      "type": "application/json",
-      "screenshots": [
-        {
-          "src": "/icon-512.png",
-          "sizes": "512x512",
-          "label": "최저가 위젯"
-        }
-      ],
-      "icons": [
-        {
-          "src": "/icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    }
-  ],
   "related_applications": [
     {
       "platform": "webapp",
