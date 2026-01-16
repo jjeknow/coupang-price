@@ -5,7 +5,7 @@
   "description": "쿠팡 상품의 실시간 가격 변동을 추적하고 역대 최저가 알림을 받아보세요. 가격 그래프로 구매 타이밍을 잡으세요!",
   "start_url": "/?utm_source=pwa&utm_medium=homescreen",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "display_override": ["window-controls-overlay", "tabbed", "standalone", "minimal-ui"],
   "background_color": "#ffffff",
   "theme_color": "#3182f6",
   "orientation": "portrait-primary",
@@ -118,6 +118,14 @@
       "url": "/search?q=%s"
     }
   ],
+  "scope_extensions": [
+    {
+      "origin": "https://*.coupang.com"
+    }
+  ],
+  "note_taking": {
+    "new_note_url": "/alerts?action=new"
+  },
   "widgets": [
     {
       "name": "오늘의 최저가",
