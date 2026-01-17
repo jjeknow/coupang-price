@@ -320,10 +320,10 @@ export default function SearchClient({ initialQuery }: SearchClientProps) {
             )}
 
             {/* 쿠팡에서 더 보기 */}
-            {searchData.landingUrl && searchData.products.length > 0 && (
+            {searchData.products.length > 0 && (
               <div className="mt-8 text-center">
                 <a
-                  href={searchData.landingUrl}
+                  href={`https://www.coupang.com/np/search?component=&q=${encodeURIComponent(query)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#3182f6] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#1b64da] transition-colors"

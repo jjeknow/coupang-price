@@ -19,10 +19,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 상품 URL이 있으면 그대로 사용, 없으면 상품 ID로 URL 생성
-    let targetUrl = productUrl;
-    if (!targetUrl && productId) {
+    // productId가 있으면 항상 새 URL 생성 (기존 어필리에이트 링크는 만료될 수 있음)
+    let targetUrl: string;
+    if (productId) {
       targetUrl = `https://www.coupang.com/vp/products/${productId}`;
+    } else if (productUrl) {
+      // productUrl에서 productId 추출 시도
+      const match = productUrl.match(/products\/(\d+)/);
+      if (match) {
+        targetUrl = `https://www.coupang.com/vp/products/${match[1]}`;
+      } else {
+        targetUrl = productUrl;
+      }
+    } else {
+      return NextResponse.json(
+        { error: 'productId 또는 productUrl이 필요합니다.' },
+        { status: 400 }
+      );
     }
 
     // 딥링크 생성
@@ -52,10 +65,21 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Deeplink API Error:', error);
 
-    // 에러 발생 시에도 원본 쿠팡 URL로 폴백
-    const body = await request.json().catch(() => ({}));
-    const fallbackUrl = body.productUrl ||
-      (body.productId ? `https://www.coupang.com/vp/products/${body.productId}` : '');
+    // 에러 발생 시에도 쿠팡 상품 페이지 URL로 폴백
+    let fallbackUrl = '';
+    try {
+      const body = await request.clone().json();
+      if (body.productId) {
+        fallbackUrl = `https://www.coupang.com/vp/products/${body.productId}`;
+      } else if (body.productUrl) {
+        const match = body.productUrl.match(/products\/(\d+)/);
+        fallbackUrl = match
+          ? `https://www.coupang.com/vp/products/${match[1]}`
+          : `https://www.coupang.com`;
+      }
+    } catch {
+      fallbackUrl = 'https://www.coupang.com';
+    }
 
     return NextResponse.json({
       success: false,

@@ -42,8 +42,8 @@ function ProductGrid({
     });
   }, [products]);
 
-  // 반응형 그리드 컬럼 클래스 - 모바일 2열, 태블릿 3열, 데스크탑 4열
-  const gridColsClass = 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5';
+  // 항상 2열 유지 (모바일 앱과 동일한 UI)
+  const gridColsClass = 'grid-cols-2';
 
   if (uniqueProducts.length === 0) {
     return (

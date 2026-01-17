@@ -167,7 +167,7 @@ export default function FavoritesPage() {
                     알림 설정
                   </Link>
                   <a
-                    href={item.productUrl}
+                    href={`https://www.coupang.com/vp/products/${item.coupangProductId}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 px-3 py-1.5 bg-[#f2f4f6] text-[#4e5968] text-[13px] rounded-lg hover:bg-[#e5e8eb]"

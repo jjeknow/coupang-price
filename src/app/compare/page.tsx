@@ -318,7 +318,7 @@ export default function ComparePage() {
                   {selectedProducts.map((product) => (
                     <div key={product.productId} className="p-4">
                       <a
-                        href={product.productUrl}
+                        href={`https://www.coupang.com/vp/products/${product.productId}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full py-2.5 bg-[#3182f6] hover:bg-[#1b64da] text-white text-[14px] font-semibold rounded-lg flex items-center justify-center gap-1 transition-colors"

@@ -260,7 +260,7 @@ function AlertCard({
             {alert.isActive ? '비활성화' : '활성화'}
           </button>
           <a
-            href={alert.productUrl}
+            href={`https://www.coupang.com/vp/products/${alert.coupangProductId}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 px-3 py-1.5 bg-[#f2f4f6] text-[#4e5968] text-[13px] rounded-lg hover:bg-[#e5e8eb]"
