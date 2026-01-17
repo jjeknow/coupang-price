@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, ReactNode } from 'react';
+import { useEffect, useState, useCallback, ReactNode, useRef } from 'react';
 import { X } from 'lucide-react';
 
 interface BottomSheetProps {
@@ -24,9 +24,14 @@ export default function BottomSheet({
 }: BottomSheetProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // 열기/닫기 애니메이션
   useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
     if (isOpen) {
       setIsVisible(true);
       requestAnimationFrame(() => {
@@ -36,15 +41,17 @@ export default function BottomSheet({
       document.body.style.overflow = 'hidden';
     } else {
       setIsAnimating(false);
-      const timer = setTimeout(() => {
+      timerRef.current = setTimeout(() => {
         setIsVisible(false);
       }, 300);
       // 스크롤 복원
       document.body.style.overflow = '';
-      return () => clearTimeout(timer);
     }
 
     return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
       document.body.style.overflow = '';
     };
   }, [isOpen]);

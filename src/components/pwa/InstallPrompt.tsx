@@ -124,8 +124,8 @@ export default function InstallPrompt() {
               </p>
               <ol className="text-[12px] text-[#8b95a1] space-y-1">
                 <li>1. 하단의 <Share size={12} className="inline" /> 공유 버튼 탭</li>
-                <li>2. "홈 화면에 추가" 선택</li>
-                <li>3. "추가" 버튼 탭</li>
+                <li>2. &quot;홈 화면에 추가&quot; 선택</li>
+                <li>3. &quot;추가&quot; 버튼 탭</li>
               </ol>
             </div>
           ) : (

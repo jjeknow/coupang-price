@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { memo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -75,7 +75,7 @@ interface TabItem {
   matchPaths?: string[];
 }
 
-export default function BottomTabBar() {
+function BottomTabBar() {
   const pathname = usePathname();
   const { data: session } = useSession();
 
@@ -158,3 +158,5 @@ export default function BottomTabBar() {
     </nav>
   );
 }
+
+export default memo(BottomTabBar);

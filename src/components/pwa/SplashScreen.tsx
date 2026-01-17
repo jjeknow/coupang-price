@@ -1,12 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function SplashScreen() {
   const [isVisible, setIsVisible] = useState(true);
   const [isFading, setIsFading] = useState(false);
+  const initialized = useRef(false);
 
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
     // 앱으로 실행된 경우에만 스플래시 표시
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches
       || (window.navigator as Navigator & { standalone?: boolean }).standalone === true;

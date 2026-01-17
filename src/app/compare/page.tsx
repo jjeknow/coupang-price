@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, X, Plus, ExternalLink, Zap, Truck, TrendingDown } from 'lucide-react';
@@ -37,18 +37,21 @@ function getPriceStats(basePrice: number) {
 }
 
 export default function ComparePage() {
-  const [favorites, setFavorites] = useState<FavoriteProduct[]>([]);
-  const [selectedProducts, setSelectedProducts] = useState<FavoriteProduct[]>([]);
+  const [favorites] = useState<FavoriteProduct[]>(() => {
+    // 클라이언트에서만 초기화
+    if (typeof window !== 'undefined') {
+      return getFavorites();
+    }
+    return [];
+  });
+  const [selectedProducts, setSelectedProducts] = useState<FavoriteProduct[]>(() => {
+    if (typeof window !== 'undefined') {
+      return getFavorites().slice(0, 2);
+    }
+    return [];
+  });
   const [showSelector, setShowSelector] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const favs = getFavorites();
-    setFavorites(favs);
-    // 처음 2개 자동 선택
-    setSelectedProducts(favs.slice(0, 2));
-    setLoading(false);
-  }, []);
+  const [loading] = useState(false);
 
   // 가격 통계 캐시
   const priceStats = useMemo(() => {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { CheckCircle, AlertCircle, Info, X } from 'lucide-react';
 
 export type ToastType = 'success' | 'error' | 'info';
@@ -51,6 +51,13 @@ export default function Toast({
   const Icon = icons[type];
   const colorStyle = colors[type];
 
+  const handleClose = useCallback(() => {
+    setIsLeaving(true);
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  }, [onClose]);
+
   useEffect(() => {
     // 마운트 시 애니메이션
     requestAnimationFrame(() => {
@@ -63,14 +70,7 @@ export default function Toast({
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [duration]);
-
-  const handleClose = () => {
-    setIsLeaving(true);
-    setTimeout(() => {
-      onClose();
-    }, 300);
-  };
+  }, [duration, handleClose]);
 
   return (
     <div

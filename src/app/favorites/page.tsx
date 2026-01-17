@@ -1,18 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Heart, ArrowLeft, Trash2, GitCompare } from 'lucide-react';
 import ProductCard from '@/components/ui/ProductCard';
 import { getFavorites, removeFavorite, FavoriteProduct } from '@/lib/favorites';
 
 export default function FavoritesPage() {
-  const [favorites, setFavorites] = useState<FavoriteProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [favorites, setFavorites] = useState<FavoriteProduct[]>(() => {
+    if (typeof window !== 'undefined') {
+      return getFavorites();
+    }
+    return [];
+  });
+  const [loading] = useState(false);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    setFavorites(getFavorites());
-    setLoading(false);
+    if (initialized.current) return;
+    initialized.current = true;
 
     // 다른 탭/컴포넌트에서 변경 시 동기화
     const handleChange = () => {

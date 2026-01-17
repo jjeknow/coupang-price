@@ -321,11 +321,11 @@ export default function PWAProvider({ children }: { children: React.ReactNode })
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="w-4 h-4 rounded bg-[#e5e8eb] flex items-center justify-center text-[10px]">2</span>
-                      "홈 화면에 추가" 선택
+                      &quot;홈 화면에 추가&quot; 선택
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="w-4 h-4 rounded bg-[#e5e8eb] flex items-center justify-center text-[10px]">3</span>
-                      "추가" 버튼 탭
+                      &quot;추가&quot; 버튼 탭
                     </li>
                   </ol>
                 </div>
