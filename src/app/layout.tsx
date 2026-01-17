@@ -412,8 +412,19 @@ export default function RootLayout({
                 gtag('js', new Date());
                 gtag('config', '${GA_MEASUREMENT_ID}', {
                   page_path: window.location.pathname,
-                  send_page_view: true
+                  send_page_view: false
                 });
+
+                // 페이지 로드 완료 후 페이지뷰 전송 (리플로우 방지)
+                if ('requestIdleCallback' in window) {
+                  requestIdleCallback(function() {
+                    gtag('event', 'page_view');
+                  });
+                } else {
+                  setTimeout(function() {
+                    gtag('event', 'page_view');
+                  }, 100);
+                }
               }
 
               if ('requestIdleCallback' in window) {

@@ -114,10 +114,19 @@ const nextConfig: NextConfig = {
   experimental: {
     // 최적화된 패키지 임포트
     optimizePackageImports: ['lucide-react', 'recharts', 'date-fns'],
+    // CSS 최적화 (Critical CSS 인라인 + 미사용 CSS 제거)
+    optimizeCss: true,
+  },
+
+  // SWC 컴파일러 설정
+  compiler: {
+    // production에서 console.log 제거
+    removeConsole: process.env.NODE_ENV === 'production',
   },
 
   // 모던 브라우저만 타겟팅 (폴리필 제거로 14KB 절감)
-  // ES2020+ 지원 브라우저: Chrome 80+, Safari 14+, Firefox 74+, Edge 80+
+  // .browserslistrc 파일에서 ES2020+ 브라우저 설정
+  // Chrome 80+, Safari 14+, Firefox 74+, Edge 80+
   transpilePackages: [],
 
   // 빌드 최적화

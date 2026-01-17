@@ -1,9 +1,10 @@
+import { Suspense } from 'react';
 import { Sparkles } from 'lucide-react';
 import HeroSearchForm from './HeroSearchForm';
 
 /**
  * 히어로 섹션 (서버 컴포넌트)
- * LCP 최적화: 정적 콘텐츠는 서버에서 렌더링
+ * LCP 최적화: 정적 콘텐츠는 서버에서 렌더링, 검색폼은 Suspense로 분리
  */
 export default function HeroSection() {
   return (
@@ -13,7 +14,7 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]" />
       </div>
 
-      {/* 글로우 이펙트 - animate-pulse 제거 (리플로우 방지) */}
+      {/* 글로우 이펙트 - CSS만 사용 (JS 없음) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px]">
           <div className="absolute top-0 left-0 w-72 h-72 bg-[#3b82f6]/30 rounded-full blur-[100px]" />
@@ -41,19 +42,21 @@ export default function HeroSection() {
             <span className="text-[12px] text-white/80">쿠팡 가격변동 알리미</span>
           </div>
 
-          {/* 타이틀 - LCP 요소 */}
-          <h1 className="text-[22px] font-bold leading-tight mb-2 tracking-tight text-white">
+          {/* 타이틀 - LCP 요소: 더 큰 영역 차지하도록 수정 */}
+          <h1 className="text-[24px] sm:text-[28px] font-bold leading-tight mb-3 tracking-tight text-white w-full">
             쿠팡 가격변동 추적{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#60a5fa] via-[#a78bfa] to-[#60a5fa]">
               &amp; 최저가 알림
             </span>
           </h1>
-          <p className="text-[#94a3b8] text-[13px] mb-5 max-w-md">
+          <p className="text-[#94a3b8] text-[13px] mb-5">
             쿠팡 가격비교, 실시간 가격 그래프로 최적의 구매 타이밍을 찾아보세요.
           </p>
 
-          {/* 검색창 (클라이언트 컴포넌트) */}
-          <HeroSearchForm />
+          {/* 검색창 - Suspense로 감싸서 LCP 차단 방지 */}
+          <Suspense fallback={<SearchFormSkeleton />}>
+            <HeroSearchForm />
+          </Suspense>
 
           {/* 파트너스 고지 */}
           <div className="mx-2 px-4 py-2.5 bg-white/10 backdrop-blur-sm rounded-full border border-white/10">
@@ -64,5 +67,26 @@ export default function HeroSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+// 검색폼 스켈레톤 - 레이아웃 시프트 방지
+function SearchFormSkeleton() {
+  return (
+    <>
+      <div className="w-full max-w-xl mb-4">
+        <div className="relative bg-white/5 border border-white/10 rounded-xl">
+          <div className="w-full h-[50px] rounded-xl" />
+        </div>
+      </div>
+      <div className="flex flex-wrap items-center justify-center gap-1.5 mb-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className="px-2.5 py-1 bg-white/5 border border-white/10 rounded-full w-20 h-6"
+          />
+        ))}
+      </div>
+    </>
   );
 }
