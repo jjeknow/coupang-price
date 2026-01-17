@@ -196,3 +196,15 @@ model PushSubscription {
 
   @@index([userId])
 }
+
+// 딥링크 캐시 모델 (쿠팡 파트너스 API 호출 최소화)
+model DeeplinkCache {
+  id         String   @id @default(cuid())
+  productId  String   @unique  // 쿠팡 상품 ID
+  shortenUrl String             // 단축 URL (coupa.ng/xxx)
+  landingUrl String             // 랜딩 URL
+  expiresAt  DateTime           // 만료 시간 (12시간, 딥링크 24시간 유효)
+  createdAt  DateTime @default(now())
+
+  @@index([expiresAt])
+}
