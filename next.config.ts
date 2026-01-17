@@ -113,8 +113,12 @@ const nextConfig: NextConfig = {
   // 실험적 기능
   experimental: {
     // 최적화된 패키지 임포트
-    optimizePackageImports: ['lucide-react'],
+    optimizePackageImports: ['lucide-react', 'recharts', 'date-fns'],
   },
+
+  // 모던 브라우저만 타겟팅 (폴리필 제거로 14KB 절감)
+  // ES2020+ 지원 브라우저: Chrome 80+, Safari 14+, Firefox 74+, Edge 80+
+  transpilePackages: [],
 
   // 빌드 최적화
   reactStrictMode: true,

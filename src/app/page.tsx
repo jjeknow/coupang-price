@@ -2,7 +2,7 @@ import ProductGrid from '@/components/ui/ProductGrid';
 import { getGoldboxProductsWithPriceData, getBestProductsWithPriceData } from '@/lib/coupang-api';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
-import HeroSearch from '@/components/home/HeroSearch';
+import HeroSection from '@/components/home/HeroSection';
 import CategorySection from '@/components/home/CategorySection';
 import RecentlyViewed from '@/components/home/RecentlyViewed';
 
@@ -111,7 +111,7 @@ export default async function HomePage() {
       />
 
       {/* 히어로 검색 섹션 */}
-      <HeroSearch />
+      <HeroSection />
 
       {/* 카테고리 선택 섹션 */}
       <CategorySection />

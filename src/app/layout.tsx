@@ -396,17 +396,32 @@ export default function RootLayout({
         <link rel="alternate" type="application/rss+xml" title="똑체크 RSS" href="/rss" />
         {/* 사이트맵 */}
         <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
-        {/* Google Analytics */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
+        {/* Google Analytics - 브라우저 유휴 시간에 로드하여 리플로우 방지 */}
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
+            (function() {
+              function loadGA() {
+                var script = document.createElement('script');
+                script.src = 'https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}';
+                script.async = true;
+                document.head.appendChild(script);
+
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}', {
+                  page_path: window.location.pathname,
+                  send_page_view: true
+                });
+              }
+
+              if ('requestIdleCallback' in window) {
+                requestIdleCallback(loadGA, { timeout: 4000 });
+              } else {
+                setTimeout(loadGA, 3000);
+              }
+            })();
           `}
         </Script>
       </head>

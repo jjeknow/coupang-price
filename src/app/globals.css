@@ -88,6 +88,8 @@ body {
   border-radius: var(--radius-md);
   transition: all 0.15s ease;
   cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
 }
 
 .toss-btn-primary {
@@ -101,128 +103,6 @@ body {
 
 .toss-btn-primary:active {
   transform: scale(0.98);
-}
-
-.toss-btn-secondary {
-  background: var(--toss-gray-100);
-  color: var(--toss-gray-800);
-}
-
-.toss-btn-secondary:hover {
-  background: var(--toss-gray-200);
-}
-
-.toss-btn-ghost {
-  background: transparent;
-  color: var(--toss-gray-700);
-}
-
-.toss-btn-ghost:hover {
-  background: var(--toss-gray-100);
-}
-
-/* 토스 스타일 인풋 */
-.toss-input {
-  width: 100%;
-  padding: 14px 16px;
-  background: var(--toss-gray-100);
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: 16px;
-  color: var(--toss-gray-900);
-  transition: all 0.15s ease;
-}
-
-.toss-input:focus {
-  outline: none;
-  background: white;
-  box-shadow: 0 0 0 2px var(--toss-blue);
-}
-
-.toss-input::placeholder {
-  color: var(--toss-gray-400);
-}
-
-/* 토스 스타일 배지 */
-.toss-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 8px;
-  font-size: 11px;
-  font-weight: 700;
-  border-radius: 6px;
-  letter-spacing: -0.02em;
-}
-
-.toss-badge-blue {
-  background: rgba(49, 130, 246, 0.1);
-  color: var(--toss-blue);
-}
-
-.toss-badge-red {
-  background: rgba(240, 68, 82, 0.1);
-  color: var(--toss-red);
-}
-
-.toss-badge-green {
-  background: rgba(0, 196, 113, 0.1);
-  color: var(--toss-green);
-}
-
-.toss-badge-orange {
-  background: rgba(255, 139, 0, 0.1);
-  color: var(--toss-orange);
-}
-
-.toss-badge-gray {
-  background: var(--toss-gray-100);
-  color: var(--toss-gray-600);
-}
-
-/* 토스 스타일 텍스트 */
-.toss-title-1 {
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.35;
-  letter-spacing: -0.02em;
-  color: var(--toss-gray-900);
-}
-
-.toss-title-2 {
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.4;
-  letter-spacing: -0.02em;
-  color: var(--toss-gray-900);
-}
-
-.toss-title-3 {
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.45;
-  letter-spacing: -0.02em;
-  color: var(--toss-gray-900);
-}
-
-.toss-body-1 {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.5;
-  color: var(--toss-gray-800);
-}
-
-.toss-body-2 {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.5;
-  color: var(--toss-gray-700);
-}
-
-.toss-caption {
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.5;
-  color: var(--toss-gray-600);
 }
 
 /* 스크롤바 숨기기 */
@@ -382,77 +262,6 @@ body {
   background: var(--toss-gray-50);
 }
 
-/* 가격 스타일 */
-.price-current {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--toss-gray-900);
-  letter-spacing: -0.02em;
-}
-
-.price-original {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--toss-gray-400);
-  text-decoration: line-through;
-}
-
-.price-discount {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--toss-red);
-  letter-spacing: -0.02em;
-}
-
-/* 토스 스타일 탭 */
-.toss-tab {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--toss-gray-600);
-  border-radius: var(--radius-md);
-  transition: all 0.15s ease;
-  cursor: pointer;
-}
-
-.toss-tab:hover {
-  color: var(--toss-gray-700);
-}
-
-.toss-tab-active {
-  background: var(--toss-gray-900);
-  color: white;
-}
-
-/* 토스 스타일 칩 */
-.toss-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--toss-gray-700);
-  background: white;
-  border: 1px solid var(--toss-gray-200);
-  border-radius: 100px;
-  transition: all 0.15s ease;
-  cursor: pointer;
-}
-
-.toss-chip:hover {
-  border-color: var(--toss-gray-300);
-  background: var(--toss-gray-50);
-}
-
-.toss-chip-active {
-  border-color: var(--toss-blue);
-  color: var(--toss-blue);
-  background: rgba(49, 130, 246, 0.05);
-}
-
 /* Safe area for mobile */
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0);
@@ -473,17 +282,6 @@ body {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
-}
-
-.not-sr-only {
-  position: static;
-  width: auto;
-  height: auto;
-  padding: 0;
-  margin: 0;
-  overflow: visible;
-  clip: auto;
-  white-space: normal;
 }
 
 /* 포커스 스타일 - 접근성 */
@@ -511,13 +309,11 @@ input:focus-visible {
     transform: scale(0.96);
   }
 
-  /* 링크 및 버튼 터치 피드백 */
   a:active,
   button:active {
     opacity: 0.8;
   }
 
-  /* 상품 카드 터치 피드백 */
   article:active {
     transform: scale(0.98);
     transition: transform 0.1s ease;
@@ -532,7 +328,7 @@ input:focus-visible {
   }
 }
 
-/* 마이크로 인터랙션 - 펄스 효과 */
+/* 마이크로 인터랙션 */
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
@@ -546,37 +342,7 @@ input:focus-visible {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* 스켈레톤 시머 효과 */
-@keyframes shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
-.animate-shimmer {
-  animation: shimmer 1.5s ease-in-out infinite;
-  background: linear-gradient(90deg, #f2f4f6 25%, #e5e8eb 50%, #f2f4f6 75%);
-  background-size: 200% 100%;
-}
-
-/* 마이크로 인터랙션 - 바운스 효과 */
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
-.animate-bounce-subtle {
-  animation: bounce 1s ease-in-out infinite;
-}
-
-/* 마이크로 인터랙션 - 하트비트 효과 */
+/* 하트비트 효과 */
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
   25% { transform: scale(1.1); }
@@ -598,94 +364,6 @@ input:focus-visible {
   box-shadow: var(--shadow-lg);
 }
 
-.hover-scale {
-  transition: transform 0.2s ease;
-}
-
-.hover-scale:hover {
-  transform: scale(1.02);
-}
-
-/* 가격 하이라이트 애니메이션 */
-@keyframes priceHighlight {
-  0% {
-    background-color: transparent;
-  }
-  50% {
-    background-color: rgba(240, 68, 82, 0.1);
-  }
-  100% {
-    background-color: transparent;
-  }
-}
-
-.price-highlight {
-  animation: priceHighlight 1.5s ease-out;
-}
-
-/* 알림 뱃지 */
-.notification-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
-  font-size: 11px;
-  font-weight: 700;
-  color: white;
-  background: var(--toss-red);
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 툴팁 */
-.tooltip {
-  position: relative;
-}
-
-.tooltip::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-8px);
-  padding: 8px 12px;
-  background: var(--toss-gray-900);
-  color: white;
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: var(--radius-sm);
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s ease;
-  z-index: 100;
-}
-
-.tooltip:hover::after {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(-4px);
-}
-
-/* 프로그레스 바 */
-.progress-bar {
-  height: 4px;
-  background: var(--toss-gray-200);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background: var(--toss-blue);
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
 /* 스크롤 스냅 */
 .scroll-snap-x {
   scroll-snap-type: x mandatory;
@@ -694,82 +372,6 @@ input:focus-visible {
 
 .scroll-snap-item {
   scroll-snap-align: start;
-}
-
-/* 플로팅 액션 버튼 */
-.fab {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--toss-blue);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(49, 130, 246, 0.4);
-  transition: all 0.2s ease;
-  z-index: 40;
-}
-
-.fab:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(49, 130, 246, 0.5);
-}
-
-.fab:active {
-  transform: scale(0.95);
-}
-
-/* 오버레이 */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  z-index: 40;
-}
-
-.overlay.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* 로딩 도트 */
-@keyframes loadingDots {
-  0%, 80%, 100% {
-    transform: scale(0);
-    opacity: 0.5;
-  }
-  40% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.loading-dots {
-  display: flex;
-  gap: 4px;
-}
-
-.loading-dots span {
-  width: 8px;
-  height: 8px;
-  background: var(--toss-blue);
-  border-radius: 50%;
-  animation: loadingDots 1.4s infinite ease-in-out both;
-}
-
-.loading-dots span:nth-child(1) {
-  animation-delay: -0.32s;
-}
-
-.loading-dots span:nth-child(2) {
-  animation-delay: -0.16s;
 }
 
 /* 감소된 모션 설정 존중 */
@@ -802,7 +404,7 @@ input:focus-visible {
 
 /* 인쇄 스타일 */
 @media print {
-  header, footer, .fab, nav {
+  header, footer, nav {
     display: none !important;
   }
 
@@ -873,29 +475,9 @@ input:focus-visible {
 
 /* ========== 앱 스타일 (모바일 스타일 전역 적용) ========== */
 
-/* 모바일 스타일을 모든 화면에 적용 */
 html {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-}
-
-/* 타이틀 크기 - 모바일 스타일 */
-.toss-title-1 {
-  font-size: 22px;
-}
-
-.toss-title-2 {
-  font-size: 18px;
-}
-
-.toss-title-3 {
-  font-size: 16px;
-}
-
-/* 버튼 터치 영역 */
-.toss-btn {
-  min-height: 44px;
-  min-width: 44px;
 }
 
 /* 카드 스타일 */
@@ -904,37 +486,14 @@ html {
   border-radius: var(--radius-md);
 }
 
-/* 입력 필드 */
-.toss-input {
-  font-size: 16px;
-  padding: 12px 14px;
-}
-
 /* 그리드 간격 */
 .grid {
   gap: 12px;
 }
 
-/* FAB 위치 */
-.fab {
-  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-  right: 16px;
-  width: 52px;
-  height: 52px;
-}
-
 /* 모바일 하단 네비게이션 공간 확보 */
 .mobile-bottom-space {
   padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
-}
-
-/* 풀스크린 모달 */
-.modal-fullscreen-mobile {
-  position: fixed;
-  inset: 0;
-  border-radius: 0;
-  max-height: 100vh;
-  max-height: 100dvh;
 }
 
 /* 모바일 가로 스크롤 컨테이너 */
@@ -959,21 +518,9 @@ html {
   flex-shrink: 0;
 }
 
-/* 풀 너비 버튼 */
-.btn-mobile-full {
-  width: 100%;
-}
-
 /* 이미지 최적화 */
 img {
   content-visibility: auto;
-}
-
-/* 모바일 텍스트 선택 방지 (UI 요소) */
-.no-select {
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
 }
 
 /* 모바일 탭 바 */
@@ -988,32 +535,6 @@ img {
   z-index: 50;
 }
 
-/* 모바일 검색 결과 빈 화면 */
-@media (max-width: 768px) {
-  .empty-state-mobile {
-    padding: 48px 24px;
-  }
-
-  .empty-state-mobile .text-\[64px\] {
-    font-size: 48px;
-  }
-}
-
-/* 모바일 상품 카드 최적화 */
-@media (max-width: 640px) {
-  /* 상품 이름 2줄로 표시 */
-  .product-name-mobile {
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-  }
-
-  /* 배지 크기 축소 */
-  .badge-mobile {
-    font-size: 10px;
-    padding: 2px 6px;
-  }
-}
-
 /* 모바일 스와이프 힌트 */
 .swipe-hint::after {
   content: '';
@@ -1024,168 +545,4 @@ img {
   width: 40px;
   background: linear-gradient(to right, transparent, white);
   pointer-events: none;
-}
-
-/* 모바일 Pull-to-refresh 영역 */
-.pull-to-refresh-area {
-  padding-top: env(safe-area-inset-top, 0px);
-}
-
-/* 모바일 키보드 대응 */
-@media (max-width: 768px) {
-  .keyboard-aware {
-    transition: padding-bottom 0.3s ease;
-  }
-
-  .keyboard-open .keyboard-aware {
-    padding-bottom: 0;
-  }
-}
-
-/* 모바일 카테고리 네비게이션 */
-@media (max-width: 768px) {
-  .category-nav-mobile {
-    padding: 0 16px;
-  }
-
-  .category-nav-mobile .toss-chip {
-    padding: 8px 14px;
-    font-size: 13px;
-  }
-}
-
-/* 다크 모드 */
-.dark {
-  --background: #121417;
-  --foreground: #f2f4f6;
-  --card-bg: #1e2024;
-
-  --toss-gray-50: #1e2024;
-  --toss-gray-100: #2a2d32;
-  --toss-gray-200: #3a3d42;
-  --toss-gray-300: #4e5968;
-  --toss-gray-400: #6b7684;
-  --toss-gray-500: #8b95a1;
-  --toss-gray-600: #b0b8c1;
-  --toss-gray-700: #d1d6db;
-  --toss-gray-800: #e5e8eb;
-  --toss-gray-900: #f2f4f6;
-
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.25);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.dark body {
-  background: var(--background);
-  color: var(--foreground);
-}
-
-.dark .bg-white {
-  background-color: var(--card-bg) !important;
-}
-
-.dark .bg-gray-50,
-.dark .bg-\[\#f2f4f6\] {
-  background-color: var(--background) !important;
-}
-
-.dark .border-\[\#e5e8eb\] {
-  border-color: var(--toss-gray-200) !important;
-}
-
-.dark .text-\[\#191f28\],
-.dark .text-\[\#333d4b\] {
-  color: var(--toss-gray-900) !important;
-}
-
-.dark .text-\[\#4e5968\],
-.dark .text-\[\#6b7684\] {
-  color: var(--toss-gray-600) !important;
-}
-
-.dark .text-\[\#8b95a1\] {
-  color: var(--toss-gray-500) !important;
-}
-
-/* 다크모드 입력 필드 */
-.dark .toss-input {
-  background: var(--toss-gray-100);
-  color: var(--toss-gray-900);
-}
-
-.dark .toss-input:focus {
-  background: var(--toss-gray-50);
-}
-
-/* 다크모드 카드 */
-.dark .toss-card,
-.dark .toss-card-flat {
-  background: var(--card-bg);
-  border-color: var(--toss-gray-200);
-}
-
-/* 다크모드 배지 */
-.dark .toss-badge-gray {
-  background: var(--toss-gray-200);
-  color: var(--toss-gray-700);
-}
-
-/* 다크모드 스켈레톤 */
-.dark .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--toss-gray-100) 0%,
-    var(--toss-gray-200) 50%,
-    var(--toss-gray-100) 100%
-  );
-}
-
-/* 다크모드 구분선 */
-.dark .toss-divider {
-  background: var(--toss-gray-100);
-}
-
-/* 다크모드 리스트 아이템 */
-.dark .toss-list-item {
-  background: var(--card-bg);
-}
-
-.dark .toss-list-item:active {
-  background: var(--toss-gray-100);
-}
-
-/* 다크모드 칩 */
-.dark .toss-chip {
-  background: var(--card-bg);
-  border-color: var(--toss-gray-200);
-  color: var(--toss-gray-700);
-}
-
-.dark .toss-chip:hover {
-  background: var(--toss-gray-100);
-  border-color: var(--toss-gray-300);
-}
-
-/* 다크모드 모바일 탭 바 */
-.dark .mobile-tab-bar {
-  background: var(--card-bg);
-  border-color: var(--toss-gray-200);
-}
-
-/* 다크모드 스와이프 힌트 */
-.dark .swipe-hint::after {
-  background: linear-gradient(to right, transparent, var(--background));
-}
-
-/* 다크모드 오버레이 */
-.dark .overlay {
-  background: rgba(0, 0, 0, 0.7);
-}
-
-/* 다크모드 툴팁 */
-.dark .tooltip::after {
-  background: var(--toss-gray-800);
-  color: var(--toss-gray-100);
 }
