@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Heart, Trash2, ArrowLeft, Bell, ExternalLink } from 'lucide-react';
+import CoupangLink from '@/components/ui/CoupangLink';
 
 interface Favorite {
   id: string;
@@ -166,15 +167,13 @@ export default function FavoritesPage() {
                     <Bell size={14} />
                     알림 설정
                   </Link>
-                  <a
-                    href={`https://www.coupang.com/vp/products/${item.coupangProductId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <CoupangLink
+                    productId={item.coupangProductId}
                     className="flex items-center gap-1 px-3 py-1.5 bg-[#f2f4f6] text-[#4e5968] text-[13px] rounded-lg hover:bg-[#e5e8eb]"
                   >
                     <ExternalLink size={14} />
                     쿠팡
-                  </a>
+                  </CoupangLink>
                   <button
                     onClick={() => handleDelete(item.coupangProductId)}
                     disabled={deleting === item.coupangProductId}

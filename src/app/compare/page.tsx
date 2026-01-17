@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, X, Plus, ExternalLink, Zap, Truck, TrendingDown } from 'lucide-react';
 import { getFavorites, FavoriteProduct } from '@/lib/favorites';
+import CoupangLink from '@/components/ui/CoupangLink';
 
 // 가격 히스토리 생성 (데모)
 function generatePriceHistory(basePrice: number) {
@@ -317,15 +318,13 @@ export default function ComparePage() {
                   <div className="hidden" />
                   {selectedProducts.map((product) => (
                     <div key={product.productId} className="p-4">
-                      <a
-                        href={`https://www.coupang.com/vp/products/${product.productId}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <CoupangLink
+                        productId={product.productId}
                         className="w-full py-2.5 bg-[#3182f6] hover:bg-[#1b64da] text-white text-[14px] font-semibold rounded-lg flex items-center justify-center gap-1 transition-colors"
                       >
                         쿠팡에서 구매
                         <ExternalLink size={14} />
-                      </a>
+                      </CoupangLink>
                     </div>
                   ))}
                                   </div>

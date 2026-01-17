@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Bell, BellOff, Trash2, ArrowLeft, TrendingDown, ExternalLink } from 'lucide-react';
+import CoupangLink from '@/components/ui/CoupangLink';
 
 interface Alert {
   id: string;
@@ -259,15 +260,13 @@ function AlertCard({
             {alert.isActive ? <BellOff size={14} /> : <Bell size={14} />}
             {alert.isActive ? '비활성화' : '활성화'}
           </button>
-          <a
-            href={`https://www.coupang.com/vp/products/${alert.coupangProductId}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <CoupangLink
+            productId={alert.coupangProductId}
             className="flex items-center gap-1 px-3 py-1.5 bg-[#f2f4f6] text-[#4e5968] text-[13px] rounded-lg hover:bg-[#e5e8eb]"
           >
             <ExternalLink size={14} />
             쿠팡
-          </a>
+          </CoupangLink>
           <button
             onClick={onDelete}
             disabled={updating}
