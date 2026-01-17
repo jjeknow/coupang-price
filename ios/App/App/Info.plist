@@ -20,10 +20,45 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.ddokcheck.app</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ddokcheck</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>CoreSpotlightContinuation</key>
+	<true/>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.shopping</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MinimumOSVersion</key>
+	<string>14.0</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>바코드 스캔을 위해 카메라를 사용합니다.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>빠른 로그인과 보안을 위해 Face ID를 사용합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>프로필 사진 설정을 위해 사진 라이브러리를 사용합니다.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -32,6 +67,10 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<false/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDefault</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -45,73 +84,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-
-	<!-- Face ID 권한 -->
-	<key>NSFaceIDUsageDescription</key>
-	<string>빠른 로그인과 보안을 위해 Face ID를 사용합니다.</string>
-
-	<!-- 푸시 알림 -->
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-		<string>remote-notification</string>
-	</array>
-
-	<!-- 카메라 (바코드 스캔용 - 향후) -->
-	<key>NSCameraUsageDescription</key>
-	<string>바코드 스캔을 위해 카메라를 사용합니다.</string>
-
-	<!-- 사진 라이브러리 -->
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>프로필 사진 설정을 위해 사진 라이브러리를 사용합니다.</string>
-
-	<!-- 앱 전송 보안 설정 -->
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<false/>
-		<key>NSAllowsArbitraryLoadsInWebContent</key>
-		<true/>
-	</dict>
-
-	<!-- URL 스킴 (딥링크) -->
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.ddokcheck.app</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>ddokcheck</string>
-			</array>
-		</dict>
-	</array>
-
-	<!-- 유니버설 링크 -->
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:ddokcheck.com</string>
 		<string>webcredentials:ddokcheck.com</string>
 	</array>
-
-	<!-- Spotlight 인덱싱 -->
-	<key>CoreSpotlightContinuation</key>
-	<true/>
-
-	<!-- 앱 카테고리 -->
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.shopping</string>
-
-	<!-- 최소 iOS 버전 -->
-	<key>MinimumOSVersion</key>
-	<string>14.0</string>
-
-	<!-- 상태바 스타일 -->
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleDefault</string>
-
-	<!-- 홈 인디케이터 자동 숨김 -->
-	<key>UIRequiresFullScreen</key>
-	<false/>
 </dict>
 </plist>
