@@ -44,8 +44,11 @@ function Header() {
   }, [handleScroll]);
 
   return (
-    <header className={`sticky top-0 z-50 bg-white safe-area-top transition-shadow ${isScrolled ? 'shadow-sm' : ''}`}>
-      <div className="border-b border-[#e5e8eb]">
+    <>
+      {/* Safe Area 배경 - 스크롤 시 노치/Dynamic Island 영역 배경색 유지 */}
+      <div className="fixed top-0 left-0 right-0 h-[env(safe-area-inset-top,0px)] bg-white z-50" />
+      <header className={`sticky top-0 z-50 bg-white pt-[env(safe-area-inset-top,0px)] transition-shadow ${isScrolled ? 'shadow-sm' : ''}`}>
+        <div className="border-b border-[#e5e8eb]">
         <div className="max-w-6xl mx-auto px-4">
           {/* 모바일 스타일 헤더 (PC에서도 동일) */}
           <div className="flex items-center justify-between h-14">
@@ -84,6 +87,7 @@ function Header() {
         </div>
       </div>
     </header>
+    </>
   );
 }
 

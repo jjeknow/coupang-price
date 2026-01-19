@@ -58,6 +58,7 @@
 	<array>
 		<string>fetch</string>
 		<string>remote-notification</string>
+		<string>bluetooth-peripheral</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -89,5 +90,7 @@
 		<string>applinks:ddokcheck.com</string>
 		<string>webcredentials:ddokcheck.com</string>
 	</array>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>
