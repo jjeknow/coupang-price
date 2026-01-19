@@ -6,7 +6,7 @@
     ],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.ddokcheck.app",
+      "package_name": "com.ddokcheck.twa",
       "sha256_cert_fingerprints": [
         "1A:93:A8:3C:87:3C:5A:3B:14:C5:7C:6B:A1:B9:DB:C2:F3:D3:64:A0:0F:16:74:E5:59:8D:07:E9:BB:30:3D:DE"
       ]
