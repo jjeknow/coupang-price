@@ -1,16 +1,21 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.ddokcheck.twa",
+      "package_name": "com.ddokcheck.app",
       "sha256_cert_fingerprints": [
-        "PLACEHOLDER_SHA256_FINGERPRINT"
+        "1A:93:A8:3C:87:3C:5A:3B:14:C5:7C:6B:A1:B9:DB:C2:F3:D3:64:A0:0F:16:74:E5:59:8D:07:E9:BB:30:3D:DE"
       ]
     }
   },
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
     "target": {
       "namespace": "web",
       "site": "https://ddokcheck.com"
