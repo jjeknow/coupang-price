@@ -739,12 +739,14 @@ export default function ProductDetailPage() {
       // 새 딥링크가 있으면 사용, 없으면 기존 URL 사용
       const targetUrl = result.data?.shortenUrl || result.data?.landingUrl || product.productUrl;
 
-      // 새 창으로 열기
-      window.open(targetUrl, '_blank', 'noopener,noreferrer');
+      // Capacitor 앱에서는 인앱 브라우저 사용
+      const { openCoupangProduct } = await import('@/lib/capacitor/browser');
+      await openCoupangProduct(targetUrl);
     } catch (error) {
       console.error('딥링크 생성 실패:', error);
       // 실패 시 기존 URL로 열기
-      window.open(product.productUrl, '_blank', 'noopener,noreferrer');
+      const { openCoupangProduct } = await import('@/lib/capacitor/browser');
+      await openCoupangProduct(product.productUrl);
     } finally {
       setPurchaseLoading(false);
     }

@@ -31,11 +31,14 @@ export default function CoupangLink({ productId, children, className }: CoupangL
       const result = await res.json();
       const targetUrl = result.data?.shortenUrl || result.data?.landingUrl || `https://www.coupang.com/vp/products/${productId}`;
 
-      window.open(targetUrl, '_blank', 'noopener,noreferrer');
+      // 쿠팡 앱 연동을 위해 location.href 사용
+      const { openCoupangProduct } = await import('@/lib/capacitor/browser');
+      await openCoupangProduct(targetUrl);
     } catch (error) {
       console.error('딥링크 생성 실패:', error);
       // 실패 시 기본 URL로 이동
-      window.open(`https://www.coupang.com/vp/products/${productId}`, '_blank', 'noopener,noreferrer');
+      const { openCoupangProduct } = await import('@/lib/capacitor/browser');
+      await openCoupangProduct(`https://www.coupang.com/vp/products/${productId}`);
     } finally {
       setLoading(false);
     }

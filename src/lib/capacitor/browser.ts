@@ -46,20 +46,19 @@ export async function closeInAppBrowser(): Promise<void> {
 }
 
 // 쿠팡 상품 페이지 열기 (파트너스 링크)
+// Universal Links/App Links가 작동하려면 직접 이동해야 함
+// 쿠팡 앱이 설치되어 있으면 자동으로 앱으로 열림
 export async function openCoupangProduct(productUrl: string): Promise<void> {
-  await openInAppBrowser({
-    url: productUrl,
-    toolbarColor: '#e5243b', // 쿠팡 색상
-  });
+  // 앱/웹 모두 location.href로 이동 (모바일 웹에서도 쿠팡 앱 연동)
+  window.location.href = productUrl;
 }
 
 // 외부 앱으로 URL 열기
 export async function openExternal(url: string): Promise<void> {
   try {
     if (Capacitor.isNativePlatform()) {
-      const { App } = await import('@capacitor/app');
-      // iOS에서는 시스템이 적절한 앱으로 열어줌
-      window.open(url, '_system');
+      // iOS/Android: 시스템이 적절한 앱으로 열어줌
+      window.location.href = url;
     } else {
       window.open(url, '_blank', 'noopener,noreferrer');
     }
