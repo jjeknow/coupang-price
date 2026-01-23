@@ -71,10 +71,13 @@ export default function PriceChart({
         secondsVisible: false,
         fixLeftEdge: true,
         fixRightEdge: true,
+        tickMarkFormatter: (time: Time) => {
+          const date = new Date(time as string);
+          return `${date.getMonth() + 1}/${date.getDate()}`;
+        },
       },
       localization: {
         locale: 'ko-KR',
-        dateFormat: 'M월 d일',
       },
       crosshair: {
         mode: 1,
@@ -101,6 +104,16 @@ export default function PriceChart({
 
     chartRef.current = chart;
 
+    // 가격 범위 계산 (Y축 스케일용)
+    const prices = data.map(d => d.price);
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    const priceRange = maxPrice - minPrice;
+
+    // 가격 변동이 거의 없으면 최소 5% 마진 적용
+    const minMargin = minPrice * 0.05;
+    const actualMargin = Math.max(priceRange * 0.1, minMargin);
+
     // 토스 블루 그라데이션 Area 시리즈
     const areaSeries = chart.addSeries(AreaSeries, {
       lineColor: '#3182f6',
@@ -109,8 +122,14 @@ export default function PriceChart({
       lineWidth: 2,
       priceFormat: {
         type: 'custom',
-        formatter: (price: number) => `${price.toLocaleString('ko-KR')}원`,
+        formatter: (price: number) => `${Math.round(price).toLocaleString('ko-KR')}원`,
       },
+      autoscaleInfoProvider: () => ({
+        priceRange: {
+          minValue: minPrice - actualMargin,
+          maxValue: maxPrice + actualMargin,
+        },
+      }),
     });
 
     seriesRef.current = areaSeries;
@@ -171,6 +190,24 @@ export default function PriceChart({
     };
   }, [data, lowestPrice, highestPrice, chartHeight]);
 
+  // 7일 전 가격 찾기
+  const getComparisonPrice = () => {
+    if (data.length < 2) return null;
+
+    const now = new Date();
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+    // 7일 전 또는 그 이전 데이터 중 가장 가까운 것
+    const comparisonData = data.find(d => {
+      const date = new Date(d.time);
+      return date <= sevenDaysAgo;
+    });
+
+    return comparisonData || null;
+  };
+
+  const comparisonData = getComparisonPrice();
+
   const stats = {
     current: currentPrice,
     lowest: lowestPrice || currentPrice,
@@ -178,11 +215,11 @@ export default function PriceChart({
     average: data.length > 0
       ? Math.round(data.reduce((sum, d) => sum + d.price, 0) / data.length)
       : currentPrice,
-    change: data.length >= 2
-      ? currentPrice - data[0].price
+    change: comparisonData
+      ? currentPrice - comparisonData.price
       : 0,
-    changePercent: data.length >= 2
-      ? ((currentPrice - data[0].price) / data[0].price * 100)
+    changePercent: comparisonData
+      ? ((currentPrice - comparisonData.price) / comparisonData.price * 100)
       : 0,
   };
 
@@ -226,12 +263,18 @@ export default function PriceChart({
       {/* 가격 변동 요약 - 반응형 그리드 */}
       <div className="grid grid-cols-3 gap-2 mb-4">
         <div className="p-2.5 bg-[#f2f4f6] rounded-lg text-center">
-          <p className="text-[10px] text-[#5c6470] mb-0.5">첫 기록 대비</p>
+          <p className="text-[10px] text-[#5c6470] mb-0.5">7일 전 대비</p>
           <div className="flex items-center justify-center gap-0.5">
-            {getTrendIcon()}
-            <span className={`text-[13px] font-bold ${getTrendColor()}`}>
-              {stats.changePercent > 0 ? '+' : ''}{stats.changePercent.toFixed(1)}%
-            </span>
+            {comparisonData ? (
+              <>
+                {getTrendIcon()}
+                <span className={`text-[13px] font-bold ${getTrendColor()}`}>
+                  {stats.changePercent > 0 ? '+' : ''}{stats.changePercent.toFixed(1)}%
+                </span>
+              </>
+            ) : (
+              <span className="text-[13px] font-bold text-[#5c6470]">-</span>
+            )}
           </div>
         </div>
         <div className="p-2.5 bg-[#e8f3ff] rounded-lg text-center">

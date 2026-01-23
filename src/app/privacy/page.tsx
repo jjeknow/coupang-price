@@ -109,7 +109,7 @@ export default function PrivacyPage() {
             <p className="text-gray-600">
               <strong>개인정보 보호책임자</strong>
               <br />
-              이메일: privacy@example.com
+              이메일: ddokcheck@naver.com
             </p>
           </div>
         </section>

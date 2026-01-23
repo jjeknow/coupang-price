@@ -7,8 +7,8 @@ android {
         applicationId "com.ddokcheck.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -18,10 +18,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('ddokcheck-release.keystore')
-            storePassword 'ddokcheck123'
-            keyAlias 'ddokcheck'
-            keyPassword 'ddokcheck123'
+            storeFile file('pwabuilder.keystore')
+            storePassword '_5wbCZj4zsNR'
+            keyAlias 'my-key-alias'
+            keyPassword '_5wbCZj4zsNR'
         }
     }
     buildTypes {

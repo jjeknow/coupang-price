@@ -282,15 +282,23 @@ export async function getCoupangPLProducts(
 
 /**
  * 딥링크 생성 (일반 쿠팡 URL을 어필리에이트 링크로 변환)
+ * @param coupangUrls - 변환할 쿠팡 URL 배열
+ * @param subId - 트래킹용 subId (예: 'yoripick', 'ddokcheck')
  */
 export async function createDeeplink(
-  coupangUrls: string[]
+  coupangUrls: string[],
+  subId?: string
 ): Promise<{ originalUrl: string; shortenUrl: string; landingUrl: string }[]> {
   const path = '/v2/providers/affiliate_open_api/apis/openapi/v1/deeplink';
 
+  const body: { coupangUrls: string[]; subId?: string } = { coupangUrls };
+  if (subId) {
+    body.subId = subId;
+  }
+
   const response = await callApi<{
     data: { originalUrl: string; shortenUrl: string; landingUrl: string }[];
-  }>('POST', path, { coupangUrls });
+  }>('POST', path, body);
 
   return response.data || [];
 }

@@ -2,6 +2,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import { NextAuthOptions } from 'next-auth';
 import { Adapter } from 'next-auth/adapters';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import AppleProvider from 'next-auth/providers/apple';
 import GoogleProvider from 'next-auth/providers/google';
 import KakaoProvider from 'next-auth/providers/kakao';
 import NaverProvider from 'next-auth/providers/naver';
@@ -47,6 +48,12 @@ export const authOptions: NextAuthOptions = {
           image: user.image,
         };
       },
+    }),
+
+    // Apple 로그인 (iOS 앱스토어 필수 - Guideline 4.8)
+    AppleProvider({
+      clientId: process.env.APPLE_CLIENT_ID || '',
+      clientSecret: process.env.APPLE_CLIENT_SECRET || '',
     }),
 
     // 구글 로그인
