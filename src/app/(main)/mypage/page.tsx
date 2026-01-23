@@ -95,7 +95,7 @@ export default function MyPage() {
     { href: '/mypage/alerts', icon: Bell, label: '가격 알림', count: alerts.filter(a => a.isActive).length },
     { href: '/mypage/history', icon: Package, label: '최근 본 상품' },
     { href: '/mypage/settings', icon: Settings, label: '설정' },
-    { href: '/help', icon: HelpCircle, label: '고객센터' },
+    { href: '/support', icon: HelpCircle, label: '고객센터' },
   ];
 
   return (
