@@ -29,7 +29,7 @@ export async function DELETE() {
     // 트랜잭션으로 모든 관련 데이터 삭제
     await prisma.$transaction(async (tx) => {
       // 1. 가격 알림 삭제
-      await tx.priceAlert.deleteMany({
+      await tx.alert.deleteMany({
         where: { userId },
       });
 
