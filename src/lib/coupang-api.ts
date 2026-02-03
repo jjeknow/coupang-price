@@ -17,6 +17,9 @@ const API_BASE_URL = 'https://api-gateway.coupang.com';
 const ACCESS_KEY = process.env.COUPANG_ACCESS_KEY || '';
 const SECRET_KEY = process.env.COUPANG_SECRET_KEY || '';
 
+// API 비활성화 플래그 (true면 API 호출 안 함)
+const API_DISABLED = true;
+
 // 카테고리 매핑
 export const CATEGORIES: Record<number, string> = {
   1001: '여성패션',
@@ -107,6 +110,12 @@ async function callApi<T>(
   body?: object,
   rateLimitType: 'global' | 'search' | 'reports' = 'global'
 ): Promise<T> {
+  // API 비활성화 상태면 에러
+  if (API_DISABLED) {
+    console.log('[API DISABLED] Coupang API is currently disabled');
+    throw new Error('쿠팡 파트너스 API가 일시적으로 비활성화되었습니다.');
+  }
+
   // API 키가 없으면 에러
   if (!ACCESS_KEY || !SECRET_KEY) {
     console.error('Coupang API keys not configured');
